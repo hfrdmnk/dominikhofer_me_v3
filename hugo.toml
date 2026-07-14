@@ -2,6 +2,7 @@ baseURL = 'https://dominikhofer.me/'
 languageCode = 'en-us'
 title = 'Dominik Hofer'
 timeZone = 'Europe/Zurich'
+theme = 'dominik'
 
 [permalinks]
 posts = '/:slug/'

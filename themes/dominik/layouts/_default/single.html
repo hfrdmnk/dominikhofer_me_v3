@@ -1,0 +1,6 @@
+{{ define "main" }}
+  <article>
+    <h1>{{ if .Title }}{{ .Title }}{{ else }}{{ .Date.Format "2006-01-02" }}{{ end }}</h1>
+    {{ .Content }}
+  </article>
+{{ end }}

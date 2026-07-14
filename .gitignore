@@ -1,0 +1,15 @@
+# Hugo generated output
+/public/
+/resources/_gen/
+/assets/jsconfig.json
+hugo_stats.json
+
+# Hugo build lock
+/.hugo_build.lock
+
+# Dependencies
+/node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
