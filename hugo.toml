@@ -1,3 +1,8 @@
-baseURL = 'https://example.org/'
-locale = 'en-us'
-title = 'My New Hugo Project'
+baseURL = 'https://dominikhofer.me/'
+languageCode = 'en-us'
+title = 'Dominik Hofer'
+timeZone = 'Europe/Zurich'
+
+[permalinks]
+posts = '/:slug/'
+races = '/:slug/'
