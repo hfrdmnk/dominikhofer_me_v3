@@ -1,26 +1,126 @@
-:root {
-  /* Accent colors */
-  --red: oklch(0.649 0.237 26.973);
-  --orange: oklch(0.744 0.181 56.458);
-  --yellow: oklch(0.865 0.177 90.382);
-  --green: oklch(0.748 0.175 153.527);
-  --teal: oklch(0.771 0.132 205.437);
-  --blue: oklch(0.632 0.202 254.088);
-  --violet: oklch(0.56 0.244 275.119);
+/* Fonts */
+@font-face {
+    font-family: "Newsreader";
+    src: url("../fonts/Newsreader-Roman-VF.woff2") format("woff2");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
+}
 
-  /* Theme — light */
-  --bg: oklch(1 0 0);
-  --primary: oklch(0.205 0 0);
-  --secondary: oklch(0.439 0 0);
-  --tertiary: oklch(0.709 0 0);
+@font-face {
+    font-family: "Newsreader";
+    src: url("../fonts/Newsreader-Italic-VF.woff2") format("woff2");
+    font-weight: 200 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Reset — https://www.joshwcomeau.com/css/custom-css-reset/ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+*:not(dialog) {
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-wrap: balance;
+}
+
+/* Tokens */
+:root {
+    /* Accent colors */
+    --red: oklch(0.649 0.237 26.973);
+    --orange: oklch(0.744 0.181 56.458);
+    --yellow: oklch(0.865 0.177 90.382);
+    --green: oklch(0.748 0.175 153.527);
+    --teal: oklch(0.771 0.132 205.437);
+    --blue: oklch(0.632 0.202 254.088);
+    --violet: oklch(0.56 0.244 275.119);
+
+    /* Theme — light */
+    --bg: oklch(1 0 0);
+    --primary: oklch(0.205 0 0);
+    --secondary: oklch(0.439 0 0);
+    --tertiary: oklch(0.709 0 0);
+
+    /* Font stacks */
+    --font-sans: system-ui, sans-serif;
+    --font-serif: "Newsreader", serif;
+
+    /* Font sizes */
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 16px;
+    --text-lg: 20px;
+    --text-xl: 24px;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    /* Theme — dark */
-    --bg: oklch(0.145 0 0);
-    --primary: oklch(0.985 0 0);
-    --secondary: oklch(0.709 0 0);
-    --tertiary: oklch(0.556 0 0);
-  }
+    :root {
+        /* Theme — dark */
+        --bg: oklch(0.145 0 0);
+        --primary: oklch(0.985 0 0);
+        --secondary: oklch(0.709 0 0);
+        --tertiary: oklch(0.556 0 0);
+    }
+}
+
+/* Base */
+body {
+    background: var(--bg);
+    color: var(--primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-optical-sizing: auto;
+    font-size-adjust: from-font;
 }
