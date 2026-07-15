@@ -1,0 +1,9 @@
+<footer class="colophon">
+  <p class="colophon__meta">
+    <span class="colophon__version">v {{ site.Params.version | default "3.0" }}</span>
+    <span class="colophon__deploy" data-deploy="{{ now.Unix }}">last deployed just now</span>
+    <span class="colophon__motto">{{ site.Params.motto | default "trust the process" }}</span>
+  </p>
+  {{/* TODO: replace this text placeholder with the real signature SVG asset */}}
+  <p class="colophon__sign" aria-hidden="true">Domi</p>
+</footer>

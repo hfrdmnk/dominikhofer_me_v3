@@ -1,9 +1,15 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  <ul>
-    {{ range .Pages }}
-    <li>
-      <a href="{{ .RelPermalink }}">{{ if .Title }}{{ .Title }}{{ else }}{{ .Date.Format "2006-01-02" }}{{ end }}</a>
+  {{ partial "page-title.html" (dict "kicker" .Params.kicker "title" .Title) }}
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  <ul class="post-list">
+    {{ range .Pages.ByDate.Reverse }}
+    <li class="post-list__item">
+      <a class="post-list__link" href="{{ .RelPermalink }}">
+        <span class="post-list__title">
+          {{- if .Title }}{{ .Title }}{{ else }}{{ .Summary | plainify | truncate 70 }}{{ end -}}
+        </span>
+        <time class="post-list__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      </a>
     </li>
     {{ end }}
   </ul>

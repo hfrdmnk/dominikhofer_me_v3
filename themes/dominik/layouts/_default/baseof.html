@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.Lang }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
-  <script>
-    document.documentElement.dataset.day =
-      { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[
-        new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Zurich", weekday: "short" }).format()
-      ];
-  </script>
-  {{ with resources.Get "css/main.css" }}
-  <link rel="stylesheet" href="{{ .RelPermalink }}">
-  {{ end }}
-</head>
-<body>
-  {{ block "main" . }}{{ end }}
+{{ partial "head.html" . }}
+<body class="page" id="top">
+  <a class="skip-link" href="#content">Skip to content</a>
+  {{ partial "topbar.html" . }}
+  {{ partial "sidebar.html" . }}
+  <main class="content" id="content">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "colophon.html" . }}
 </body>
 </html>

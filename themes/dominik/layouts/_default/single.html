@@ -1,6 +1,9 @@
 {{ define "main" }}
-  <article>
-    <h1>{{ if .Title }}{{ .Title }}{{ else }}{{ .Date.Format "2006-01-02" }}{{ end }}</h1>
+  {{- $title := .Title | default (.Date.Format "January 2, 2006") -}}
+  {{- $kicker := .Params.kicker -}}
+  {{- if and (not $kicker) .Title }}{{ $kicker = .Date.Format "January 2, 2006" }}{{ end -}}
+  {{ partial "page-title.html" (dict "kicker" $kicker "title" $title) }}
+  <article class="prose">
     {{ .Content }}
   </article>
 {{ end }}

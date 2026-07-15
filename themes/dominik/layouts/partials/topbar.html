@@ -1,0 +1,16 @@
+{{- $path := "/" -}}
+{{- if not .IsHome }}{{ $path = strings.TrimSuffix "/" .RelPermalink }}{{ end -}}
+<header class="topbar">
+  <p class="topbar__page">
+    <span class="topbar__path">{{ $path }}</span>
+    <span class="topbar__status">
+      <time class="topbar__clock" data-clock>{{ now.Format "15:04" }}</time>
+      <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span>
+    </span>
+  </p>
+  <p class="topbar__now">
+    <span class="visually-hidden">Last listened: </span>
+    <span class="topbar__cover" aria-hidden="true"></span>
+    <span class="topbar__track">Autumn, Ben Böhmer</span>
+  </p>
+</header>

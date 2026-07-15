@@ -1,0 +1,20 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  {{ with .Description | default site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+  <script>
+    document.documentElement.dataset.day =
+      { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[
+        new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Zurich", weekday: "short" }).format()
+      ];
+  </script>
+  <link rel="preload" href="{{ "fonts/Newsreader-Roman-VF.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ "fonts/Newsreader-Italic-VF.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+  {{ with resources.Get "css/main.css" }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ end }}
+  {{ with resources.Get "js/site.js" }}
+  <script src="{{ .RelPermalink }}" defer></script>
+  {{ end }}
+</head>
