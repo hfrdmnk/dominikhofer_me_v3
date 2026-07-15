@@ -87,6 +87,9 @@ h6 {
     --blue: oklch(0.632 0.202 254.088);
     --violet: oklch(0.56 0.244 275.119);
 
+    /* Accent of the day — data-day set by inline script in <head> (Europe/Zurich) */
+    --accent: var(--red);
+
     /* Theme — light */
     --bg: oklch(1 0 0);
     --primary: oklch(0.205 0 0);
@@ -113,6 +116,35 @@ h6 {
         --secondary: oklch(0.709 0 0);
         --tertiary: oklch(0.556 0 0);
     }
+}
+
+/* Accent by weekday (Europe/Zurich): Mon→Sun */
+:root[data-day="1"] {
+    --accent: var(--red);
+}
+
+:root[data-day="2"] {
+    --accent: var(--orange);
+}
+
+:root[data-day="3"] {
+    --accent: var(--yellow);
+}
+
+:root[data-day="4"] {
+    --accent: var(--green);
+}
+
+:root[data-day="5"] {
+    --accent: var(--teal);
+}
+
+:root[data-day="6"] {
+    --accent: var(--blue);
+}
+
+:root[data-day="0"] {
+    --accent: var(--violet);
 }
 
 /* Base */
