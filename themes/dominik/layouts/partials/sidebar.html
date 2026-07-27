@@ -2,7 +2,7 @@
 <div class="sidebar">
   <nav class="nav" aria-label="Primary">
     <a class="nav__home" href="{{ "/" | relURL }}">
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6 4 12l6 6"/><path d="M4 12h16"/></svg>
+      {{ partial "domicons/back.html" (dict "strokeWidth" 1.5) }}
       Back home
     </a>
     <ul class="nav__list">
@@ -20,7 +20,7 @@
       </svg>
     </span>
     <span class="progress__label">
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4"/><path d="m6 10 6-6 6 6"/></svg>
+      {{ partial "domicons/up.html" (dict "strokeWidth" 1.5) }}
       Back to top
     </span>
   </a>
