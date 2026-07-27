@@ -10,10 +10,11 @@
   </p>
   {{ with hugo.Data.lastfm }}
     {{ if and .track .artist .url }}
-      <a class="topbar__now" href="{{ .url }}">
+      {{- $track := printf "%s, %s" .track .artist | strings.Truncate 60 "…" -}}
+      <a class="topbar__now" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
         <span class="visually-hidden">Last listened: </span>
         <span class="topbar__cover" aria-hidden="true"></span>
-        <span class="topbar__track">{{ .track }}, {{ .artist }}</span>
+        <span class="topbar__track">{{ $track }}</span>
       </a>
     {{ end }}
   {{ end }}
