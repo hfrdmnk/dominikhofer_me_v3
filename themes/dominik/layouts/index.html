@@ -2,3 +2,14 @@
   {{ partial "page-title.html" (dict "kicker" .Params.kicker "title" .Title) }}
   {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
 {{ end }}
+
+{{ define "page-aside" }}
+  <div class="home-portraits">
+    {{ with resources.Get "images/home-1.avif" }}
+      <img class="home-portraits__image home-portraits__image--dominik" src="{{ .RelPermalink }}" width="2160" height="2880" alt="Dominik outdoors">
+    {{ end }}
+    {{ with resources.Get "images/home-2.avif" }}
+      <img class="home-portraits__image home-portraits__image--naida" src="{{ .RelPermalink }}" width="2160" height="2881" alt="Naida lying in the sun">
+    {{ end }}
+  </div>
+{{ end }}

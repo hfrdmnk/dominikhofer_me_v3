@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.Lang }}">
 {{ partial "head.html" . }}
-<body class="page" id="top">
-  <a class="skip-link" href="#content">Skip to content</a>
-  {{ partial "topbar.html" . }}
-  {{ partial "sidebar.html" . }}
-  <main class="content" id="content">
-    {{ block "main" . }}{{ end }}
-  </main>
-  {{ partial "colophon.html" . }}
+<body id="top">
+  <div class="page">
+    <a class="skip-link" href="#content">Skip to content</a>
+    {{ partial "topbar.html" . }}
+    {{ partial "sidebar.html" . }}
+    <main class="content" id="content">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ block "page-aside" . }}{{ end }}
+    {{ partial "colophon.html" . }}
+  </div>
 </body>
 </html>
