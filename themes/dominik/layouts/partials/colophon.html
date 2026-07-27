@@ -1,9 +1,13 @@
+{{ $quote := "trust the process" }}
+{{ with site.Data.quote }}
+  {{ $quote = index (shuffle .) 0 }}
+{{ end }}
 <footer class="colophon">
   <p class="colophon__meta">
     <span class="colophon__version">v {{ site.Params.version | default "3.0" }}</span>
     <span class="colophon__deploy" data-deploy="{{ now.Unix }}">last deployed just now</span>
   </p>
-  <span class="colophon__motto">{{ site.Params.motto | default "trust the process" }}</span>
+  <span class="colophon__motto"><mark><span class="highlight__text">{{ $quote }}</span></mark></span>
   {{ with resources.Get "images/signature.svg" }}
     <span class="colophon__sign" aria-hidden="true">{{ .Content | safeHTML }}</span>
   {{ end }}

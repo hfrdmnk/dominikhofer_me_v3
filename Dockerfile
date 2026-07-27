@@ -15,5 +15,6 @@ RUN --mount=type=secret,id=LASTFM_API_KEY \
 FROM nginx:1.29-alpine-slim
 
 COPY --from=build /site/public /usr/share/nginx/html
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

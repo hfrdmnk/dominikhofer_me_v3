@@ -1,0 +1,38 @@
+{{- $publicationURI := "" -}}
+{{- if os.FileExists "sequoia.json" -}}
+  {{- $sequoia := os.ReadFile "sequoia.json" | transform.Unmarshal -}}
+  {{- $publicationURI = $sequoia.publicationUri | default "" -}}
+{{- end -}}
+<section class="follow-card breakout" aria-labelledby="follow-card-title">
+  <h2 class="follow-card__title" id="follow-card-title">Want to stay in touch?</h2>
+  <div class="follow-card__copy">
+    <p>In a world full of algorithms, we should do it the old way.</p>
+    <p>Below, you can enter your email and I will notify you when a new post goes online. And maybe send you the occasional update that doesn’t land on this site. Very casual though, no spam ever. Pinky promise.</p>
+  </div>
+  <form class="follow-card__form" action="https://buttondown.com/api/emails/embed-subscribe/dominikhofer" method="post">
+    <label class="visually-hidden" for="follow-card-email">Email address</label>
+    <input
+      class="follow-card__input"
+      id="follow-card-email"
+      type="email"
+      name="email"
+      placeholder="Email address"
+      autocomplete="email"
+      enterkeyhint="send"
+      required
+    >
+    <input type="hidden" name="embed" value="1">
+    <button class="follow-card__submit" type="submit">Subscribe</button>
+  </form>
+  <p class="follow-card__alternative">If you prefer, you can also follow along via RSS or standard.site.</p>
+  <div class="follow-card__links">
+    <a class="follow-card__link" href="{{ "rss.xml" | relURL }}">RSS feed</a>
+    <sequoia-subscribe button-type="plain" label="Standard Site"{{ with $publicationURI }} publication-uri="{{ . }}"{{ end }}>
+      {{- with $publicationURI -}}
+        <a class="follow-card__link" href="https://sequoia.pub/subscribe?publicationUri={{ . | urlquery }}">Standard Site</a>
+      {{- else -}}
+        <span class="follow-card__link">Standard Site</span>
+      {{- end -}}
+    </sequoia-subscribe>
+  </div>
+</section>

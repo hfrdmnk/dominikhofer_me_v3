@@ -34,6 +34,13 @@
   }
 
   const root = document.documentElement;
+  const updateScrollable = () => {
+    root.dataset.scrollable = root.scrollHeight > root.clientHeight ? "true" : "false";
+  };
+  updateScrollable();
+  window.addEventListener("load", updateScrollable, { once: true });
+  new ResizeObserver(updateScrollable).observe(document.body);
+
   const tiltPointer = window.matchMedia(
     "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
   );

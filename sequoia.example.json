@@ -1,0 +1,31 @@
+{
+  "$schema": "https://tangled.org/stevedylan.dev/sequoia/raw/main/sequoia.schema.json",
+  "siteUrl": "https://dominikhofer.me",
+  "contentDir": "./content/posts",
+  "publicDir": "./static",
+  "outputDir": "./public",
+  "pathPrefix": "",
+  "publicationUri": "at://YOUR_DID/site.standard.publication/YOUR_RECORD_KEY",
+  "identity": "dominik.social",
+  "frontmatter": {
+    "title": "title",
+    "description": "description",
+    "publishDate": "date",
+    "coverImage": "cover",
+    "tags": "tags",
+    "draft": "draft",
+    "slugField": "slug"
+  },
+  "ignore": [
+    "_index.md"
+  ],
+  "removeIndexFromSlug": true,
+  "publishContent": true,
+  "bluesky": {
+    "enabled": false
+  },
+  "ui": {
+    "components": "./assets/js"
+  },
+  "autoSync": true
+}

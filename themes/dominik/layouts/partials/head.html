@@ -1,8 +1,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  <title>{{ if or .IsHome (not .Title) }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
   {{ with .Description | default site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+  <link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/png" sizes="48x48">
+  <link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}" sizes="180x180">
+  <link rel="alternate" type="application/rss+xml" href="{{ "rss.xml" | relURL }}" title="{{ site.Title }}">
+  {{- if os.FileExists "sequoia.json" }}
+    {{- $sequoia := os.ReadFile "sequoia.json" | transform.Unmarshal }}
+    {{- with $sequoia.publicationUri }}
+  <link rel="site.standard.publication" href="{{ . }}">
+    {{- end }}
+  {{- end }}
+  {{- with .Params.atUri }}
+  <link rel="site.standard.document" href="{{ . }}">
+  {{- end }}
   <script>
     document.documentElement.dataset.day =
       { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[
@@ -17,4 +30,10 @@
   {{ with resources.Get "js/site.js" }}
   <script src="{{ .RelPermalink }}" defer></script>
   {{ end }}
+  {{- $followPages := slice "/" "/about/" "/now/" "/posts/" "/hello/" }}
+  {{- if in $followPages .RelPermalink }}
+    {{- with resources.Get "js/sequoia-subscribe.js" }}
+  <script type="module" src="{{ .RelPermalink }}"></script>
+    {{- end }}
+  {{- end }}
 </head>

@@ -8,9 +8,13 @@
     {{ partial "sidebar.html" . }}
     <main class="content" id="content">
       {{ block "main" . }}{{ end }}
+      {{- $followPages := slice "/" "/about/" "/now/" "/posts/" "/hello/" -}}
+      {{- if in $followPages .RelPermalink -}}
+        {{ partial "follow-card.html" . }}
+      {{- end -}}
     </main>
     {{ block "page-aside" . }}{{ end }}
-    {{ partial "colophon.html" . }}
+    {{ partialCached "colophon.html" . }}
   </div>
 </body>
 </html>
