@@ -8,9 +8,13 @@
       <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span>
     </span>
   </p>
-  <p class="topbar__now">
-    <span class="visually-hidden">Last listened: </span>
-    <span class="topbar__cover" aria-hidden="true"></span>
-    <span class="topbar__track">Autumn, Ben Böhmer</span>
-  </p>
+  {{ with hugo.Data.lastfm }}
+    {{ if and .track .artist .url }}
+      <a class="topbar__now" href="{{ .url }}">
+        <span class="visually-hidden">Last listened: </span>
+        <span class="topbar__cover" aria-hidden="true"></span>
+        <span class="topbar__track">{{ .track }}, {{ .artist }}</span>
+      </a>
+    {{ end }}
+  {{ end }}
 </header>

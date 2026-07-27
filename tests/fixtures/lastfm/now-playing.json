@@ -1,0 +1,26 @@
+{
+  "recenttracks": {
+    "track": [
+      {
+        "name": "Active Song",
+        "artist": {
+          "#text": "Current Artist"
+        },
+        "url": "https://www.last.fm/music/Current+Artist/_/Active+Song",
+        "@attr": {
+          "nowplaying": "true"
+        }
+      },
+      {
+        "name": "Completed Song",
+        "artist": {
+          "#text": "Previous Artist"
+        },
+        "url": "https://www.last.fm/music/Previous+Artist/_/Completed+Song",
+        "date": {
+          "uts": "1785135600"
+        }
+      }
+    ]
+  }
+}

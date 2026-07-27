@@ -1,0 +1,26 @@
+{
+  "recenttracks": {
+    "track": [
+      {
+        "name": "Autumn",
+        "artist": {
+          "#text": "Ben Böhmer"
+        },
+        "url": "https://www.last.fm/music/Ben+B%C3%B6hmer/_/Autumn",
+        "date": {
+          "uts": "1785135600"
+        }
+      },
+      {
+        "name": "Earlier Song",
+        "artist": {
+          "#text": "Earlier Artist"
+        },
+        "url": "https://www.last.fm/music/Earlier+Artist/_/Earlier+Song",
+        "date": {
+          "uts": "1785132000"
+        }
+      }
+    ]
+  }
+}

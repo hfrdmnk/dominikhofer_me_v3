@@ -6,6 +6,12 @@ hugo_stats.json
 
 # Hugo build lock
 /.hugo_build.lock
+/data/lastfm.json
+
+# Local environment
+/.env
+/.env.*
+!/.env.example
 
 # Dependencies
 /node_modules/

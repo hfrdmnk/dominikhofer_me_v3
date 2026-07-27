@@ -1,0 +1,8 @@
+.git
+.gitignore
+.hugo_build.lock
+.env
+.env.*
+.DS_Store
+public
+resources
