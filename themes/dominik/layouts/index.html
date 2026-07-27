@@ -4,16 +4,19 @@
 {{ end }}
 
 {{ define "page-aside" }}
-  <div class="home-portraits">
-    {{ with resources.Get "images/home-1.avif" }}
-      <div class="home-portraits__card home-portraits__card--dominik" data-tilt>
-        <img class="home-portraits__image" src="{{ .RelPermalink }}" width="2160" height="2880" alt="Dominik outdoors">
-      </div>
-    {{ end }}
-    {{ with resources.Get "images/home-2.avif" }}
-      <div class="home-portraits__card home-portraits__card--naida" data-tilt>
-        <img class="home-portraits__image" src="{{ .RelPermalink }}" width="2160" height="2881" alt="Naida lying in the sun">
-      </div>
-    {{ end }}
-  </div>
+  {{- $photos := slice
+    (dict
+      "image" "images/home-1.avif"
+      "alt" "Dominik outdoors"
+      "tooltip" "That's me, hi :)"
+      "tooltipId" "home-photo-dominik-tooltip"
+    )
+    (dict
+      "image" "images/home-2.avif"
+      "alt" "Naida lying in the sun"
+      "tooltip" "My dog Naida"
+      "tooltipId" "home-photo-naida-tooltip"
+    )
+  -}}
+  {{ partial "tilt-photo-pair.html" (dict "photos" $photos) }}
 {{ end }}

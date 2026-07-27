@@ -1,0 +1,25 @@
+{{- $image := resources.Get .image -}}
+{{- if not $image -}}
+  {{- errorf "TiltPhoto image not found: %s" .image -}}
+{{- end -}}
+{{- if and .tooltip (not .tooltipId) -}}
+  {{- errorf "TiltPhoto tooltipId is required when tooltip is set for %s" .image -}}
+{{- end -}}
+<figure
+  class="tilt-photo"
+  data-tilt
+  {{- with .tooltip }} tabindex="0" aria-describedby="{{ $.tooltipId }}"{{ end -}}
+>
+  <div class="tilt-photo__surface">
+    <img
+      class="tilt-photo__image"
+      src="{{ $image.RelPermalink }}"
+      width="{{ $image.Width }}"
+      height="{{ $image.Height }}"
+      alt="{{ .alt }}"
+    >
+  </div>
+  {{- with .tooltip }}
+    <span class="tilt-photo__tooltip" id="{{ $.tooltipId }}" role="tooltip">{{ . }}</span>
+  {{- end }}
+</figure>

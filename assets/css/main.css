@@ -100,6 +100,8 @@ h6 {
     --tertiary: oklch(0.709 0 0);
     --surface: color-mix(in oklab, var(--tertiary) 22%, var(--bg));
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tooltip-bg: #000;
+    --tooltip-fg: #fff;
 
     /* Font stacks */
     --font-sans: system-ui, sans-serif;
@@ -120,6 +122,8 @@ h6 {
         --primary: oklch(0.985 0 0);
         --secondary: oklch(0.709 0 0);
         --tertiary: oklch(0.556 0 0);
+        --tooltip-bg: #fff;
+        --tooltip-fg: #000;
     }
 }
 
@@ -504,12 +508,22 @@ a {
 
     position: relative;
     isolation: isolate;
+}
+
+.tilt-photo__surface {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    translate: var(--photo-offset-x) var(--photo-offset-y);
+    rotate: var(--photo-rotation);
     transform: perspective(32rem) rotateX(var(--tilt-rotate-x)) rotateY(var(--tilt-rotate-y));
     transform-style: preserve-3d;
     transition: transform 140ms ease-out;
 }
 
-[data-tilt]::after {
+.tilt-photo__surface::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -527,69 +541,131 @@ a {
 }
 
 @media (hover: hover) and (pointer: fine) {
-    [data-tilt][data-tilt-active] {
+    [data-tilt][data-tilt-active] .tilt-photo__surface {
         will-change: transform;
     }
 
-    [data-tilt][data-tilt-active]::after {
+    [data-tilt][data-tilt-active] .tilt-photo__surface::after {
         opacity: 0.7;
+    }
+
+    .tilt-photo:hover .tilt-photo__tooltip {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    [data-tilt],
-    [data-tilt]::after {
+    .tilt-photo__surface,
+    .tilt-photo__surface::after,
+    .tilt-photo__tooltip {
         transition: none;
     }
 }
 
-/* Home portraits */
-.home-portraits {
+/* Tilt photo pair */
+.tilt-photo-pair {
     --portrait-size: 8rem;
 
     position: relative;
-    grid-column: main-end / edge-end;
+    grid-column: main-start / main-end;
     grid-row: r-head-end / span 1;
     align-self: center;
-    justify-self: start;
+    justify-self: end;
     display: grid;
     grid-template-columns: repeat(2, var(--portrait-size));
     grid-template-rows: calc(var(--portrait-size) * 4 / 3);
     column-gap: var(--space-xs);
-    inline-size: min(18rem, 100%);
-    block-size: 14rem;
-    margin-inline-start: calc(var(--gap-col) * -1);
+    inline-size: max-content;
+    padding: var(--space-sm) 2rem 2rem var(--space-xs);
 }
 
-.home-portraits__card {
+.tilt-photo-pair__item {
     position: relative;
     grid-row: 1;
     inline-size: var(--portrait-size);
     block-size: calc(var(--portrait-size) * 4 / 3);
-    aspect-ratio: 3 / 4;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
 }
 
-.home-portraits__image {
+.tilt-photo-pair__item--1 {
+    --photo-offset-x: 0.75rem;
+    --photo-offset-y: 0rem;
+    --photo-rotation: -8deg;
+
+    grid-column: 1;
+    z-index: 2;
+}
+
+.tilt-photo-pair__item--2 {
+    --photo-offset-x: 0.75rem;
+    --photo-offset-y: 1.75rem;
+    --photo-rotation: 15deg;
+
+    grid-column: 2;
+    z-index: 1;
+}
+
+.tilt-photo {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: 3 / 4;
+}
+
+.tilt-photo:focus-visible {
+    outline: none;
+}
+
+.tilt-photo:focus-visible .tilt-photo__surface {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.tilt-photo__image {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
 }
 
-.home-portraits__card--dominik {
-    grid-column: 1;
-    z-index: 2;
-    translate: 0.75rem 0;
-    rotate: -8deg;
+.tilt-photo__tooltip {
+    position: absolute;
+    inset-block-end: calc(100% - var(--photo-offset-y) + var(--space-md) + var(--space-2xs));
+    inset-inline-start: calc(50% + var(--photo-offset-x));
+    z-index: 4;
+    max-inline-size: 12rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border-radius: var(--radius);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-fg);
+    font-size: var(--text-xs);
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    translate: -50% 0;
+    transform: translateY(0.25rem) scale(0.97);
+    transform-origin: bottom center;
+    transition:
+        opacity 150ms ease-out,
+        transform 150ms ease-out;
 }
 
-.home-portraits__card--naida {
-    grid-column: 2;
-    z-index: 1;
-    translate: 0.75rem 1.75rem;
-    rotate: 15deg;
+.tilt-photo__tooltip::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-start: 50%;
+    inline-size: 0;
+    block-size: 0;
+    border: 0.3rem solid transparent;
+    border-block-start-color: var(--tooltip-bg);
+    translate: -50% 0;
+}
+
+.tilt-photo:focus-visible .tilt-photo__tooltip {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 /* Prose */
@@ -762,11 +838,9 @@ a {
         gap: var(--space-md);
     }
 
-    .home-portraits {
+    .tilt-photo-pair {
         align-self: center;
-        inline-size: min(18rem, 100%);
         margin-block-start: 0;
-        margin-inline-start: 0;
     }
 
     .colophon__sign {
@@ -779,10 +853,8 @@ a {
         gap: var(--space-md);
     }
 
-    .home-portraits {
+    .tilt-photo-pair {
         --portrait-size: 7rem;
-
-        block-size: 12rem;
     }
 
     .colophon__motto {

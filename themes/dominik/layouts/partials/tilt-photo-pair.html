@@ -1,0 +1,11 @@
+{{- $photos := .photos -}}
+{{- if ne (len $photos) 2 -}}
+  {{- errorf "TiltPhotoPair expects exactly two photos" -}}
+{{- end -}}
+<div class="tilt-photo-pair">
+  {{- range $index, $photo := $photos }}
+    <div class="tilt-photo-pair__item tilt-photo-pair__item--{{ add $index 1 }}">
+      {{ partial "tilt-photo.html" $photo }}
+    </div>
+  {{- end }}
+</div>

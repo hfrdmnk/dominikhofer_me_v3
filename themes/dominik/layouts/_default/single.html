@@ -7,3 +7,9 @@
     {{ .Content }}
   </article>
 {{ end }}
+
+{{ define "page-aside" }}
+  {{ with .Params.photo_pair }}
+    {{ partial "tilt-photo-pair.html" . }}
+  {{ end }}
+{{ end }}
