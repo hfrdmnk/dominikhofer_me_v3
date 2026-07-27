@@ -100,8 +100,8 @@
   document.addEventListener("pointerleave", resetTilt);
   tiltPointer.addEventListener("change", resetTilt);
 
-  const cover = document.querySelector(".topbar__cover");
-  if (cover) {
+  const particleSource = document.querySelector(".topbar__particle");
+  if (particleSource) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const particles = new Set();
     let spawnTimer;
@@ -111,7 +111,7 @@
     const scheduleParticle = () => {
       window.clearTimeout(spawnTimer);
       if (!reducedMotion.matches) {
-        spawnTimer = window.setTimeout(spawnParticle, randomBetween(1400, 2600));
+        spawnTimer = window.setTimeout(spawnParticle, randomBetween(800, 1200));
       }
     };
 
@@ -122,22 +122,26 @@
       }
 
       const particle = document.createElement("span");
-      particle.className = "topbar__cover-particle";
-      cover.append(particle);
+      particle.className = "topbar__particle-trail";
+      particleSource.append(particle);
 
-      const x1 = randomBetween(-8, 8);
-      const x2 = x1 + randomBetween(-12, 12);
-      const x3 = x2 + randomBetween(-8, 8);
+      const endX = randomBetween(-18, 18);
+      const controlX = endX + randomBetween(-10, 10);
+      const curveX = (progress) =>
+        2 * (1 - progress) * progress * controlX + progress ** 2 * endX;
+      const transformAt = (progress, scale) =>
+        `translate3d(${curveX(progress)}px, ${-76 * progress}px, 0) scale(${scale})`;
       const animation = particle.animate(
         [
-          { transform: "translate3d(0, 0, 0)", opacity: 0.8 },
-          { transform: `translate3d(${x1}px, -22px, 0)`, opacity: 0.6, offset: 0.3 },
-          { transform: `translate3d(${x2}px, -48px, 0)`, opacity: 0.3, offset: 0.68 },
-          { transform: `translate3d(${x3}px, -76px, 0)`, opacity: 0 },
+          { transform: transformAt(0, 1), opacity: 0.8 },
+          { transform: transformAt(0.22, 0.92), opacity: 0.7, offset: 0.22 },
+          { transform: transformAt(0.48, 0.75), opacity: 0.48, offset: 0.48 },
+          { transform: transformAt(0.74, 0.5), opacity: 0.22, offset: 0.74 },
+          { transform: transformAt(1, 0.2), opacity: 0 },
         ],
         {
           duration: randomBetween(3000, 4200),
-          easing: "cubic-bezier(0.455, 0.03, 0.515, 0.955)",
+          easing: "ease-out",
           fill: "forwards",
         },
       );

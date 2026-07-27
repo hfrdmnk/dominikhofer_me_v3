@@ -340,7 +340,7 @@ sequoia-subscribe::part(button) {
     background-repeat: no-repeat;
     background-size: 0 1px, 100% 1px;
     color: var(--primary);
-    font-size: var(--text-base);
+    font-size: inherit;
     cursor: pointer;
     user-select: none;
 }
@@ -437,7 +437,7 @@ sequoia-subscribe::part(button):focus-visible {
     color: inherit;
 }
 
-.topbar__cover {
+.topbar__particle {
     position: relative;
     isolation: isolate;
     inline-size: 11px;
@@ -447,7 +447,7 @@ sequoia-subscribe::part(button):focus-visible {
     background: var(--surface);
 }
 
-.topbar__cover-particle {
+.topbar__particle-trail {
     position: absolute;
     inset: 0;
     z-index: -1;
@@ -456,6 +456,7 @@ sequoia-subscribe::part(button):focus-visible {
     border-radius: inherit;
     background: var(--surface);
     pointer-events: none;
+    transform-origin: center;
     will-change: transform, opacity;
 }
 
@@ -970,7 +971,6 @@ sequoia-subscribe::part(button) {
     border: 0;
     background-color: transparent;
     font: inherit;
-    font-size: var(--text-base);
     cursor: pointer;
     user-select: none;
 }
