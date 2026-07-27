@@ -2,54 +2,63 @@
 set -eu
 
 root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-filter="$root_dir/scripts/lastfm-transform.jq"
 fixtures="$root_dir/tests/fixtures/lastfm"
+test_dir=$(mktemp -d)
+theme_dir="$test_dir/themes/dominik"
+homepage="$test_dir/public/index.html"
 
-assert_json() {
+cleanup() {
+    rm -rf "$test_dir"
+}
+
+trap cleanup EXIT HUP INT TERM
+
+mkdir -p "$test_dir/data" "$test_dir/themes"
+cp -R "$root_dir/themes/dominik" "$theme_dir"
+printf '%s\n' \
+    '{{ return partial "lastfm/track.html" hugo.Data.lastfm }}' \
+    > "$theme_dir/layouts/partials/lastfm/fetch.html"
+
+render() {
+    cp "$fixtures/$1" "$test_dir/data/lastfm.json"
+    HUGO_DATADIR="$test_dir/data" hugo \
+        --source "$root_dir" \
+        --themesDir "$test_dir/themes" \
+        --destination "$test_dir/public" \
+        --quiet
+}
+
+assert_rendered() {
     fixture=$1
     expected=$2
-    actual=$(jq -c -f "$filter" "$fixtures/$fixture")
 
-    if [ "$actual" != "$expected" ]; then
-        echo "$fixture: expected $expected, got ${actual:-<empty>}" >&2
+    render "$fixture"
+    if ! grep -Fq "$expected" "$homepage"; then
+        echo "$fixture: expected to render $expected" >&2
         exit 1
     fi
 }
 
-assert_empty() {
-    fixture=$1
-    actual=$(jq -c -f "$filter" "$fixtures/$fixture")
-
-    if [ -n "$actual" ]; then
-        echo "$fixture: expected no output, got $actual" >&2
-        exit 1
-    fi
-}
-
-assert_invalid() {
+assert_hidden() {
     fixture=$1
 
-    if jq -c -f "$filter" "$fixtures/$fixture" >/dev/null 2>&1; then
-        echo "$fixture: expected parsing to fail" >&2
+    render "$fixture"
+    if grep -Fq 'class="topbar__now"' "$homepage"; then
+        echo "$fixture: expected the Last.fm item to be hidden" >&2
         exit 1
     fi
 }
 
-assert_json \
-    "now-playing.json" \
-    '{"track":"Completed Song","artist":"Previous Artist","url":"https://www.last.fm/music/Previous+Artist/_/Completed+Song"}'
+assert_rendered "now-playing.json" "Completed Song, Previous Artist"
+if grep -Fq "Active Song" "$homepage"; then
+    echo "now-playing.json: rendered the active track" >&2
+    exit 1
+fi
 
-assert_json \
-    "completed.json" \
-    '{"track":"Autumn","artist":"Ben Böhmer","url":"https://www.last.fm/music/Ben+B%C3%B6hmer/_/Autumn"}'
-
-assert_json \
-    "unicode.json" \
-    '{"track":"L’été d’après (feat. O’Neil)","artist":"Björk & Sigur Rós","url":"https://www.last.fm/music/Bj%C3%B6rk+%26+Sigur+R%C3%B3s/_/L%27%C3%A9t%C3%A9+d%27apr%C3%A8s"}'
-
-assert_empty "empty.json"
-assert_empty "error.json"
-assert_empty "malformed.json"
-assert_invalid "invalid.json"
+assert_rendered "completed.json" "Autumn, Ben Böhmer"
+assert_rendered "unicode.json" "L’été d’après (feat. O’Neil), Björk &amp; Sigur Rós"
+assert_hidden "empty.json"
+assert_hidden "error.json"
+assert_hidden "malformed.json"
 
 echo "Last.fm transform tests passed."

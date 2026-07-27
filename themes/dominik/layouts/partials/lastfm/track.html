@@ -1,0 +1,34 @@
+{{- $result := dict -}}
+{{- $tracks := slice -}}
+
+{{- with .recenttracks -}}
+  {{- with .track -}}
+    {{- if reflect.IsSlice . -}}
+      {{- $tracks = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $tracks -}}
+  {{- if not $result -}}
+    {{- $nowPlaying := false -}}
+    {{- with index . "@attr" -}}
+      {{- $nowPlaying = eq (index . "nowplaying") "true" -}}
+    {{- end -}}
+
+    {{- if not $nowPlaying -}}
+      {{- $name := index . "name" | default "" -}}
+      {{- $artist := "" -}}
+      {{- with index . "artist" -}}
+        {{- $artist = index . "#text" | default "" -}}
+      {{- end -}}
+      {{- $url := index . "url" | default "" | replaceRE "^http://" "https://" -}}
+
+      {{- if and $name $artist (strings.HasPrefix $url "https://www.last.fm/") -}}
+        {{- $result = dict "track" $name "artist" $artist "url" $url -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $result -}}

@@ -10,14 +10,17 @@ cleanup() {
 
 trap cleanup EXIT HUP INT TERM
 
-mkdir -p "$test_dir/data"
-jq -f \
-    "$root_dir/scripts/lastfm-transform.jq" \
-    "$root_dir/tests/fixtures/lastfm/now-playing.json" \
-    > "$test_dir/data/lastfm.json"
+mkdir -p "$test_dir/data" "$test_dir/themes"
+cp "$root_dir/tests/fixtures/lastfm/now-playing.json" "$test_dir/data/lastfm.json"
+cp -R "$root_dir/themes/dominik" "$test_dir/themes/"
+printf '%s\n' \
+    '{{ return partial "lastfm/track.html" hugo.Data.lastfm }}' \
+    > "$test_dir/themes/dominik/layouts/partials/lastfm/fetch.html"
 
-HUGO_DATADIR="$test_dir/data" hugo \
+HUGO_DATADIR="$test_dir/data" \
+hugo \
     --source "$root_dir" \
+    --themesDir "$test_dir/themes" \
     --destination "$test_dir/public" \
     --quiet
 

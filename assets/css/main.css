@@ -56,6 +56,12 @@ button,
 textarea,
 select {
     font: inherit;
+    font-size: var(--text-sm);
+}
+
+button {
+    cursor: pointer;
+    user-select: none;
 }
 
 ::selection {
@@ -109,6 +115,7 @@ h6 {
     --secondary: oklch(0.556 0 none);
     --tertiary: oklch(0.709 0 0);
     --surface: color-mix(in oklab, var(--tertiary) 24%, var(--bg));
+    --surface-lighter: color-mix(in oklab, var(--tertiary) 8%, var(--bg));
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --tooltip-bg: #000;
     --tooltip-fg: #fff;
@@ -262,6 +269,8 @@ body {
     --space-2xl: 4rem;
 
     --radius: 4px;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
 }
 
 /* Base typography */
@@ -304,6 +313,62 @@ a {
     clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
+}
+
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 2.5rem;
+    padding: var(--space-xs) var(--space-md);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--primary);
+    color: var(--bg);
+    font-size: var(--text-sm);
+    cursor: pointer;
+}
+
+.button-underline,
+sequoia-subscribe::part(button) {
+    display: inline-block;
+    padding-block-end: 2px;
+    background-image:
+        linear-gradient(var(--accent), var(--accent)),
+        linear-gradient(var(--tertiary), var(--tertiary));
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: 0 1px, 100% 1px;
+    color: var(--primary);
+    font-size: var(--text-base);
+    cursor: pointer;
+    user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    button,
+    sequoia-subscribe::part(button) {
+        transition: transform 100ms ease-out;
+    }
+
+    button:active,
+    sequoia-subscribe::part(button):active {
+        transform: scale(0.97);
+    }
+
+    .button-underline,
+    sequoia-subscribe::part(button) {
+        transition:
+            background-size 150ms ease,
+            transform 100ms ease-out;
+    }
+}
+
+.button-underline:hover,
+.button-underline:focus-visible,
+sequoia-subscribe::part(button):hover,
+sequoia-subscribe::part(button):focus-visible {
+    background-size: 100% 1px, 100% 1px;
 }
 
 .skip-link {
@@ -823,14 +888,15 @@ a {
 .follow-card {
     margin-block-start: var(--space-2xl);
     padding: var(--space-xl) var(--breakout);
-    border-radius: var(--radius);
-    background: var(--surface);
+    border-radius: var(--radius-lg);
+    background: var(--surface-lighter);
     color: var(--secondary);
+    text-align: start;
 }
 
 .follow-card__title {
     color: var(--primary);
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
 }
 
 .follow-card__copy {
@@ -848,74 +914,49 @@ a {
     margin-block-start: var(--space-lg);
 }
 
-.follow-card__input,
-.follow-card__submit {
-    min-block-size: 3rem;
-    border: 1px solid color-mix(in oklab, var(--tertiary) 65%, transparent);
-    border-radius: var(--radius);
-}
-
 .follow-card__input {
     min-inline-size: 0;
+    min-block-size: 2.5rem;
     flex: 1 1 auto;
-    padding-inline: var(--space-md);
-    background: var(--bg);
+    padding: var(--space-xs) var(--space-md);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--surface);
     color: var(--primary);
-    font-size: var(--text-base);
 }
 
 .follow-card__input::placeholder {
     color: var(--tertiary);
-}
-
-.follow-card__input:user-invalid {
-    border-color: var(--red);
+    user-select: none;
 }
 
 .follow-card__submit {
     flex: none;
-    padding-inline: var(--space-lg);
-    background: var(--primary);
-    color: var(--bg);
-    cursor: pointer;
 }
 
-.follow-card__input:focus-visible,
-.follow-card__submit:focus-visible,
-.follow-card__link:focus-visible,
+.button-primary:focus-visible,
+.button-underline:focus-visible,
 sequoia-subscribe::part(button):focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: var(--space-2xs);
 }
 
-.follow-card__alternative {
+.follow-card__input:focus-visible {
+    outline: none;
+}
+
+.follow-card__alternatives {
+    display: grid;
+    gap: var(--space-xs);
     margin-block-start: var(--space-xl);
-    text-align: center;
 }
 
 .follow-card__links {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-sm) var(--space-lg);
-    margin-block-start: var(--space-md);
-}
-
-.follow-card__link,
-sequoia-subscribe::part(button) {
-    color: var(--primary);
-    text-decoration: underline;
-    text-decoration-color: var(--tertiary);
-    text-underline-offset: 0.2em;
-    transition: text-decoration-color 150ms ease;
-}
-
-.follow-card__link:hover,
-.follow-card__link:focus-visible,
-sequoia-subscribe::part(button):hover,
-sequoia-subscribe::part(button):focus-visible {
-    text-decoration-color: var(--accent);
 }
 
 sequoia-subscribe {
@@ -925,12 +966,13 @@ sequoia-subscribe {
 
 sequoia-subscribe::part(button) {
     min-block-size: 1.5rem;
-    padding: 0;
+    padding: 0 0 2px;
     border: 0;
-    border-radius: 0;
-    background: transparent;
+    background-color: transparent;
     font: inherit;
+    font-size: var(--text-base);
     cursor: pointer;
+    user-select: none;
 }
 
 /* Colophon / footer */

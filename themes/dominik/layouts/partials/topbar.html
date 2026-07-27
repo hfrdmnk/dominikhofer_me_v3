@@ -8,14 +8,12 @@
       <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span>
     </span>
   </p>
-  {{ with hugo.Data.lastfm }}
-    {{ if and .track .artist .url }}
-      {{- $track := printf "%s, %s" .track .artist | strings.Truncate 60 "…" -}}
-      <a class="topbar__now" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
-        <span class="visually-hidden">Last listened: </span>
-        <span class="topbar__cover" aria-hidden="true"></span>
-        <span class="topbar__track">{{ $track }}</span>
-      </a>
-    {{ end }}
+  {{ with partialCached "lastfm/fetch.html" . "lastfm" }}
+    {{- $track := printf "%s, %s" .track .artist | strings.Truncate 60 "…" -}}
+    <a class="topbar__now" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+      <span class="visually-hidden">Last listened: </span>
+      <span class="topbar__cover" aria-hidden="true"></span>
+      <span class="topbar__track">{{ $track }}</span>
+    </a>
   {{ end }}
 </header>

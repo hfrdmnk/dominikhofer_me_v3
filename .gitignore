@@ -6,7 +6,6 @@ hugo_stats.json
 
 # Hugo build lock
 /.hugo_build.lock
-/data/lastfm.json
 /.sequoia-runtime/
 /.sequoia-state.json
 

@@ -1,0 +1,21 @@
+{{- $track := dict -}}
+{{- with os.Getenv "HUGO_LASTFM_API_KEY" -}}
+  {{- $query := collections.Querify
+    "method" "user.getrecenttracks"
+    "user" "dmnkhfr"
+    "limit" 2
+    "api_key" .
+    "format" "json"
+  -}}
+  {{- $url := printf "https://ws.audioscrobbler.com/2.0/?%s" $query -}}
+  {{- with try (resources.GetRemote $url) -}}
+    {{- with .Value -}}
+      {{- with try (transform.Unmarshal .) -}}
+        {{- with .Value -}}
+          {{- $track = partial "lastfm/track.html" . -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $track -}}
