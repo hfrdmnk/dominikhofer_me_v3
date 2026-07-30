@@ -4,30 +4,40 @@
 {{- end -}}
 {{- $filter := .filter | default "" -}}
 {{- $count := int (.count | default 0) -}}
+{{- $queryFilter := .queryFilter | default false -}}
+
+{{- $pages = where $pages "Params.archived" "ne" true -}}
 
 {{- with $filter -}}
   {{- $pages = where $pages (printf "Params.%s" .) true -}}
 {{- end -}}
 
-{{- $pages = $pages.ByDate.Reverse -}}
-{{- if eq $filter "favorite" -}}
-  {{- $pages = collections.Shuffle $pages -}}
-{{- end -}}
 {{- if gt $count 0 -}}
-  {{- $pages = first $count $pages -}}
+  {{- if eq $filter "favorite" -}}
+    {{- $pages = first $count (collections.Shuffle $pages) -}}
+  {{- else -}}
+    {{- $pages = first $count $pages.ByDate.Reverse -}}
+  {{- end -}}
 {{- end -}}
+{{- $pages = $pages.ByDate.Reverse -}}
 
-<div class="archive archive--{{ if gt $count 0 }}excerpt{{ else }}full{{ end }}"{{ with $filter }} data-filter="{{ . }}"{{ end }}>
+<div class="archive archive--{{ if gt $count 0 }}excerpt{{ else }}full{{ end }}"{{ with $filter }} data-filter="{{ . }}"{{ end }}{{ if $queryFilter }} data-query-filter{{ end }}>
   <ul class="post-list archive__list">
     {{- range $pages }}
-      <li class="post-list__item">
+      <li class="post-list__item" data-favorite="{{ .Params.favorite | default false }}" data-tags="{{ delimit (.Params.tags | default (slice)) "|" }}">
         <a class="post-list__link" href="{{ .RelPermalink }}">
           <span class="post-list__title">
+            {{- if and (ne $filter "favorite") .Params.favorite }}<mark>{{ end -}}
             {{- if .Title }}{{ .Title }}{{ else }}{{ .Summary | plainify | truncate 70 }}{{ end -}}
+            {{- if and (ne $filter "favorite") .Params.favorite }}</mark>{{ end -}}
           </span>
           <time class="post-list__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
         </a>
       </li>
     {{- end }}
   </ul>
+  {{- if gt $count 0 }}
+    {{- $showFavorites := eq $filter "favorite" -}}
+    <a class="archive__more button-underline" href="{{ if $showFavorites }}{{ "posts/?favorite=true" | relURL }}{{ else }}{{ "posts/" | relURL }}{{ end }}">View all {{ if $showFavorites }}favorites{{ else }}posts{{ end }}</a>
+  {{- end }}
 </div>

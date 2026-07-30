@@ -6,7 +6,7 @@ description: "Reflections after my first marathon."
 tags: ["running"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 Yesterday, I participated at the Lausanne Marathon – my first-ever race at that distance. Now, on the day after the big event, I want to recap a bit and write about my experience. For future me and maybe for you as well, if you’re interested and perhaps even want to run a marathon yourself.

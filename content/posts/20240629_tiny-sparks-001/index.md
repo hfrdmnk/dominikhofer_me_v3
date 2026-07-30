@@ -4,7 +4,7 @@ slug: "tiny-sparks-001"
 date: 2024-06-29T05:30:00
 description: "Congratulations! You are part of a very, very small circle of people who receive this first Issue of Tiny Sparks! Thank you very much for reading this 🥳"
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

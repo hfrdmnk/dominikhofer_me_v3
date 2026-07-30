@@ -6,7 +6,7 @@ description: "Recently, there was this insightful interview in our local newspap
 tags: ["people", "philosophy", "history"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 Recently, there was this insightful interview in our local newspaper that I found really interesting and seemed almost philosophical to me. So I decided to curate and share some passages.

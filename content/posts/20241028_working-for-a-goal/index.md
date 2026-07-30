@@ -6,7 +6,7 @@ description: "And the rewarding feeling of reaching it."
 tags: ["running", "personal"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 Yesterday was the day I had worked toward for almost half a year.

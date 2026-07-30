@@ -4,7 +4,7 @@ slug: "tiny-sparks-002"
 date: 2024-07-13T05:30:00
 description: "Bonjour and welcome to the second issue of the Tiny Sparks newsletter!"
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

@@ -4,7 +4,7 @@ slug: "tiny-sparks-005"
 date: 2024-08-24T05:30:00
 description: "Switching this newsletter to WordPress, improving my personal website and listening to a thrilling podcast episode."
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

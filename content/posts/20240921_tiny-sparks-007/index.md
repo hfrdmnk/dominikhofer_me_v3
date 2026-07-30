@@ -4,7 +4,7 @@ slug: "tiny-sparks-007"
 date: 2024-09-21T05:30:00
 description: "Adjusting to a new lifestyle and learning a ton of new stuff."
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

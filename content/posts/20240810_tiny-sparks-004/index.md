@@ -4,7 +4,7 @@ slug: "tiny-sparks-004"
 date: 2024-08-10T05:30:00
 description: "Preparing for uni, trying out a new tech gadget and learning how Social Media is pretty bad at accurately reporting on real life events."
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

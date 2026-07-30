@@ -8,7 +8,7 @@ tags: ["personalwebsite", "indieweb"]
 cover: "cover.jpg"
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 **The why’s, what’s and how’s behind the creation of this website. After reading this post, you’ll want to create your own – I hope.**

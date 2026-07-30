@@ -4,7 +4,7 @@ slug: "tiny-sparks-006"
 date: 2024-09-07T05:30:00
 description: "Yet another change to this newsletter, Laravel is awesome and people create really cool internet tools."
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

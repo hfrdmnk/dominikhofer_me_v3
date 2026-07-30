@@ -33,6 +33,31 @@
     setInterval(render, 30000);
   }
 
+  const postsArchive = document.querySelector("[data-query-filter]");
+  if (postsArchive) {
+    const params = new URLSearchParams(window.location.search);
+    const favoriteValue = params.get("favorite") ?? params.get("favorites");
+    const favoriteOnly =
+      (params.has("favorite") || params.has("favorites")) && favoriteValue !== "false";
+    const tag = (params.get("tag") ?? params.get("tags"))?.trim().toLocaleLowerCase();
+
+    if (favoriteOnly || tag) {
+      if (favoriteOnly) {
+        postsArchive
+          .querySelectorAll(".post-list__title mark")
+          .forEach((mark) => mark.replaceWith(mark.textContent));
+      }
+
+      postsArchive.querySelectorAll(".post-list__item").forEach((post) => {
+        const tags = post.dataset.tags
+          .split("|")
+          .map((value) => value.trim().toLocaleLowerCase());
+        post.hidden =
+          (favoriteOnly && post.dataset.favorite !== "true") || (tag && !tags.includes(tag));
+      });
+    }
+  }
+
   const root = document.documentElement;
   const updateScrollable = () => {
     root.dataset.scrollable = root.scrollHeight > root.clientHeight ? "true" : "false";

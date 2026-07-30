@@ -1,4 +1,5 @@
 {{- partial "archive.html" (dict
   "count" (.Get "count")
   "filter" (.Get "filter")
+  "queryFilter" (eq .Page.RelPermalink "/posts/")
 ) -}}

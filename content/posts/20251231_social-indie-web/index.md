@@ -7,7 +7,7 @@ description: "My entry for the IndieWeb Carnival of December 2025 about the Indi
 tags: ["indieweb carnival", "social web", "at protocol", "activitypub"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 If I had to choose one direction, that I could push the IndieWeb towards for the next couple of years, it would be the social route. Just having a personal website, which already makes you part of the movement, can be incredibly lonely without any additional tools. This is definitely something we need to improve.

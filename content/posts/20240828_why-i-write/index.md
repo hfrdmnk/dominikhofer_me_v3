@@ -6,7 +6,7 @@ description: "\"Recently, I wrote about how I write daily. In this post, I want 
 tags: ["writing"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 Recently, I wrote about [how I write daily](/writing-daily). In this post, I want to take a step back: Why write in the first place?

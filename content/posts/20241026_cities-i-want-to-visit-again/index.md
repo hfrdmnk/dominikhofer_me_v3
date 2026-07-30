@@ -6,7 +6,7 @@ description: "A trip down memory lane and a list of cities, you also should visi
 tags: ["memories", "travel"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 Exactly one year ago, I was in the midst of my biggest adventure so far. For the first time ever in my life, I was living on my own for a month, in a foreign place, in a foreign country: Seoul, in South Korea.

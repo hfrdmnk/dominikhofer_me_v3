@@ -4,7 +4,7 @@ slug: "tiny-sparks-003"
 date: 2024-07-27T05:30:00
 description: "Goededag and welcome to the third issue of the Tiny Sparks newsletter!"
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

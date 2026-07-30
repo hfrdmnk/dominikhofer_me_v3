@@ -6,7 +6,7 @@ description: "Or: How a simple rule change can help you create more consistently
 tags: ["writing", "habit"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 > I don't **think** writing every day will change your life...  

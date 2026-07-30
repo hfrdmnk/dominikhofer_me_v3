@@ -116,6 +116,8 @@ h6 {
     --tertiary: oklch(0.709 0 0);
     --surface: color-mix(in oklab, var(--tertiary) 24%, var(--bg));
     --surface-lighter: color-mix(in oklab, var(--tertiary) 8%, var(--bg));
+    --border: var(--surface);
+    --border-light: var(--surface-lighter);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --tooltip-bg: #000;
     --tooltip-fg: #fff;
@@ -179,8 +181,6 @@ body {
     color: var(--primary);
     font-family: var(--font-sans);
     font-size: var(--text-base);
-    font-optical-sizing: auto;
-    font-size-adjust: from-font;
 }
 
 /* Marker highlight */
@@ -335,7 +335,7 @@ sequoia-subscribe::part(button) {
     padding-block-end: 2px;
     background-image:
         linear-gradient(var(--accent), var(--accent)),
-        linear-gradient(var(--tertiary), var(--tertiary));
+        linear-gradient(var(--border), var(--border));
     background-position: left bottom;
     background-repeat: no-repeat;
     background-size: 0 1px, 100% 1px;
@@ -838,9 +838,11 @@ sequoia-subscribe::part(button):focus-visible {
 
 .prose a {
     color: var(--primary);
-    font-family: var(--font-serif);
-    font-style: italic;
-    text-decoration: none;
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--border);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -861,7 +863,7 @@ sequoia-subscribe::part(button):focus-visible {
 
 .prose blockquote {
     padding-inline-start: var(--space-md);
-    border-inline-start: 2px solid var(--tertiary);
+    border-inline-start: 2px solid var(--border-light);
     color: var(--secondary);
     font-style: italic;
 }
@@ -873,6 +875,10 @@ sequoia-subscribe::part(button):focus-visible {
 
 .prose ul li {
     position: relative;
+}
+
+.prose ul li + li {
+    margin-block-start: 0.5rem;
 }
 
 .prose ul li::before {
@@ -901,6 +907,10 @@ sequoia-subscribe::part(button):focus-visible {
     margin-block-start: 0;
 }
 
+.archive__more {
+    margin-block-start: var(--space-md);
+}
+
 /* Post list */
 .post-list {
     list-style: none;
@@ -915,7 +925,7 @@ sequoia-subscribe::part(button):focus-visible {
     align-items: baseline;
     gap: var(--space-lg);
     padding-block: var(--space-sm);
-    border-block-end: 1px solid color-mix(in oklab, var(--tertiary) 30%, transparent);
+    border-block-end: 1px solid var(--border-light);
     color: var(--secondary);
     transition: color 150ms ease;
 }

@@ -4,7 +4,7 @@ slug: "tiny-sparks-008"
 date: 2024-10-05T05:30:00
 description: "Being short on time, chatting with way to many AIs and how a meme turned into a cult."
 tags: ["tiny sparks"]
-archived: false
+archived: true
 draft: false
 favorite: false
 ---

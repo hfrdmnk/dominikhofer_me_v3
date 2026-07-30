@@ -51,6 +51,8 @@ create_post() {
     slug=$1
     date=$2
     favorite=$3
+    tags=$4
+    archived=${5:-false}
 
     mkdir -p "$content_dir/posts/$slug"
     cat > "$content_dir/posts/$slug/index.md" <<EOF
@@ -59,18 +61,21 @@ title: "$slug"
 slug: "$slug"
 date: $date
 favorite: $favorite
+tags: [$tags]
+archived: $archived
 ---
 
 Post body.
 EOF
 }
 
-create_post "favorite-one" "2026-01-01" true
-create_post "favorite-two" "2026-01-02" true
-create_post "favorite-three" "2026-01-03" true
-create_post "recent-one" "2026-02-01" false
-create_post "recent-two" "2026-02-02" false
-create_post "recent-three" "2026-02-03" false
+create_post "favorite-one" "2026-01-01" true '"writing"'
+create_post "favorite-two" "2026-01-02" true '"design"'
+create_post "favorite-three" "2026-01-03" true '"writing", "indieweb carnival"'
+create_post "recent-one" "2026-02-01" false '"writing"'
+create_post "recent-two" "2026-02-02" false '"design"'
+create_post "recent-three" "2026-02-03" false '"personal"'
+create_post "archived-favorite" "2026-03-01" true '"writing"' true
 
 for slug in race-one race-two
 do
@@ -111,11 +116,24 @@ fi
 
 test "$(grep -o 'class="archive archive--excerpt"' "$homepage" | wc -l | tr -d ' ')" = 2
 test "$(grep -o 'class="post-list__item"' "$homepage" | wc -l | tr -d ' ')" = 5
+test "$(grep -o 'class="archive__more button-underline"' "$homepage" | wc -l | tr -d ' ')" = 2
+grep -Fq 'href="/posts/?favorite=true">View all favorites</a>' "$homepage"
+grep -Fq 'href="/posts/">View all posts</a>' "$homepage"
 
 favorite_archive=$(sed -n '/data-filter="favorite"/,/<\/div>/p' "$homepage")
 test "$(printf '%s' "$favorite_archive" | grep -o 'href="/favorite-[^"]*"' | wc -l | tr -d ' ')" = 2
+favorite_dates=$(printf '%s' "$favorite_archive" | grep -o 'datetime="[0-9-]*"' | cut -d'"' -f2)
+test "$favorite_dates" = "$(printf '%s\n' "$favorite_dates" | sort -r)"
 if printf '%s' "$favorite_archive" | grep -Fq 'recent-'; then
     echo "The favorites archive contains an unfiltered post." >&2
+    exit 1
+fi
+if printf '%s' "$favorite_archive" | grep -Fq '<mark>'; then
+    echo "The favorites archive marks titles redundantly." >&2
+    exit 1
+fi
+if grep -Fq 'archived-favorite' "$homepage"; then
+    echo "An archived post appears in a homepage archive." >&2
     exit 1
 fi
 
@@ -125,6 +143,14 @@ grep -Fq 'recent-one' "$homepage"
 
 test "$(grep -o 'class="archive archive--full"' "$posts_page" | wc -l | tr -d ' ')" = 1
 test "$(grep -o 'class="post-list__item"' "$posts_page" | wc -l | tr -d ' ')" = 6
+test "$(grep -o 'post-list__title"><mark>' "$posts_page" | wc -l | tr -d ' ')" = 3
+grep -Fq 'data-query-filter' "$posts_page"
+grep -Fq 'data-favorite="true"' "$posts_page"
+grep -Fq 'data-tags=' "$posts_page"
+if grep -Fq 'archived-favorite' "$posts_page"; then
+    echo "An archived post appears on the posts page." >&2
+    exit 1
+fi
 test "$(grep -o 'class="archive archive--full"' "$races_page" | wc -l | tr -d ' ')" = 1
 test "$(grep -o 'class="post-list__item"' "$races_page" | wc -l | tr -d ' ')" = 2
 
