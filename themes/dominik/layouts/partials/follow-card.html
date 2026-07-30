@@ -26,7 +26,8 @@
                 publication-uri="{{ . }}" {{ end }}>
                 {{- with $publicationURI -}}
                 <a class="button-underline follow-card__link"
-                    href="https://sequoia.pub/subscribe?publicationUri={{ . | urlquery }}">Standard Site</a>
+                    href="https://sequoia.pub/subscribe?publicationUri={{ . | urlquery }}" target="_blank"
+                    rel="noopener noreferrer">Standard Site</a>
                 {{- else -}}
                 <span class="button-underline follow-card__link">Standard Site</span>
                 {{- end -}}

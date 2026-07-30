@@ -1,0 +1,33 @@
+{{- $pages := where site.RegularPages "Section" "posts" -}}
+{{- if isset . "pages" -}}
+  {{- $pages = .pages -}}
+{{- end -}}
+{{- $filter := .filter | default "" -}}
+{{- $count := int (.count | default 0) -}}
+
+{{- with $filter -}}
+  {{- $pages = where $pages (printf "Params.%s" .) true -}}
+{{- end -}}
+
+{{- $pages = $pages.ByDate.Reverse -}}
+{{- if eq $filter "favorite" -}}
+  {{- $pages = collections.Shuffle $pages -}}
+{{- end -}}
+{{- if gt $count 0 -}}
+  {{- $pages = first $count $pages -}}
+{{- end -}}
+
+<div class="archive archive--{{ if gt $count 0 }}excerpt{{ else }}full{{ end }}"{{ with $filter }} data-filter="{{ . }}"{{ end }}>
+  <ul class="post-list archive__list">
+    {{- range $pages }}
+      <li class="post-list__item">
+        <a class="post-list__link" href="{{ .RelPermalink }}">
+          <span class="post-list__title">
+            {{- if .Title }}{{ .Title }}{{ else }}{{ .Summary | plainify | truncate 70 }}{{ end -}}
+          </span>
+          <time class="post-list__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+        </a>
+      </li>
+    {{- end }}
+  </ul>
+</div>

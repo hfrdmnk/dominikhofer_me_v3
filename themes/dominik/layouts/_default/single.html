@@ -1,11 +1,11 @@
 {{ define "main" }}
-  {{- $title := .Title | default (.Date.Format "January 2, 2006") -}}
-  {{- $kicker := .Params.kicker -}}
-  {{- if and (not $kicker) .Title }}{{ $kicker = .Date.Format "January 2, 2006" }}{{ end -}}
-  {{ partial "page-title.html" (dict "kicker" $kicker "title" $title) }}
-  <article class="prose">
+  {{- if .Section -}}
+    <article class="prose">
+      {{ .Content }}
+    </article>
+  {{- else -}}
     {{ .Content }}
-  </article>
+  {{- end -}}
 {{ end }}
 
 {{ define "page-aside" }}

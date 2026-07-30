@@ -838,14 +838,25 @@ sequoia-subscribe::part(button):focus-visible {
 
 .prose a {
     color: var(--primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    text-decoration-color: var(--tertiary);
-    transition: text-decoration-color 150ms ease;
+    font-family: var(--font-serif);
+    font-style: italic;
+    text-decoration: none;
 }
 
-.prose a:hover {
-    text-decoration-color: var(--accent);
+@media (prefers-reduced-motion: no-preference) {
+    .prose a {
+        transition: color 150ms ease;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .prose a:hover {
+        color: var(--accent);
+    }
+}
+
+.prose a:focus-visible {
+    color: var(--accent);
 }
 
 .prose blockquote {
@@ -853,6 +864,30 @@ sequoia-subscribe::part(button):focus-visible {
     border-inline-start: 2px solid var(--tertiary);
     color: var(--secondary);
     font-style: italic;
+}
+
+.prose ul li::marker {
+    content: "\2013  ";
+}
+
+.prose > p:has(> img:only-child) {
+    inline-size: calc(100% + (2 * var(--breakout)));
+    margin-inline: calc(var(--breakout) * -1);
+}
+
+.prose > p > img:only-child {
+    inline-size: 100%;
+    border-radius: var(--radius-lg);
+}
+
+/* Archive */
+.archive {
+    max-inline-size: var(--measure);
+    margin-block: var(--space-lg) var(--space-xl);
+}
+
+.archive__list {
+    margin-block-start: 0;
 }
 
 /* Post list */
@@ -1101,6 +1136,11 @@ sequoia-subscribe::part(button) {
 
 @media (width < 36rem) {
     .breakout {
+        inline-size: 100%;
+        margin-inline: 0;
+    }
+
+    .prose > p:has(> img:only-child) {
         inline-size: 100%;
         margin-inline: 0;
     }

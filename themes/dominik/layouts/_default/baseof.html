@@ -7,11 +7,8 @@
     {{ partial "topbar.html" . }}
     {{ partial "sidebar.html" . }}
     <main class="content" id="content">
+      {{ partial "page-title.html" . }}
       {{ block "main" . }}{{ end }}
-      {{- $followPages := slice "/" "/about/" "/now/" "/posts/" "/hello/" -}}
-      {{- if in $followPages .RelPermalink -}}
-        {{ partial "follow-card.html" . }}
-      {{- end -}}
     </main>
     {{ block "page-aside" . }}{{ end }}
     {{ partialCached "colophon.html" . }}

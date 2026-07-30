@@ -13,4 +13,8 @@ photo_pair:
       tooltipId: "about-photo-childhood-tooltip"
 ---
 
+{{< prose >}}
 Placeholder for the about page. Real content is on its way.
+{{< /prose >}}
+
+{{< follow-card >}}
