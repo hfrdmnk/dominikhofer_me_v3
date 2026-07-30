@@ -954,8 +954,13 @@ sequoia-subscribe::part(button):focus-visible {
 .race-card {
     position: relative;
     isolation: isolate;
-    display: flex;
     min-block-size: 20rem;
+}
+
+.race-card__surface {
+    position: absolute;
+    inset: 0;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
@@ -964,6 +969,24 @@ sequoia-subscribe::part(button):focus-visible {
     border-radius: var(--radius-lg);
     background: var(--surface-lighter);
     font-family: var(--font-sans);
+    transform: perspective(32rem) rotateX(var(--tilt-rotate-x)) rotateY(var(--tilt-rotate-y));
+    transform-style: preserve-3d;
+    transition: transform 140ms ease-out;
+}
+
+.race-card__surface::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    background: radial-gradient(circle at calc(100% - var(--mouse-local-x)) calc(100% - var(--mouse-local-y)),
+            rgb(255 255 255 / 0.5),
+            transparent 58%);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms ease;
 }
 
 .race-card__header,
@@ -990,11 +1013,6 @@ sequoia-subscribe::part(button):focus-visible {
     letter-spacing: -0.025em;
 }
 
-.race-card__title a:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: var(--space-2xs);
-}
-
 .race-card__art {
     position: absolute;
     inset: 0;
@@ -1007,19 +1025,18 @@ sequoia-subscribe::part(button):focus-visible {
     position: absolute;
     inset-block-start: -4.75rem;
     inset-inline-end: -3.375rem;
-    inline-size: 31.5rem;
-    block-size: 21rem;
+    display: grid;
+    grid-template-columns: repeat(10, 2.625rem);
+    grid-template-rows: repeat(10, 2.625rem);
+    inline-size: 26.25rem;
+    block-size: 26.25rem;
 }
 
 .race-card__pixels span {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
     inline-size: 2.625rem;
     block-size: 2.625rem;
     background: var(--tertiary);
     opacity: var(--pixel-opacity);
-    transform: translate(var(--pixel-x), var(--pixel-y));
     transition: background-color 150ms ease;
 }
 
@@ -1037,7 +1054,7 @@ sequoia-subscribe::part(button):focus-visible {
 .race-card__route path {
     fill: none;
     stroke: currentColor;
-    stroke-width: 6;
+    stroke-width: 3;
     stroke-linecap: round;
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
@@ -1045,6 +1062,14 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 @media (hover: hover) and (pointer: fine) {
+    [data-tilt][data-tilt-active] .race-card__surface {
+        will-change: transform;
+    }
+
+    [data-tilt][data-tilt-active] .race-card__surface::after {
+        opacity: 0.7;
+    }
+
     .race-card:hover .race-card__pixels span {
         background-color: var(--accent);
     }
@@ -1324,6 +1349,8 @@ sequoia-subscribe::part(button) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .race-card__surface,
+    .race-card__surface::after,
     .race-card__pixels span {
         transition: none;
     }

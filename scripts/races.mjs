@@ -1,24 +1,58 @@
 import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { Decoder, Stream } from "@garmin/fitsdk";
 
 const DEFAULT_DATA_FILE = "data/race_courses.json";
+const SEMICIRCLES_TO_DEGREES = 180 / 2 ** 31;
 
-export function parseGpxPoints(gpx) {
-  const points = [];
-  const trackPointPattern = /<trkpt\b([^>]*)>/g;
-  let match;
-
-  while ((match = trackPointPattern.exec(gpx))) {
-    const latitude = /\blat="([^"]+)"/.exec(match[1]);
-    const longitude = /\blon="([^"]+)"/.exec(match[1]);
-    if (!latitude || !longitude) continue;
-
-    const point = [Number(latitude[1]), Number(longitude[1])];
-    if (point.every(Number.isFinite)) points.push(point);
+export function decodeFitRecords(buffer) {
+  const { messages, errors } = new Decoder(Stream.fromBuffer(buffer)).read();
+  if (errors.length) {
+    throw new Error(`FIT decode failed: ${errors.join(", ")}`);
   }
 
-  return points;
+  return messages.recordMesgs ?? [];
+}
+
+function routePoints(records) {
+  return records
+    .filter(
+      ({ positionLat, positionLong }) =>
+        Number.isFinite(positionLat) && Number.isFinite(positionLong),
+    )
+    .map(({ positionLat, positionLong }) => [
+      positionLat * SEMICIRCLES_TO_DEGREES,
+      positionLong * SEMICIRCLES_TO_DEGREES,
+    ]);
+}
+
+export function buildHeartRatePixels(records, count = 100, maxOpacity = 0.5) {
+  if (!records.length) return [];
+
+  const buckets = Array.from({ length: count }, (_, index) => {
+    const start = Math.floor((index * records.length) / count);
+    const end = Math.floor(((index + 1) * records.length) / count);
+    const heartRates = records
+      .slice(start, end)
+      .map(({ heartRate }) => heartRate)
+      .filter((heartRate) => Number.isFinite(heartRate) && heartRate > 0);
+
+    if (!heartRates.length) return null;
+    return heartRates.reduce((sum, heartRate) => sum + heartRate, 0) / heartRates.length;
+  });
+  const measured = buckets.filter(Number.isFinite);
+  if (!measured.length) return [];
+
+  const minimum = Math.min(...measured);
+  const maximum = Math.max(...measured);
+  const range = maximum - minimum;
+
+  return buckets.map((heartRate) => {
+    if (!Number.isFinite(heartRate)) return 0;
+    if (!range) return maxOpacity;
+    return Number((((heartRate - minimum) / range) * maxOpacity).toFixed(3));
+  });
 }
 
 function squaredSegmentDistance(point, start, end) {
@@ -122,32 +156,34 @@ async function writeJsonAtomic(file, value) {
   await rename(temporaryFile, file);
 }
 
-export async function generateRaceCourses({
+export async function generateRaceArt({
   cwd = process.cwd(),
   dataFile = DEFAULT_DATA_FILE,
   log = console.log,
 } = {}) {
   const racesDirectory = resolve(cwd, "content/races");
   const bundles = await readdir(racesDirectory, { withFileTypes: true });
-  const courses = {};
+  const raceArt = {};
 
   for (const bundle of bundles) {
     if (!bundle.isDirectory()) continue;
 
-    const file = join(racesDirectory, bundle.name, "course.gpx");
+    const file = join(racesDirectory, bundle.name, "race.fit");
     try {
-      const path = buildRoutePath(parseGpxPoints(await readFile(file, "utf8")));
-      if (path) courses[bundle.name] = path;
+      const records = decodeFitRecords(await readFile(file));
+      const route = buildRoutePath(routePoints(records));
+      const pixels = buildHeartRatePixels(records);
+      if (route) raceArt[bundle.name] = { route, pixels };
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
     }
   }
 
-  await writeJsonAtomic(resolve(cwd, dataFile), courses);
-  log(`Generated ${Object.keys(courses).length} race course paths.`);
-  return courses;
+  await writeJsonAtomic(resolve(cwd, dataFile), raceArt);
+  log(`Generated artwork for ${Object.keys(raceArt).length} races.`);
+  return raceArt;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  await generateRaceCourses();
+  await generateRaceArt();
 }

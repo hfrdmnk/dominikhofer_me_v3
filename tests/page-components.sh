@@ -158,7 +158,11 @@ if grep -Fq 'archived-favorite' "$posts_page"; then
 fi
 test "$(grep -o 'class="race-card"' "$races_page" | wc -l | tr -d ' ')" = 2
 test "$(grep -o '<dt>Distance</dt>' "$races_page" | wc -l | tr -d ' ')" = 2
-grep -Fq 'data-location-seed="Bern, CH"' "$races_page"
+test "$(grep -o 'class="race-card" data-tilt' "$races_page" | wc -l | tr -d ' ')" = 2
+if grep -Fq 'class="race-card__art"' "$races_page"; then
+    echo "An untracked race rendered background artwork." >&2
+    exit 1
+fi
 if grep -Fq 'class="post-list__item"' "$races_page"; then
     echo "The races page rendered the generic post archive." >&2
     exit 1
