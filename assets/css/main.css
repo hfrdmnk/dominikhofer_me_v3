@@ -866,8 +866,19 @@ sequoia-subscribe::part(button):focus-visible {
     font-style: italic;
 }
 
-.prose ul li::marker {
-    content: "\2013  ";
+.prose ul {
+    padding-inline-start: 0;
+    list-style: none;
+}
+
+.prose ul li {
+    position: relative;
+}
+
+.prose ul li::before {
+    content: "\2013";
+    position: absolute;
+    inset-inline-end: calc(100% + 1em);
 }
 
 .prose > p:has(> img:only-child) {
