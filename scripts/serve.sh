@@ -14,4 +14,5 @@ set -a
 . ./.env
 set +a
 
+node scripts/races.mjs
 exec hugo server "$@"

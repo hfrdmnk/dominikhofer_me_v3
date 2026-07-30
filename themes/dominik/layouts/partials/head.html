@@ -30,6 +30,11 @@
   {{ with resources.Get "js/site.js" }}
   <script src="{{ .RelPermalink }}" defer></script>
   {{ end }}
+  {{- if and .IsSection (eq .Section "races") }}
+    {{- with resources.Get "js/race-cards.js" }}
+  <script src="{{ .RelPermalink }}" defer></script>
+    {{- end }}
+  {{- end }}
   {{- $followPages := slice "/" "/about/" "/now/" "/posts/" "/hello/" }}
   {{- if in $followPages .RelPermalink }}
     {{- with resources.Get "js/sequoia-subscribe.js" }}

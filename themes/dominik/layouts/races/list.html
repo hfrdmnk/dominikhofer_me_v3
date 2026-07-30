@@ -1,0 +1,47 @@
+{{ define "main" }}
+  {{- $courses := hugo.Data.race_courses | default dict -}}
+
+  <ol class="race-list">
+    {{- range .Pages.ByDate.Reverse }}
+      {{- $bundle := path.Base (strings.TrimSuffix "/" .File.Dir) -}}
+      {{- $routePath := index $courses $bundle -}}
+      <li>
+        <article class="race-card" data-location-seed="{{ .Params.location | default .Title }}">
+          <div class="race-card__art" aria-hidden="true">
+            <div class="race-card__pixels"></div>
+            {{- with $routePath }}
+              <svg class="race-card__route" viewBox="0 0 640 430" focusable="false">
+                <path d="{{ . }}" />
+              </svg>
+            {{- end }}
+          </div>
+
+          <header class="race-card__header">
+            <p class="race-card__meta">
+              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+              {{- with .Params.location }}<span aria-hidden="true"> · </span>{{ . }}{{ end -}}
+            </p>
+            <h2 class="race-card__title">
+              <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h2>
+          </header>
+
+          <dl class="race-card__stats">
+            <div>
+              <dt>Distance</dt>
+              <dd>{{ strings.TrimRight "." (strings.TrimRight "0" (printf "%.2f" (float .Params.distance))) }}<small> km</small></dd>
+            </div>
+            <div>
+              <dt>Time</dt>
+              <dd>{{ .Params.time }}</dd>
+            </div>
+            <div>
+              <dt>Pace</dt>
+              <dd>{{ .Params.pace }}<small> /km</small></dd>
+            </div>
+          </dl>
+        </article>
+      </li>
+    {{- end }}
+  </ol>
+{{ end }}

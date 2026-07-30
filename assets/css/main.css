@@ -845,20 +845,20 @@ sequoia-subscribe::part(button):focus-visible {
     text-underline-offset: 0.2em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .prose a {
-        transition: color 150ms ease;
-    }
-}
-
 @media (hover: hover) and (pointer: fine) {
     .prose a:hover {
-        color: var(--accent);
+        text-decoration-color: var(--accent);
     }
 }
 
 .prose a:focus-visible {
-    color: var(--accent);
+    text-decoration-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .prose a {
+        transition: text-decoration-color 150ms ease;
+    }
 }
 
 .prose blockquote {
@@ -939,6 +939,145 @@ sequoia-subscribe::part(button):focus-visible {
     color: var(--tertiary);
     font-size: var(--text-sm);
     font-variant-numeric: tabular-nums;
+}
+
+/* Races */
+.race-list {
+    display: grid;
+    gap: var(--space-lg);
+    max-inline-size: var(--measure);
+    margin-block: var(--space-lg) var(--space-xl);
+    padding: 0;
+    list-style: none;
+}
+
+.race-card {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-block-size: 20rem;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: var(--space-lg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    background: var(--surface-lighter);
+    font-family: var(--font-sans);
+}
+
+.race-card__header,
+.race-card__stats {
+    position: relative;
+    z-index: 2;
+}
+
+.race-card__header {
+    inline-size: min(58%, 22rem);
+}
+
+.race-card__meta {
+    color: var(--tertiary);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+}
+
+.race-card__title {
+    margin-block-start: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+}
+
+.race-card__title a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: var(--space-2xs);
+}
+
+.race-card__art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.race-card__pixels {
+    position: absolute;
+    inset-block-start: -4.75rem;
+    inset-inline-end: -3.375rem;
+    inline-size: 31.5rem;
+    block-size: 21rem;
+}
+
+.race-card__pixels span {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 2.625rem;
+    block-size: 2.625rem;
+    background: var(--tertiary);
+    opacity: var(--pixel-opacity);
+    transform: translate(var(--pixel-x), var(--pixel-y));
+    transition: background-color 150ms ease;
+}
+
+.race-card__route {
+    position: absolute;
+    inset-block-start: -6rem;
+    inset-inline-end: -7.5rem;
+    z-index: 1;
+    inline-size: 28rem;
+    block-size: auto;
+    color: var(--accent);
+    overflow: visible;
+}
+
+.race-card__route path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    opacity: 0.82;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .race-card:hover .race-card__pixels span {
+        background-color: var(--accent);
+    }
+}
+
+.race-card:focus-within .race-card__pixels span {
+    background-color: var(--accent);
+}
+
+.race-card__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-md);
+    inline-size: min(100%, 31rem);
+    margin-block-start: var(--space-xl);
+}
+
+.race-card__stats dt {
+    color: var(--tertiary);
+    font-size: var(--text-xs);
+}
+
+.race-card__stats dd {
+    margin-block-start: var(--space-2xs);
+    color: var(--primary);
+    font-size: var(--text-lg);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+}
+
+.race-card__stats small {
+    color: var(--secondary);
+    font-size: var(--text-xs);
 }
 
 /* Follow card */
@@ -1152,6 +1291,41 @@ sequoia-subscribe::part(button) {
 
     .colophon__sign {
         inline-size: min(5rem, 25%);
+    }
+}
+
+@media (width < 34rem) {
+    .race-card {
+        min-block-size: 22rem;
+        padding: var(--space-md);
+    }
+
+    .race-card__header {
+        inline-size: 68%;
+    }
+
+    .race-card__title {
+        font-size: var(--text-lg);
+    }
+
+    .race-card__route {
+        inset-block-start: -4.5rem;
+        inset-inline-end: -8rem;
+        inline-size: 25rem;
+    }
+
+    .race-card__stats {
+        gap: var(--space-sm);
+    }
+
+    .race-card__stats dd {
+        font-size: var(--text-base);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .race-card__pixels span {
+        transition: none;
     }
 }
 

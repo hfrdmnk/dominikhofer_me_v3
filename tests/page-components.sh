@@ -5,6 +5,7 @@ root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 test_dir=$(mktemp -d)
 content_dir="$test_dir/content"
 public_dir="$test_dir/public"
+data_dir="$test_dir/data"
 
 cleanup() {
     rm -rf "$test_dir"
@@ -12,7 +13,7 @@ cleanup() {
 
 trap cleanup EXIT HUP INT TERM
 
-mkdir -p "$content_dir/posts" "$content_dir/races"
+mkdir -p "$content_dir/posts" "$content_dir/races" "$data_dir"
 
 cat > "$content_dir/_index.md" <<'EOF'
 ---
@@ -85,13 +86,17 @@ do
 title: "$slug"
 slug: "$slug"
 date: 2026-03-01
+distance: 10
+time: "42:00"
+pace: "4:12"
+location: "Bern, CH"
 ---
 
 Race report.
 EOF
 done
 
-hugo \
+HUGO_DATADIR="$data_dir" hugo \
     --source "$root_dir" \
     --contentDir "$content_dir" \
     --destination "$public_dir" \
@@ -151,7 +156,12 @@ if grep -Fq 'archived-favorite' "$posts_page"; then
     echo "An archived post appears on the posts page." >&2
     exit 1
 fi
-test "$(grep -o 'class="archive archive--full"' "$races_page" | wc -l | tr -d ' ')" = 1
-test "$(grep -o 'class="post-list__item"' "$races_page" | wc -l | tr -d ' ')" = 2
+test "$(grep -o 'class="race-card"' "$races_page" | wc -l | tr -d ' ')" = 2
+test "$(grep -o '<dt>Distance</dt>' "$races_page" | wc -l | tr -d ' ')" = 2
+grep -Fq 'data-location-seed="Bern, CH"' "$races_page"
+if grep -Fq 'class="post-list__item"' "$races_page"; then
+    echo "The races page rendered the generic post archive." >&2
+    exit 1
+fi
 
 echo "Page component tests passed."

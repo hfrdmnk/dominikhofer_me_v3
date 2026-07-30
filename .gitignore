@@ -13,6 +13,7 @@ hugo_stats.json
 /.env
 /.env.*
 !/.env.example
+/data/race_courses.json
 
 # Dependencies
 /node_modules/
