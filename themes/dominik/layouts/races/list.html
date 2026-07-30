@@ -1,7 +1,7 @@
 {{ define "main" }}
   {{- $courses := hugo.Data.race_courses | default dict -}}
 
-  <ol class="race-list">
+  <ol class="race-list breakout">
     {{- range .Pages.ByDate.Reverse }}
       {{- $bundle := path.Base (strings.TrimSuffix "/" .File.Dir) -}}
       {{- $raceArt := index $courses $bundle -}}
@@ -11,8 +11,12 @@
             {{- with $raceArt }}
               <div class="race-card__art" aria-hidden="true">
                 <div class="race-card__pixels">
-                  {{- range .pixels }}
-                    <span style="--pixel-opacity: {{ . }}"></span>
+                  {{- range .pixelRows }}
+                    <div class="race-card__pixel-row">
+                      {{- range . }}
+                        <span style="--pixel-opacity: {{ . }}"></span>
+                      {{- end }}
+                    </div>
                   {{- end }}
                 </div>
                 <svg class="race-card__route" viewBox="0 0 640 430" focusable="false">

@@ -27,10 +27,34 @@ function routePoints(records) {
     ]);
 }
 
-export function buildHeartRatePixels(records, count = 100, maxOpacity = 0.5) {
-  if (!records.length) return [];
+function percentileOpacities(values, maxOpacity) {
+  const measured = values.filter((value) => Number.isFinite(value) && value > 0);
+  if (!measured.length) return [];
 
-  const buckets = Array.from({ length: count }, (_, index) => {
+  const sorted = measured.toSorted((a, b) => a - b);
+  if (sorted[0] === sorted.at(-1)) {
+    return values.map((value) =>
+      Number.isFinite(value) && value > 0 ? maxOpacity / 2 : 0,
+    );
+  }
+
+  const ranks = new Map();
+  for (let start = 0; start < sorted.length; ) {
+    let end = start + 1;
+    while (end < sorted.length && sorted[end] === sorted[start]) end += 1;
+    const rank = ((start + end - 1) / 2) / (sorted.length - 1);
+    ranks.set(sorted[start], rank);
+    start = end;
+  }
+
+  return values.map((value) => {
+    if (!Number.isFinite(value) || value <= 0) return 0;
+    return ranks.get(value) * maxOpacity;
+  });
+}
+
+function heartRateBuckets(records, count) {
+  return Array.from({ length: count }, (_, index) => {
     const start = Math.floor((index * records.length) / count);
     const end = Math.floor(((index + 1) * records.length) / count);
     const heartRates = records
@@ -41,17 +65,99 @@ export function buildHeartRatePixels(records, count = 100, maxOpacity = 0.5) {
     if (!heartRates.length) return null;
     return heartRates.reduce((sum, heartRate) => sum + heartRate, 0) / heartRates.length;
   });
-  const measured = buckets.filter(Number.isFinite);
-  if (!measured.length) return [];
+}
+
+export function buildHeartRatePixels(records, count = 100, maxOpacity = 0.5) {
+  if (!records.length) return [];
+
+  const buckets = heartRateBuckets(records, count);
+
+  return percentileOpacities(buckets, maxOpacity).map((opacity) =>
+    Number(opacity.toFixed(3)),
+  );
+}
+
+function phaseLengths(phases, totalPixels, minimumLength, maximumLength) {
+  const elevations = phases.map((phase) => {
+    const measured = phase
+      .map(({ enhancedAltitude }) => enhancedAltitude)
+      .filter(Number.isFinite);
+    if (!measured.length) return null;
+    return measured.reduce((sum, elevation) => sum + elevation, 0) / measured.length;
+  });
+  const measured = elevations.filter(Number.isFinite);
+  if (measured.length !== phases.length) {
+    return Array.from({ length: phases.length }, () => totalPixels / phases.length);
+  }
 
   const minimum = Math.min(...measured);
   const maximum = Math.max(...measured);
   const range = maximum - minimum;
+  if (!range) {
+    return Array.from({ length: phases.length }, () => totalPixels / phases.length);
+  }
 
-  return buckets.map((heartRate) => {
-    if (!Number.isFinite(heartRate)) return 0;
-    if (!range) return maxOpacity;
-    return Number((((heartRate - minimum) / range) * maxOpacity).toFixed(3));
+  const mean = measured.reduce((sum, elevation) => sum + elevation, 0) / measured.length;
+  const amplitude = Math.min(
+    totalPixels / phases.length - minimumLength,
+    maximumLength - totalPixels / phases.length,
+  );
+  const targets = measured.map(
+    (elevation) => totalPixels / phases.length + ((elevation - mean) / range) * amplitude,
+  );
+  const lengths = targets.map(Math.floor);
+  let remaining = totalPixels - lengths.reduce((sum, length) => sum + length, 0);
+  const priority = targets
+    .map((target, index) => ({ index, remainder: target - Math.floor(target) }))
+    .toSorted((a, b) => b.remainder - a.remainder);
+
+  for (let index = 0; remaining > 0; index = (index + 1) % priority.length) {
+    const phase = priority[index].index;
+    if (lengths[phase] >= maximumLength) continue;
+    lengths[phase] += 1;
+    remaining -= 1;
+  }
+
+  return lengths;
+}
+
+export function buildRacePhaseRows(
+  records,
+  rowCount = 10,
+  totalPixels = 100,
+  minimumLength = 7,
+  maximumLength = 13,
+  maxOpacity = 0.5,
+) {
+  if (!records.length || rowCount < 1 || totalPixels < rowCount) return [];
+
+  const measuredDistances = records
+    .map(({ distance }) => distance)
+    .filter(Number.isFinite);
+  const firstDistance = measuredDistances[0];
+  const distanceRange = measuredDistances.at(-1) - firstDistance;
+  const phases = Array.from({ length: rowCount }, () => []);
+
+  records.forEach((record, index) => {
+    const progress =
+      distanceRange > 0 && Number.isFinite(record.distance)
+        ? (record.distance - firstDistance) / distanceRange
+        : index / Math.max(1, records.length - 1);
+    const phase = Math.min(rowCount - 1, Math.max(0, Math.floor(progress * rowCount)));
+    phases[phase].push(record);
+  });
+
+  const lengths = phaseLengths(phases, totalPixels, minimumLength, maximumLength);
+  const buckets = phases.flatMap((phase, index) => heartRateBuckets(phase, lengths[index]));
+  const opacities = percentileOpacities(buckets, maxOpacity).map((opacity) =>
+    Number(opacity.toFixed(3)),
+  );
+  let offset = 0;
+
+  return lengths.map((length) => {
+    const row = opacities.slice(offset, offset + length);
+    offset += length;
+    return row;
   });
 }
 
@@ -171,9 +277,12 @@ export async function generateRaceArt({
     const file = join(racesDirectory, bundle.name, "race.fit");
     try {
       const records = decodeFitRecords(await readFile(file));
-      const route = buildRoutePath(routePoints(records));
-      const pixels = buildHeartRatePixels(records);
-      if (route) raceArt[bundle.name] = { route, pixels };
+      const points = routePoints(records);
+      const route = buildRoutePath(points);
+      const pixelRows = buildRacePhaseRows(records);
+      if (route) {
+        raceArt[bundle.name] = { route, pixelRows };
+      }
     } catch (error) {
       if (error.code !== "ENOENT") throw error;
     }

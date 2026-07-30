@@ -54,7 +54,7 @@ cat > "$data_dir/race_courses.json" <<'EOF'
 {
   "sample-race": {
     "route": "M24 210 L320 24 L616 210",
-    "pixels": [0, 0.5]
+    "pixelRows": [[0], [0.5]]
   }
 }
 EOF

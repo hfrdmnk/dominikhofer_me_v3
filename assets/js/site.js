@@ -74,6 +74,10 @@
   let pointerFrame;
   let pointerX = 0;
   let pointerY = 0;
+  const maximumTilt = 7;
+  const maximumEdgeShift = 12;
+  const tiltForSize = (size) =>
+    Math.min(maximumTilt, (Math.atan2(maximumEdgeShift, size / 2) * 180) / Math.PI);
 
   const resetTilt = () => {
     if (!activeTilt) return;
@@ -112,8 +116,14 @@
           const y = Math.min(1, Math.max(0, (pointerY - activeRect.top) / activeRect.height));
           activeTilt.style.setProperty("--mouse-local-x", `${x * 100}%`);
           activeTilt.style.setProperty("--mouse-local-y", `${y * 100}%`);
-          activeTilt.style.setProperty("--tilt-rotate-x", `${(1 - y * 2) * 7}deg`);
-          activeTilt.style.setProperty("--tilt-rotate-y", `${(x * 2 - 1) * 7}deg`);
+          activeTilt.style.setProperty(
+            "--tilt-rotate-x",
+            `${(1 - y * 2) * tiltForSize(activeRect.height)}deg`,
+          );
+          activeTilt.style.setProperty(
+            "--tilt-rotate-y",
+            `${(x * 2 - 1) * tiltForSize(activeRect.width)}deg`,
+          );
         }
 
         pointerFrame = undefined;
