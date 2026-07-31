@@ -50,11 +50,30 @@ grep -Fq 'required' "$homepage"
 grep -Fq 'name="embed" value="1"' "$homepage"
 grep -Fq 'name="tag" value="Personal Updates"' "$homepage"
 grep -Fq 'class="button-primary follow-card__submit"' "$homepage"
-grep -Fq 'class="follow-card__status" aria-live="polite" hidden' "$homepage"
-grep -Fq 'Sweet! Check your inbox for a confirmation mail.' "$test_dir/public/js/site.js"
+grep -Fq 'data-state="idle"' "$homepage"
+grep -Fq 'd="M5 13L9 17L19 7"' "$homepage"
+grep -Fq 'd="M6.75827 17.2426L12.0009 12' "$homepage"
+grep -Fq 'd="M12 12C15.866 12 19 8.86599 19 5H5' "$homepage"
+
+if grep -Fq 'follow-card__status' "$homepage"; then
+    echo "The follow card still renders a separate submission status." >&2
+    exit 1
+fi
+
+grep -Fq 'minimumLoadingTime' "$test_dir/public/js/site.js"
+grep -Fq 'successDisplayTime = 5000' "$test_dir/public/js/site.js"
+grep -Fq 'submit.dataset.state = "loading"' "$test_dir/public/js/site.js"
+grep -Fq 'submit.dataset.state = "success"' "$test_dir/public/js/site.js"
+grep -Fq 'submit.dataset.state = "danger"' "$test_dir/public/js/site.js"
+grep -Fq 'animation-play-state: paused' "$test_dir/public/css/main.css"
+grep -Fq '@media (prefers-reduced-motion: no-preference)' "$test_dir/public/css/main.css"
+grep -Fq 'background-color: oklch(79.2% 0.209 151.711)' "$test_dir/public/css/main.css"
+grep -Fq 'background-color: oklch(64.5% 0.246 16.439)' "$test_dir/public/css/main.css"
+grep -Fq 'inline-size: 1.125rem' "$test_dir/public/css/main.css"
 grep -Fq 'class="follow-card__alternatives"' "$homepage"
 grep -Fq 'class="button-underline follow-card__link"' "$homepage"
-grep -Fq 'href="/rss.xml"' "$homepage"
+grep -Fq 'href="/rss.xml" target="_blank"' "$homepage"
+grep -Fq 'rel="noopener noreferrer">RSS feed</a>' "$homepage"
 grep -Fq 'rel="alternate" type="application/rss+xml" href="/rss.xml"' "$homepage"
 grep -Fq 'href="/uses">/uses</a>' "$homepage"
 test "$(grep -o 'href="/library"' "$homepage" | wc -l | tr -d ' ')" = 1

@@ -59,13 +59,16 @@
   }
 
   document.querySelectorAll(".follow-card__form").forEach((form) => {
-    const status = form.querySelector(".follow-card__status");
     const submit = form.querySelector(".follow-card__submit");
+    const minimumLoadingTime = 900;
+    const successDisplayTime = 5000;
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      status.hidden = true;
-      status.removeAttribute("data-state");
+      const minimumLoading = new Promise((resolve) => setTimeout(resolve, minimumLoadingTime));
+
+      submit.dataset.state = "loading";
+      submit.setAttribute("aria-label", "Subscribing");
       submit.disabled = true;
       form.setAttribute("aria-busy", "true");
 
@@ -76,23 +79,32 @@
         });
 
         if (!response.ok) {
-          const responseText = await response.text();
-          const responseDocument = new DOMParser().parseFromString(responseText, "text/html");
-          const buttondownError = responseDocument.querySelector(".message-box--error")?.textContent.trim();
-          throw new Error(buttondownError || "Something went wrong. Please try again.");
+          throw new Error("Subscription failed");
         }
 
+        await minimumLoading;
         form.reset();
-        status.textContent = "Sweet! Check your inbox for a confirmation mail.";
-        status.dataset.state = "success";
-      } catch (error) {
-        status.textContent = error.message || "Something went wrong. Please try again.";
-        status.dataset.state = "danger";
-      } finally {
-        status.hidden = false;
+        submit.dataset.state = "success";
+        submit.setAttribute("aria-label", "Subscribed successfully");
+        setTimeout(() => {
+          submit.dataset.state = "idle";
+          submit.setAttribute("aria-label", "Subscribe");
+          submit.disabled = false;
+        }, successDisplayTime);
+      } catch {
+        await minimumLoading;
+        submit.dataset.state = "danger";
+        submit.setAttribute("aria-label", "Subscription failed. Try again");
         submit.disabled = false;
+      } finally {
         form.removeAttribute("aria-busy");
       }
+    });
+
+    form.addEventListener("input", () => {
+      if (submit.dataset.state !== "danger") return;
+      submit.dataset.state = "idle";
+      submit.setAttribute("aria-label", "Subscribe");
     });
   });
 

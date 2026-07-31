@@ -1172,20 +1172,84 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .follow-card__submit {
+    display: grid;
     flex: none;
+    transition:
+        background-color 180ms ease 80ms,
+        color 180ms ease 80ms;
 }
 
-.follow-card__status {
-    grid-column: 1 / -1;
-    font-size: var(--text-sm);
+.follow-card__submit-state {
+    display: grid;
+    grid-area: 1 / 1;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms ease;
 }
 
-.follow-card__status[data-state="success"] {
-    color: color-mix(in oklab, var(--green) 70%, var(--primary));
+.follow-card__submit[data-state="idle"] [data-button-state="idle"],
+.follow-card__submit[data-state="loading"] [data-button-state="loading"],
+.follow-card__submit[data-state="success"] [data-button-state="success"],
+.follow-card__submit[data-state="danger"] [data-button-state="danger"] {
+    opacity: 1;
 }
 
-.follow-card__status[data-state="danger"] {
-    color: color-mix(in oklab, var(--red) 80%, var(--primary));
+.follow-card__submit[data-state="success"] {
+    background-color: oklch(79.2% 0.209 151.711);
+    color: oklch(20.5% 0 0);
+}
+
+.follow-card__submit[data-state="danger"] {
+    background-color: oklch(64.5% 0.246 16.439);
+    color: oklch(20.5% 0 0);
+}
+
+.follow-card__submit-icon {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .follow-card__submit {
+        transition:
+            background-color 180ms ease 80ms,
+            color 180ms ease 80ms,
+            transform 100ms ease-out;
+    }
+
+    .follow-card__submit-state {
+        filter: blur(4px);
+        transform: scale(0.9);
+        transition:
+            opacity 140ms ease,
+            filter 180ms cubic-bezier(0.19, 1, 0.22, 1),
+            transform 200ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .follow-card__submit[data-state="idle"] [data-button-state="idle"],
+    .follow-card__submit[data-state="loading"] [data-button-state="loading"],
+    .follow-card__submit[data-state="success"] [data-button-state="success"],
+    .follow-card__submit[data-state="danger"] [data-button-state="danger"] {
+        filter: blur(0);
+        transform: scale(1);
+        transition-delay: 70ms;
+    }
+
+    .follow-card__hourglass svg {
+        animation: follow-card-hourglass 900ms linear infinite;
+        animation-play-state: paused;
+    }
+
+    .follow-card__submit[data-state="loading"] .follow-card__hourglass svg {
+        animation-play-state: running;
+    }
+}
+
+@keyframes follow-card-hourglass {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .button-primary:focus-visible,

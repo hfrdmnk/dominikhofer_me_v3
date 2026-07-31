@@ -17,13 +17,41 @@
             autocomplete="email" enterkeyhint="send" required>
         <input type="hidden" name="embed" value="1">
         <input type="hidden" name="tag" value="Personal Updates">
-        <button class="button-primary follow-card__submit" type="submit">Subscribe</button>
-        <p class="follow-card__status" aria-live="polite" hidden></p>
+        <button class="button-primary follow-card__submit" type="submit" data-state="idle" aria-label="Subscribe">
+            <span class="follow-card__submit-state" data-button-state="idle">Subscribe</span>
+            <span class="follow-card__submit-state follow-card__hourglass" data-button-state="loading"
+                aria-hidden="true">
+                <svg class="follow-card__submit-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12C15.866 12 19 8.86599 19 5H5C5 8.86599 8.13401 12 12 12ZM12 12C15.866 12 19 15.134 19 19H5C5 15.134 8.13401 12 12 12Z"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M5 2L12 2L19 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M5 22H12L19 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            <span class="follow-card__submit-state" data-button-state="success" aria-hidden="true">
+                <svg class="follow-card__submit-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            <span class="follow-card__submit-state" data-button-state="danger" aria-hidden="true">
+                <svg class="follow-card__submit-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </span>
+        </button>
     </form>
     <div class="follow-card__alternatives">
         <p>If you prefer, you can also follow along via RSS or standard.site:</p>
         <div class="follow-card__links">
-            <a class="button-underline follow-card__link" href="{{ " rss.xml" | relURL }}">RSS feed</a>
+            <a class="button-underline follow-card__link" href="{{ "rss.xml" | relURL }}" target="_blank"
+                rel="noopener noreferrer">RSS feed</a>
             <sequoia-subscribe button-type="plain" label="Standard Site" {{ with $publicationURI }}
                 publication-uri="{{ . }}" {{ end }}>
                 {{- with $publicationURI -}}
