@@ -105,12 +105,16 @@ HUGO_DATADIR="$data_dir" hugo \
 homepage="$public_dir/index.html"
 posts_page="$public_dir/posts/index.html"
 races_page="$public_dir/races/index.html"
+race_page="$public_dir/race-one/index.html"
 
 grep -Fq '<header class="intro">' "$homepage"
 grep -Fq '<div class="prose">' "$homepage"
 grep -Fq 'class="follow-card breakout"' "$homepage"
 grep -Fq 'href="https://example.com/" target="_blank" rel="noopener noreferrer"' "$homepage"
 grep -Fq 'href="/posts"' "$homepage"
+grep -Fq 'href="/races">/races</a>' "$homepage"
+grep -Fq 'href="/races" aria-current="page">/races</a>' "$races_page"
+grep -Fq 'href="/races" aria-current="page">/races</a>' "$race_page"
 word_joiner=$(printf '\342\201\240')
 grep -Fq "</a>$word_joiner," "$homepage"
 internal_link=$(grep -o '<a href="/posts"[^>]*>' "$homepage")

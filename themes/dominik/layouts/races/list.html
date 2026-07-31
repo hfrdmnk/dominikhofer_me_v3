@@ -19,9 +19,6 @@
                     </div>
                   {{- end }}
                 </div>
-                <svg class="race-card__route" viewBox="0 0 640 430" focusable="false">
-                  <path d="{{ .route }}" />
-                </svg>
               </div>
             {{- end }}
 
@@ -32,6 +29,12 @@
               </p>
               <h2 class="race-card__title">{{ .Title }}</h2>
             </header>
+
+            {{- with $raceArt }}
+              <svg class="race-card__route" viewBox="0 0 640 430" focusable="false" aria-hidden="true">
+                <path d="{{ .route }}" />
+              </svg>
+            {{- end }}
 
             <dl class="race-card__stats">
               <div>

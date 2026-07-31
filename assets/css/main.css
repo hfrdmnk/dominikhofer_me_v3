@@ -957,24 +957,32 @@ sequoia-subscribe::part(button):focus-visible {
 /* Races */
 .race-list {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-lg);
     margin-block: var(--space-lg) var(--space-xl);
     padding: 0;
     list-style: none;
 }
 
+@media (width < 48rem) {
+    .race-list {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
 .race-card {
     position: relative;
     isolation: isolate;
-    min-block-size: 20rem;
+    aspect-ratio: 1;
+    font-size: var(--text-xs);
 }
 
 .race-card__surface {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--space-xs);
     overflow: hidden;
     padding: var(--space-lg);
     border: 1px solid var(--border-light);
@@ -1008,6 +1016,7 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .race-card__header {
+    grid-row: 1;
     inline-size: min(58%, 22rem);
 }
 
@@ -1020,7 +1029,7 @@ sequoia-subscribe::part(button):focus-visible {
 .race-card__title {
     margin-block-start: var(--space-sm);
     font-family: var(--font-sans);
-    font-size: var(--text-xl);
+    font-size: var(--text-base);
     font-weight: 500;
     letter-spacing: -0.025em;
 }
@@ -1033,19 +1042,15 @@ sequoia-subscribe::part(button):focus-visible {
     pointer-events: none;
 }
 
-.race-card__pixels,
-.race-card__route {
+.race-card__pixels {
     position: absolute;
     inset-block-start: 0;
     inset-inline-end: 0;
-    inline-size: min(50%, 22rem);
-}
-
-.race-card__pixels {
+    inline-size: 78%;
+    block-size: calc(100% - var(--space-lg) - 2.425rem - 16px);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    aspect-ratio: 640 / 430;
 }
 
 .race-card__pixel-row {
@@ -1064,8 +1069,12 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .race-card__route {
+    grid-row: 2;
+    position: relative;
     z-index: 1;
-    block-size: auto;
+    inline-size: 100%;
+    block-size: 100%;
+    min-block-size: 0;
     color: var(--accent);
     overflow: visible;
 }
@@ -1099,11 +1108,11 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .race-card__stats {
+    grid-row: 3;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-md);
     inline-size: min(100%, 31rem);
-    margin-block-start: var(--space-xl);
 }
 
 .race-card__stats dt {
@@ -1114,7 +1123,7 @@ sequoia-subscribe::part(button):focus-visible {
 .race-card__stats dd {
     margin-block-start: var(--space-2xs);
     color: var(--primary);
-    font-size: var(--text-lg);
+    font-size: var(--text-sm);
     font-variant-numeric: tabular-nums;
     line-height: 1.2;
 }
@@ -1413,35 +1422,6 @@ sequoia-subscribe::part(button) {
 
     .colophon__sign {
         inline-size: min(5rem, 25%);
-    }
-}
-
-@media (width < 34rem) {
-    .race-card {
-        min-block-size: 22rem;
-        padding: var(--space-md);
-    }
-
-    .race-card__header {
-        inline-size: 68%;
-    }
-
-    .race-card__title {
-        font-size: var(--text-lg);
-    }
-
-    .race-card__pixels,
-    .race-card__route {
-        inset-block-start: 6rem;
-        inline-size: 68%;
-    }
-
-    .race-card__stats {
-        gap: var(--space-sm);
-    }
-
-    .race-card__stats dd {
-        font-size: var(--text-base);
     }
 }
 

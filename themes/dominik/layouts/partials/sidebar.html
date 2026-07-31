@@ -8,9 +8,9 @@
     </a>
     {{- end }}
     <ul class="nav__list">
-      {{- range slice "/about" "/now" "/posts" "/uses" "/hello" }}
+      {{- range slice "/about" "/now" "/posts" "/races" "/uses" "/hello" }}
       {{- $parentPath := printf "%s/" . }}
-      {{- $active := or (strings.HasPrefix $page.RelPermalink $parentPath) (and (eq . "/posts") (eq $page.Section "posts")) }}
+      {{- $active := or (strings.HasPrefix $page.RelPermalink $parentPath) (and (or (eq . "/posts") (eq . "/races")) (eq $page.Section (strings.TrimPrefix "/" .))) }}
       <li><a href="{{ . | relURL }}"{{ if $active }} aria-current="page"{{ end }}>{{ . }}</a></li>
       {{- end }}
     </ul>
