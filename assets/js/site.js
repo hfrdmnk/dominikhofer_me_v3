@@ -58,6 +58,44 @@
     }
   }
 
+  document.querySelectorAll(".follow-card__form").forEach((form) => {
+    const status = form.querySelector(".follow-card__status");
+    const submit = form.querySelector(".follow-card__submit");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      status.hidden = true;
+      status.removeAttribute("data-state");
+      submit.disabled = true;
+      form.setAttribute("aria-busy", "true");
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+        });
+
+        if (!response.ok) {
+          const responseText = await response.text();
+          const responseDocument = new DOMParser().parseFromString(responseText, "text/html");
+          const buttondownError = responseDocument.querySelector(".message-box--error")?.textContent.trim();
+          throw new Error(buttondownError || "Something went wrong. Please try again.");
+        }
+
+        form.reset();
+        status.textContent = "Sweet! Check your inbox for a confirmation mail.";
+        status.dataset.state = "success";
+      } catch (error) {
+        status.textContent = error.message || "Something went wrong. Please try again.";
+        status.dataset.state = "danger";
+      } finally {
+        status.hidden = false;
+        submit.disabled = false;
+        form.removeAttribute("aria-busy");
+      }
+    });
+  });
+
   const root = document.documentElement;
   const updateScrollable = () => {
     root.dataset.scrollable = root.scrollHeight > root.clientHeight ? "true" : "false";

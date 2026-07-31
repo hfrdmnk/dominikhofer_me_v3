@@ -3,12 +3,12 @@
   <nav class="nav" aria-label="Primary">
     {{- if not $page.IsHome }}
     <a class="nav__home" href="{{ "/" | relURL }}">
-      {{ partial "domicons/back.html" (dict "strokeWidth" 1.5) }}
+      {{ partial "icons/nav-arrow-left.html" }}
       Back home
     </a>
     {{- end }}
     <ul class="nav__list">
-      {{- range slice "/about" "/now" "/posts" "/hello" }}
+      {{- range slice "/about" "/now" "/posts" "/uses" "/hello" }}
       {{- $parentPath := printf "%s/" . }}
       {{- $active := or (strings.HasPrefix $page.RelPermalink $parentPath) (and (eq . "/posts") (eq $page.Section "posts")) }}
       <li><a href="{{ . | relURL }}"{{ if $active }} aria-current="page"{{ end }}>{{ . }}</a></li>
@@ -23,7 +23,7 @@
       </svg>
     </span>
     <span class="progress__label">
-      {{ partial "domicons/up.html" (dict "strokeWidth" 1.5) }}
+      {{ partial "icons/nav-arrow-up.html" }}
       Back to top
     </span>
   </a>

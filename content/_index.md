@@ -25,7 +25,6 @@ The posts are the main part of this website. But there are also these “[slash 
 - [/about](/about) for getting to know me better
 - [/now](/now) for seeing what I’m currently up to
 - [/races](/races) for checking out my past races
-- [/library](/library) for finding interesting books and links to check out
 - [/uses](/uses) for a glimpse into my workspace and the tools I use
 - [/hello](/hello) for getting in touch
 

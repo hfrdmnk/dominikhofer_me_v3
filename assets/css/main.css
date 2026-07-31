@@ -290,7 +290,7 @@ a {
     text-decoration: none;
 }
 
-.domicon {
+.iconoir {
     inline-size: 1em;
     block-size: 1em;
     flex: none;
@@ -489,6 +489,19 @@ sequoia-subscribe::part(button):focus-visible {
     gap: var(--space-xs);
     color: inherit;
     transition: color 150ms ease;
+}
+
+@media (width >= 60rem) {
+    .nav__home {
+        position: relative;
+    }
+
+    .nav__home .iconoir {
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-end: calc(100% + var(--space-xs));
+        transform: translateY(-50%);
+    }
 }
 
 .nav__list {
@@ -1135,7 +1148,8 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .follow-card__form {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: stretch;
     gap: var(--space-sm);
     margin-block-start: var(--space-lg);
@@ -1159,6 +1173,19 @@ sequoia-subscribe::part(button):focus-visible {
 
 .follow-card__submit {
     flex: none;
+}
+
+.follow-card__status {
+    grid-column: 1 / -1;
+    font-size: var(--text-sm);
+}
+
+.follow-card__status[data-state="success"] {
+    color: color-mix(in oklab, var(--green) 70%, var(--primary));
+}
+
+.follow-card__status[data-state="danger"] {
+    color: color-mix(in oklab, var(--red) 80%, var(--primary));
 }
 
 .button-primary:focus-visible,
@@ -1378,7 +1405,7 @@ sequoia-subscribe::part(button) {
     }
 
     .follow-card__form {
-        flex-direction: column;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .topbar__page {
