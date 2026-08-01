@@ -4,5 +4,3 @@ kicker: "Posts"
 ---
 
 {{< archive >}}
-
-{{< follow-card >}}

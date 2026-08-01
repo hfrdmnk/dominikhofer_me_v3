@@ -32,5 +32,3 @@ Enjoy your stay!
 
 Dominik
 {{< /prose >}}
-
-{{< follow-card >}}

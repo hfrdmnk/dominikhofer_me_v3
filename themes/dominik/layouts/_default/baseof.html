@@ -9,6 +9,7 @@
     <main class="content" id="content">
       {{ partial "page-title.html" . }}
       {{ block "main" . }}{{ end }}
+      {{ partialCached "follow-card.html" . }}
     </main>
     {{ block "page-aside" . }}{{ end }}
     {{ partialCached "colophon.html" . }}

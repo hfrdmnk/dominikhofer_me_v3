@@ -16,5 +16,3 @@ photo_pair:
 {{< prose >}}
 Placeholder for the about page. Real content is on its way.
 {{< /prose >}}
-
-{{< follow-card >}}

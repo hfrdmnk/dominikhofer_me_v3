@@ -6,5 +6,3 @@ kicker: "Hello"
 {{< prose >}}
 Placeholder for the hello page. Real content is on its way.
 {{< /prose >}}
-
-{{< follow-card >}}
