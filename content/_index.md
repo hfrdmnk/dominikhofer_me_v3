@@ -4,7 +4,7 @@ kicker: "Hoi, my name is Dominik. And I’m"
 ---
 
 {{< prose >}}
-I'm doing this by focusing on a few things that are truly meaningful to me: [Writing](/posts), [Running](/races), [Reading](/library). And building software like [Morgenblau](https://morgen.blue/), a calm window into the open web.
+I'm doing this by focusing on a few things that are truly meaningful to me: [Writing](/posts), [Running](/races), [Reading](/now). And building software like [Morgenblau](https://morgen.blue/), a calm window into the open web.
 
 This right here is my personal corner of the internet. It’s ever-evolving and the place where I document and share my journey. And the things I learn along the way.
 

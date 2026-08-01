@@ -5,7 +5,7 @@ updated: 2026-07-31
 ---
 
 {{< prose >}}
-(This is a [now page](https://nownownow.com/), and if you have your own site, [you should make one, too](https://nownownow.com/about).)
+This is a [now page](https://nownownow.com/), and if you have your own site, [you should make one, too](https://nownownow.com/about).
 
 ## Location
 
