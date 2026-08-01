@@ -10,7 +10,8 @@ favorite: false
 ---
 
 > There’s #doomscrolling… but also there’s my passion for #nerdscrolling. […]
-> — [@davidbisset@phpc.social](https://phpc.social/@davidbisset)
+>
+> _— [@davidbisset@phpc.social](https://phpc.social/@davidbisset)_
 
 Do you know this feeling when you discover a new word, that immediately resonates with you? That’s how I felt when I read the Toot above.
 

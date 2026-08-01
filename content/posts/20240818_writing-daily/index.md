@@ -11,8 +11,8 @@ favorite: true
 
 > I don't **think** writing every day will change your life...  
 > ...I **know** it will.
-
-_— Peter Suhm_
+>
+> _— Peter Suhm_
 
 Occasionally, you stumble upon a piece of content, that flips a switch in your brain. It may not be life-changing per se, but right at that moment, it certainly feels like it.
 

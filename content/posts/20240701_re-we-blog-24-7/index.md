@@ -11,7 +11,7 @@ favorite: false
 
 > We "blog" even when we are not sitting in front of a computer screen. We see or hear something, draw parallels to our lives, and make a mental note of it. Then, when the opportunity arises, we sit down and create something unique based on our history.
 >
-> — Robert in “[We Blog 24/7](https://birming.com/we-blog-247/)”
+> _— Robert in “[We Blog 24/7](https://birming.com/we-blog-247/)”_
 
 This immediately reminded me of something James Clear talks about in his bestseller “Atomic Habits”. When establishing a new habit, you first have to take on a new identity. Acting according to your new identity will then lead to you being able to establish the habit way more easily.
 

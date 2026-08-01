@@ -38,8 +38,8 @@ _By the way, if you’re wondering why there are already a couple of posts on th
 Since rediscovering personal blogs at the start of this year, I really got into the IndieWeb.
 
 > The IndieWeb is a people-focused alternative to the “corporate web”.
-
-— [https://indieweb.org/](https://indieweb.org/)
+>
+> _— [https://indieweb.org/](https://indieweb.org/)_
 
 Basically, everything in this community comes down to a few basic [principles](https://indieweb.org/principles) that really resonate with me:
 

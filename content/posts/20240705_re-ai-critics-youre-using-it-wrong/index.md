@@ -11,7 +11,7 @@ favorite: false
 
 > I get quite irritated by people who seem to make it their life's goal to bash AI.
 >
-> — Yordi in [AI Critics: You're Using It Wrong](https://yordi.me/ai-critics-youre-using-it-wrong/)
+> _— Yordi in [AI Critics: You're Using It Wrong](https://yordi.me/ai-critics-youre-using-it-wrong/)_
 
 This morning, I read this post by Yordi, and I’m glad I’m not the only one who feels that way.
 

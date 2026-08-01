@@ -14,6 +14,10 @@
         color: var(--primary);
     }
 
+    h2 {
+        font-size: var(--text-lg);
+    }
+
     a {
         color: var(--primary);
         text-decoration-line: underline;
@@ -37,11 +41,45 @@
         }
     }
 
+    strong {
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    > * + blockquote,
+    > blockquote + * {
+        margin-block-start: var(--space-xl);
+    }
+
     blockquote {
-        padding-inline-start: var(--space-md);
-        border-inline-start: 2px solid var(--border-light);
-        color: var(--secondary);
-        font-style: italic;
+        color: var(--primary);
+        font-size: var(--text-lg);
+        font-weight: 500;
+
+        p + p {
+            margin-block-start: var(--space-md);
+        }
+
+        p:first-of-type {
+            /* Hang the opening quote into the margin */
+            text-indent: -0.45em;
+
+            &::before {
+                content: "\201C";
+            }
+        }
+
+        p:last-of-type:not(:has(> em:only-child))::after,
+        p:has(+ p:last-of-type > em:only-child)::after {
+            content: "\201D";
+        }
+
+        /* Attribution: final italic-only paragraph, authored as `_— Peter Suhm_` */
+        p:last-of-type:has(> em:only-child) {
+            color: var(--secondary);
+            font-size: var(--text-base);
+            font-weight: 400;
+        }
     }
 
     ul {
@@ -49,17 +87,51 @@
         list-style: none;
     }
 
+    ol {
+        padding-inline-start: 0;
+    }
+
+    li + li {
+        margin-block-start: 0.5rem;
+    }
+
+    li::marker {
+        color: var(--tertiary);
+    }
+
     ul li {
         position: relative;
-
-        & + li {
-            margin-block-start: 0.5rem;
-        }
 
         &::before {
             content: "\2013";
             position: absolute;
             inset-inline-end: calc(100% + 1em);
+            color: var(--tertiary);
+        }
+    }
+
+    sup a {
+        text-decoration-line: none;
+    }
+
+    .footnotes {
+        hr {
+            margin-block: var(--space-xl);
+            border: none;
+            border-block-start: 1px solid var(--border-light);
+        }
+
+        /* "undo" icon from iconoir (https://iconoir.com/) */
+        a.footnote-backref {
+            display: inline-block;
+            inline-size: 1rem;
+            block-size: 1rem;
+            vertical-align: text-bottom;
+            font-size: 0;
+            text-decoration-line: none;
+            background-color: currentColor;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M10.25 19.25L6.75 15.75L10.25 12.25' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.75 15.75H12.75C14.9591 15.75 16.75 13.9591 16.75 11.75V4.75' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+                no-repeat center / contain;
         }
     }
 
