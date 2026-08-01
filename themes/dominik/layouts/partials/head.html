@@ -24,7 +24,13 @@
   </script>
   <link rel="preload" href="{{ "fonts/Newsreader-Roman-VF.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "fonts/Newsreader-Italic-VF.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-  {{ with resources.Get "css/main.css" }}
+  {{/* Foundations in cascade order, then components (order-independent) */}}
+  {{ $css := slice }}
+  {{ range slice "fonts" "reset" "tokens" "base" "typography" "utilities" "layout" }}
+  {{ $css = $css | append (resources.Get (printf "css/%s.css" .)) }}
+  {{ end }}
+  {{ $css = $css | append (resources.Match "css/components/*.css") }}
+  {{ with $css | resources.Concat "css/main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}">
   {{ end }}
   {{ with resources.Get "js/site.js" }}

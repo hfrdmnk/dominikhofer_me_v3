@@ -1,0 +1,104 @@
+/* Tokens */
+:root {
+    --mouse-x: 50vw;
+    --mouse-y: 50vh;
+
+    /* Accent colors */
+    --red: oklch(0.649 0.237 26.973);
+    --orange: oklch(0.744 0.181 56.458);
+    --yellow: oklch(0.865 0.177 90.382);
+    --green: oklch(0.748 0.175 153.527);
+    --teal: oklch(0.771 0.132 205.437);
+    --blue: oklch(0.632 0.202 254.088);
+    --violet: oklch(0.56 0.244 275.119);
+
+    /* Accent of the day — data-day set by inline script in <head> (Europe/Zurich) */
+    --accent: var(--red);
+
+    /* Theme — light */
+    --bg: oklch(1 0 0);
+    --primary: oklch(0.205 0 0);
+    --secondary: oklch(0.556 0 none);
+    --tertiary: oklch(0.709 0 0);
+    --surface: color-mix(in oklab, var(--tertiary) 24%, var(--bg));
+    --surface-lighter: color-mix(in oklab, var(--tertiary) 8%, var(--bg));
+    --border: var(--surface);
+    --border-light: var(--surface-lighter);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tooltip-bg: #000;
+    --tooltip-fg: #fff;
+
+    /* Font stacks */
+    --font-sans: system-ui, sans-serif;
+    --font-serif: "Newsreader", serif;
+
+    /* Font sizes */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.5rem;
+
+    @media (prefers-color-scheme: dark) {
+        /* Theme — dark */
+        --bg: oklch(0.145 0 0);
+        --primary: oklch(0.985 0 0);
+        --secondary: oklch(0.709 0 0);
+        --tertiary: oklch(0.556 0 0);
+        --tooltip-bg: #fff;
+        --tooltip-fg: #000;
+    }
+
+    /* Accent by weekday (Europe/Zurich): Mon→Sun */
+    &[data-day="1"] {
+        --accent: var(--red);
+    }
+
+    &[data-day="2"] {
+        --accent: var(--orange);
+    }
+
+    &[data-day="3"] {
+        --accent: var(--yellow);
+    }
+
+    &[data-day="4"] {
+        --accent: var(--green);
+    }
+
+    &[data-day="5"] {
+        --accent: var(--teal);
+    }
+
+    &[data-day="6"] {
+        --accent: var(--blue);
+    }
+
+    &[data-day="0"] {
+        --accent: var(--violet);
+    }
+}
+
+/* Layout & spacing tokens */
+:root {
+    --measure: 65ch;
+    --breakout: 2rem;
+    --pad-inline: clamp(1.5rem, 5vw, 5rem);
+    --pad-block: clamp(1.75rem, 4vh, 2.75rem);
+    --gap-col: clamp(1.5rem, 4vw, 3rem);
+    --headroom: clamp(14rem, 22vh, 16rem);
+    --footer-gap: clamp(2rem, 4vh, 2.75rem);
+    --topbar-line: 1.3125rem;
+
+    --space-2xs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2.5rem;
+    --space-2xl: 4rem;
+
+    --radius: 4px;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+}

@@ -1,0 +1,61 @@
+/* Marker highlight */
+:where(mark, .highlight) {
+    --highlight-angle: 87deg;
+    --highlight-start: 90%;
+    --highlight-leading: 82%;
+    --highlight-trailing: 80%;
+    --highlight-end: 65%;
+    --highlight-leading-stop: 6%;
+    --highlight-trailing-stop: 95%;
+
+    margin: -0.18em -0.24em -0.08em -0.2em;
+    padding: 0.18em 0.24em 0.08em 0.2em;
+    border-radius: 0.45em 0.25em;
+    color: var(--accent);
+    background-color: transparent;
+    background-image: linear-gradient(var(--highlight-angle),
+            color-mix(in oklch, var(--accent), transparent var(--highlight-start)),
+            color-mix(in oklch, var(--accent), transparent var(--highlight-leading)) var(--highlight-leading-stop),
+            color-mix(in oklch, var(--accent), transparent var(--highlight-trailing)) var(--highlight-trailing-stop),
+            color-mix(in oklch, var(--accent), transparent var(--highlight-end)));
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.highlight__text {
+    mix-blend-mode: multiply;
+
+    @supports (mix-blend-mode: plus-darker) {
+        mix-blend-mode: plus-darker;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        mix-blend-mode: plus-lighter;
+    }
+}
+
+:where(p, li, blockquote):nth-of-type(3n + 2) :where(mark, .highlight),
+:where(mark, .highlight):nth-of-type(3n + 2) {
+    --highlight-angle: 92deg;
+    --highlight-start: 62%;
+    --highlight-leading: 78%;
+    --highlight-trailing: 82%;
+    --highlight-end: 94%;
+    --highlight-leading-stop: 4%;
+    --highlight-trailing-stop: 93%;
+
+    border-radius: 0.25em 0.5em;
+}
+
+:where(p, li, blockquote):nth-of-type(3n) :where(mark, .highlight),
+:where(mark, .highlight):nth-of-type(3n) {
+    --highlight-angle: 84deg;
+    --highlight-start: 95%;
+    --highlight-leading: 80%;
+    --highlight-trailing: 80%;
+    --highlight-end: 94%;
+    --highlight-leading-stop: 9%;
+    --highlight-trailing-stop: 91%;
+
+    border-radius: 0.5em 0.35em;
+}

@@ -1,0 +1,180 @@
+/* Pointer tilt */
+[data-tilt] {
+    --mouse-local-x: 50%;
+    --mouse-local-y: 50%;
+    --tilt-rotate-x: 0deg;
+    --tilt-rotate-y: 0deg;
+
+    position: relative;
+    isolation: isolate;
+}
+
+.tilt-photo__surface {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    translate: var(--photo-offset-x) var(--photo-offset-y);
+    rotate: var(--photo-rotation);
+    transform: perspective(32rem) rotateX(var(--tilt-rotate-x)) rotateY(var(--tilt-rotate-y));
+    transform-style: preserve-3d;
+    transition: transform 140ms ease-out;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        border-radius: inherit;
+        background: radial-gradient(circle at calc(100% - var(--mouse-local-x)) calc(100% - var(--mouse-local-y)),
+                rgb(255 255 255 / 0.5),
+                transparent 58%);
+        mix-blend-mode: soft-light;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 140ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &,
+        &::after {
+            transition: none;
+        }
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    [data-tilt][data-tilt-active] .tilt-photo__surface {
+        will-change: transform;
+
+        &::after {
+            opacity: 0.7;
+        }
+    }
+}
+
+/* Tilt photo pair */
+.tilt-photo-pair {
+    --portrait-size: 8rem;
+
+    position: relative;
+    grid-column: main-start / main-end;
+    grid-row: r-head-end / span 1;
+    align-self: center;
+    justify-self: end;
+    display: grid;
+    grid-template-columns: repeat(2, var(--portrait-size));
+    grid-template-rows: calc(var(--portrait-size) * 4 / 3);
+    column-gap: var(--space-xs);
+    inline-size: max-content;
+    padding: var(--space-sm) 2rem 2rem var(--space-xs);
+
+    @media (width < 60rem) {
+        align-self: center;
+        margin-block-start: 0;
+    }
+
+    @media (width < 36rem) {
+        --portrait-size: 7rem;
+    }
+}
+
+.tilt-photo-pair__item {
+    position: relative;
+    grid-row: 1;
+    inline-size: var(--portrait-size);
+    block-size: calc(var(--portrait-size) * 4 / 3);
+}
+
+.tilt-photo-pair__item--1 {
+    --photo-offset-x: 0.75rem;
+    --photo-offset-y: 0rem;
+    --photo-rotation: -8deg;
+
+    grid-column: 1;
+    z-index: 2;
+}
+
+.tilt-photo-pair__item--2 {
+    --photo-offset-x: 0.75rem;
+    --photo-offset-y: 1.75rem;
+    --photo-rotation: 15deg;
+
+    grid-column: 2;
+    z-index: 1;
+}
+
+.tilt-photo {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: 3 / 4;
+
+    &:focus-visible {
+        outline: none;
+
+        .tilt-photo__surface {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .tilt-photo__tooltip {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover .tilt-photo__tooltip {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+}
+
+.tilt-photo__image {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+}
+
+.tilt-photo__tooltip {
+    position: absolute;
+    inset-block-end: calc(100% - var(--photo-offset-y) + var(--space-md) + var(--space-2xs));
+    inset-inline-start: calc(50% + var(--photo-offset-x));
+    z-index: 4;
+    max-inline-size: 12rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border-radius: var(--radius);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-fg);
+    font-size: var(--text-xs);
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    translate: -50% 0;
+    transform: translateY(0.25rem) scale(0.97);
+    transform-origin: bottom center;
+    transition:
+        opacity 150ms ease-out,
+        transform 150ms ease-out;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset-block-start: 100%;
+        inset-inline-start: 50%;
+        inline-size: 0;
+        block-size: 0;
+        border: 0.3rem solid transparent;
+        border-block-start-color: var(--tooltip-bg);
+        translate: -50% 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+}

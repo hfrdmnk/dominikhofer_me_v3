@@ -1,0 +1,29 @@
+/* Post list */
+.post-list {
+    list-style: none;
+    padding: 0;
+    margin-block-start: var(--space-lg);
+    max-inline-size: var(--measure);
+}
+
+.post-list__link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-lg);
+    padding-block: var(--space-sm);
+    border-block-end: 1px solid var(--border-light);
+    color: var(--secondary);
+    transition: color 150ms ease;
+
+    &:hover {
+        color: var(--primary);
+    }
+}
+
+.post-list__date {
+    flex: none;
+    color: var(--tertiary);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+}

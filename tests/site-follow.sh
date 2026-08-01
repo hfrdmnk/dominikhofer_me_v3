@@ -74,12 +74,12 @@ if grep -Fq 'minimumLoading' "$test_dir/public/js/site.js"; then
     exit 1
 fi
 
-grep -Fq '@media (prefers-reduced-motion: no-preference)' "$test_dir/public/css/main.css"
-grep -Fq 'background-color: oklch(79.2% 0.209 151.711)' "$test_dir/public/css/main.css"
-grep -Fq 'background-color: oklch(64.5% 0.246 16.439)' "$test_dir/public/css/main.css"
-grep -Fq '.follow-card__submit:disabled[data-state="idle"]' "$test_dir/public/css/main.css"
-grep -Fq 'opacity: 0.6' "$test_dir/public/css/main.css"
-grep -Fq 'inline-size: 1.125rem' "$test_dir/public/css/main.css"
+css_file=$(find "$test_dir/public/css" -name 'main.*.css' | head -n 1)
+grep -Fq '@media(prefers-reduced-motion:no-preference)' "$css_file"
+grep -Fq 'background-color:oklch(79.2% .209 151.711)' "$css_file"
+grep -Fq 'background-color:oklch(64.5% .246 16.439)' "$css_file"
+grep -Fq '&:disabled[data-state=idle]{opacity:.6}' "$css_file"
+grep -Fq 'inline-size:1.125rem' "$css_file"
 grep -Fq 'class="follow-card__alternatives"' "$homepage"
 grep -Fq 'class="button-underline follow-card__link"' "$homepage"
 grep -Fq 'href="/rss.xml" target="_blank"' "$homepage"

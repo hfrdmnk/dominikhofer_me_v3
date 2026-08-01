@@ -1,0 +1,13 @@
+/* Archive */
+.archive {
+    max-inline-size: var(--measure);
+    margin-block: var(--space-lg) var(--space-xl);
+}
+
+.archive__list {
+    margin-block-start: 0;
+}
+
+.archive__more {
+    margin-block-start: var(--space-md);
+}

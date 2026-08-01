@@ -1,0 +1,155 @@
+/* Follow card */
+.follow-card {
+    margin-block-start: var(--space-2xl);
+    padding: var(--space-xl) var(--breakout);
+    border-radius: var(--radius-lg);
+    background: var(--surface-lighter);
+    color: var(--secondary);
+    text-align: start;
+
+    @media (width < 36rem) {
+        padding: var(--space-lg);
+    }
+}
+
+.follow-card__title {
+    color: var(--primary);
+    font-size: var(--text-lg);
+}
+
+.follow-card__copy {
+    margin-block-start: var(--space-lg);
+
+    > * + * {
+        margin-block-start: var(--space-md);
+    }
+}
+
+.follow-card__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: var(--space-sm);
+    margin-block-start: var(--space-lg);
+
+    @media (width < 36rem) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.follow-card__input {
+    min-inline-size: 0;
+    min-block-size: 2.5rem;
+    flex: 1 1 auto;
+    padding: var(--space-xs) var(--space-md);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--primary);
+
+    &::placeholder {
+        color: var(--tertiary);
+        user-select: none;
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+.follow-card__submit {
+    display: grid;
+    flex: none;
+    transition:
+        background-color 180ms ease 80ms,
+        color 180ms ease 80ms,
+        opacity 140ms ease;
+
+    &:disabled[data-state="idle"] {
+        opacity: 0.6;
+    }
+
+    &[data-state="idle"] [data-button-state="idle"],
+    &[data-state="success"] [data-button-state="success"],
+    &[data-state="danger"] [data-button-state="danger"] {
+        opacity: 1;
+    }
+
+    &[data-state="success"] {
+        background-color: oklch(79.2% 0.209 151.711);
+        color: oklch(20.5% 0 0);
+    }
+
+    &[data-state="danger"] {
+        background-color: oklch(64.5% 0.246 16.439);
+        color: oklch(20.5% 0 0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        transition:
+            background-color 180ms ease 80ms,
+            color 180ms ease 80ms,
+            opacity 140ms ease,
+            transform 100ms ease-out;
+
+        &[data-state="idle"] [data-button-state="idle"],
+        &[data-state="success"] [data-button-state="success"],
+        &[data-state="danger"] [data-button-state="danger"] {
+            filter: blur(0);
+            transform: scale(1);
+            transition-delay: 70ms;
+        }
+    }
+}
+
+.follow-card__submit-state {
+    display: grid;
+    grid-area: 1 / 1;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms ease;
+
+    @media (prefers-reduced-motion: no-preference) {
+        filter: blur(4px);
+        transform: scale(0.9);
+        transition:
+            opacity 140ms ease,
+            filter 180ms cubic-bezier(0.19, 1, 0.22, 1),
+            transform 200ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
+}
+
+.follow-card__submit-icon {
+    inline-size: 1.125rem;
+    block-size: 1.125rem;
+}
+
+.follow-card__alternatives {
+    display: grid;
+    gap: var(--space-xs);
+    margin-block-start: var(--space-xl);
+}
+
+.follow-card__links {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm) var(--space-lg);
+}
+
+sequoia-subscribe {
+    display: inline-block;
+    font: inherit;
+}
+
+sequoia-subscribe::part(button) {
+    min-block-size: 1.5rem;
+    padding: 0 0 2px;
+    border: 0;
+    background-color: transparent;
+    font: inherit;
+    cursor: pointer;
+    user-select: none;
+}
