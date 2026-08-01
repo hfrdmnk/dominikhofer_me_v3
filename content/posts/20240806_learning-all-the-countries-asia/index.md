@@ -4,6 +4,7 @@ slug: "learning-all-the-countries-asia"
 date: 2024-08-06T18:58:24
 description: "\"My quest for learning all the countries in the world continues. On today's episode: Asia.\""
 tags: ["geography", "learning"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

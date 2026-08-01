@@ -4,6 +4,7 @@ slug: "capturing-vs-living"
 date: 2024-07-24T16:00:00
 description: "Some reflections on documenting my life and FOMO."
 tags: ["intentionality", "slow living", "photography"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

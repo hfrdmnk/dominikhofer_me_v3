@@ -4,6 +4,7 @@ slug: "diving-into-the-atmosphere"
 date: 2024-11-18T20:33:25
 description: "Some initial thoughts about Bluesky and the AT protocol."
 tags: ["at protocol", "social web"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

@@ -5,6 +5,7 @@ date: 2024-09-07T11:30:10
 lastmod: 2024-10-04T20:40:00
 description: "Going for a run is always the right choice. You’ll thank yourself afterward."
 tags: ["running"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

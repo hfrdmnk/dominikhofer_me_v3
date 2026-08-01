@@ -4,6 +4,7 @@ slug: "a-lot-has-happened"
 date: 2025-04-19T15:00:54
 description: "A long overdue update on what's been going on over the last few months."
 tags: ["life update", "university", "personal", "running"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

@@ -4,6 +4,7 @@ slug: "working-for-a-goal"
 date: 2024-10-28T20:46:27
 description: "And the rewarding feeling of reaching it."
 tags: ["running", "personal"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: true

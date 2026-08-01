@@ -4,6 +4,7 @@ slug: "going-mainstream"
 date: 2024-07-04T19:00:00
 description: "My thoughts on the newest book by Julia Ebner."
 tags: ["book", "society", "politics"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

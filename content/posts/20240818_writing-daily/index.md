@@ -4,6 +4,7 @@ slug: "writing-daily"
 date: 2024-08-18T15:35:24
 description: "Or: How a simple rule change can help you create more consistently."
 tags: ["writing", "habit"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: true

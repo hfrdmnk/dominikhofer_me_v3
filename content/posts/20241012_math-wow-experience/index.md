@@ -4,6 +4,7 @@ slug: "math-wow-experience"
 date: 2024-10-12T13:30:00
 description: "After 4 weeks of taking the calculus 1 class in university, I’ve had my first true [insert mindblown-emoji here] moment. And I want to share it with you."
 tags: ["math", "explainer"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

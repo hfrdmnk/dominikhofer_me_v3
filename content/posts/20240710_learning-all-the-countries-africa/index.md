@@ -4,6 +4,7 @@ slug: "learning-all-the-countries-africa"
 date: 2024-07-10T11:00:00
 description: "Inspired by my girlfriend and my brother, who are both somewhat huge geography buffs, I’ve decided to challenge myself to learn all the countries in the world."
 tags: ["geography", "learning"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

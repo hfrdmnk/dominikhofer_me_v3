@@ -4,6 +4,7 @@ slug: "step-by-step"
 date: 2025-10-27T20:23:13
 description: "Reflections after my first marathon."
 tags: ["running"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: true

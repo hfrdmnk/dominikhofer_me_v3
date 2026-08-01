@@ -4,6 +4,7 @@ slug: "murder-in-the-family"
 date: 2024-12-20T07:59:11
 description: "Murder in the Family by Cara Hunter is probably the most unique fiction book I’ve read this year."
 tags: ["book"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

@@ -4,6 +4,7 @@ slug: "uni-start"
 date: 2024-09-13T11:36:44
 description: "Today is Friday, September 13th, and it’s Orientation Day for new bachelor students at Uni Bern. Which also means that my lectures (and my university career as a whole) start in just three days, on Monday."
 tags: ["life update", "university"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

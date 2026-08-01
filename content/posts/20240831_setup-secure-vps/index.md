@@ -4,6 +4,7 @@ slug: "setup-secure-vps"
 date: 2024-08-31T14:28:15
 description: "An easy guide on how to setup your own VPS."
 tags: ["code", "tutorial"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

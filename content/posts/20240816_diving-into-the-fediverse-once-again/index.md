@@ -4,6 +4,7 @@ slug: "diving-into-the-fediverse-once-again"
 date: 2024-08-16T14:48:38
 description: "A list of interesting links from my recent trip into the Fediverse rabbit hole."
 tags: ["fediverse", "activitypub", "social web"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

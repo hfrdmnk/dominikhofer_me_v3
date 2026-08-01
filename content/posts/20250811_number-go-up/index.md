@@ -4,6 +4,7 @@ slug: "number-go-up"
 date: 2025-08-11T19:52:54
 description: "Number Go Up by Zeke Faux blends investigative journalism, social commentary, and true crime to recount some of the wildest crypto frauds – a ride I partly lived through in real time."
 tags: ["book", "crypto"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

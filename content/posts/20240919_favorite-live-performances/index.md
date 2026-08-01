@@ -4,6 +4,7 @@ slug: "favorite-live-performances"
 date: 2024-09-19T19:36:22
 description: "Pure creativity, emotions & vibes."
 tags: ["inspiration", "music"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

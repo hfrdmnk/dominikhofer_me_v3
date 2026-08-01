@@ -4,6 +4,7 @@ slug: "why-i-write"
 date: 2024-08-28T09:10:00
 description: "\"Recently, I wrote about how I write daily. In this post, I want to take a step back: Why write in the first place?\""
 tags: ["writing"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: true

@@ -5,6 +5,7 @@ date: 2024-11-12T19:29:28
 lastmod: 2024-12-09T20:54:33
 description: "A lesson from Four Thousand Weeks for when you are stuck in traffic the next time."
 tags: ["life advice", "book"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

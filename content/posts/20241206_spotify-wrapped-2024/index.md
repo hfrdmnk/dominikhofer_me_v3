@@ -4,6 +4,7 @@ slug: "spotify-wrapped-2024"
 date: 2024-12-06T21:04:56
 description: "Inspired by Jedda and in the spirit of sharing and discovering great music, I also wanted to write a bit about my Spotify Wrapped this year."
 tags: ["music", "spotify wrapped"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

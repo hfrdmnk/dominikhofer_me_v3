@@ -4,6 +4,7 @@ slug: "spotify-wrapped-2025"
 date: 2025-12-04T17:56:14
 description: "It’s the beginning of December again, which means Spotify Wrapped has just dropped. Like last year, I want to share mine here and encourage you to do the same, so we can all discover some great music :)"
 tags: ["music", "spotify wrapped"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

@@ -4,6 +4,7 @@ slug: "feel-good-productivity"
 date: 2024-03-18T01:00:00
 description: "Feel Good Productivity by Ali Abdaal (2023) is a book about how to live a healthy and productive life without all the stress. This is my personal book summary."
 tags: ["book", "productivity"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

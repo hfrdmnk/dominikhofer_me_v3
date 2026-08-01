@@ -4,6 +4,7 @@ slug: "you-and-your-smartphone"
 date: 2024-09-04T08:02:19
 description: "Two interesting quotes from a video that stuck with me and got me thinking."
 tags: ["life advice", "learning"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: false

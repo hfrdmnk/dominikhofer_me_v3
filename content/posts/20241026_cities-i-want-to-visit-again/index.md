@@ -4,6 +4,7 @@ slug: "cities-i-want-to-visit-again"
 date: 2024-10-26T20:31:44
 description: "A trip down memory lane and a list of cities, you also should visit one day."
 tags: ["memories", "travel"]
+cover: "cover.jpg"
 archived: false
 draft: false
 favorite: true
