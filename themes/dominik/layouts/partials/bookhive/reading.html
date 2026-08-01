@@ -1,0 +1,54 @@
+{{- $result := partial "atproto/records.html" (dict "collection" "buzz.bookhive.book") -}}
+{{- $reading := slice -}}
+{{- if $result.ok -}}
+  {{- range $result.records -}}
+    {{- if eq .value.status "buzz.bookhive.defs#reading" -}}
+      {{- $reading = $reading | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if $reading }}
+{{- $pds := partialCached "atproto/pds.html" site -}}
+<div class="reading">
+  <p class="data-note">This list auto-updates from <a href="https://bookhive.buzz/" target="_blank" rel="noopener noreferrer">Bookhive</a>.</p>
+  <ul class="reading__list">
+    {{- range $reading }}
+      {{- $book := .value }}
+      {{- $cover := "" }}
+      {{- with $book.cover }}
+        {{- $query := collections.Querify "did" site.Params.atproto.did "cid" (index .ref "$link") }}
+        {{- $blobUrl := printf "%s/xrpc/com.atproto.sync.getBlob?%s" $pds $query }}
+        {{- with try (resources.GetRemote $blobUrl) }}
+          {{- with .Err }}
+            {{- warnf "bookhive: cover fetch for %q failed: %s" $book.title . }}
+          {{- else with .Value }}
+            {{- with try (.Fill "240x360 webp q85") }}
+              {{- with .Err }}
+                {{- warnf "bookhive: cover processing for %q failed: %s" $book.title . }}
+              {{- else }}
+                {{- $cover = .Value }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+      <li class="reading__item">
+        <a class="reading__link" href="https://bookhive.buzz/books/{{ $book.hiveId }}" target="_blank" rel="noopener noreferrer">
+        <figure class="reading__cover tilt-photo" data-tilt>
+          <div class="tilt-photo__surface">
+            {{- with $cover }}
+            <img class="tilt-photo__image" src="{{ .RelPermalink }}" width="120" height="180" alt="" loading="lazy">
+            {{- else }}
+            <span class="reading__placeholder" aria-hidden="true"><span>{{ $book.title }}</span></span>
+            {{- end }}
+          </div>
+        </figure>
+        <span class="reading__title">{{ $book.title }}</span>
+        <span class="reading__author">{{ $book.authors }}</span>
+        </a>
+      </li>
+    {{- end }}
+  </ul>
+  <a class="button-underline" href="{{ site.Params.bookhive.profile }}" target="_blank" rel="noopener noreferrer">See what I read in the past</a>
+</div>
+{{- end }}

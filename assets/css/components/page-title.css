@@ -15,3 +15,10 @@
     font-size: var(--text-xl);
     line-height: 1.25;
 }
+
+.intro__updated {
+    margin-block-start: var(--space-xs);
+    color: var(--tertiary);
+    font-size: var(--text-sm);
+    font-style: italic;
+}

@@ -9,4 +9,8 @@
 <header class="intro">
   {{- with $kicker }}<p class="intro__kicker">{{ . }}</p>{{ end }}
   <h1 class="intro__title">{{ $title }}</h1>
+  {{- with .Params.updated }}
+  {{- $updated := time.AsTime . }}
+  <p class="intro__updated">Last updated: <time datetime="{{ $updated.Format "2006-01-02" }}">{{ $updated.Format "January 2, 2006" }}</time></p>
+  {{- end }}
 </header>

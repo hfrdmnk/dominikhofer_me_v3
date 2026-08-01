@@ -24,3 +24,13 @@ maxAge = 0
 version = '3.0'
 location = 'Bern, CH'
 description = 'Dominik Hofer — striving for simplicity in a complex world.'
+
+[params.atproto]
+did = 'did:plc:fthx2gjakdj4ynxxu5vysjty'
+
+[params.bookhive]
+profile = 'https://bookhive.buzz/profile/dominik.social'
+
+[params.semble]
+profile = 'https://semble.so/profile/dominik.social'
+findsCollection = 'at://did:plc:fthx2gjakdj4ynxxu5vysjty/network.cosmik.collection/3mmg5d62hv62f'

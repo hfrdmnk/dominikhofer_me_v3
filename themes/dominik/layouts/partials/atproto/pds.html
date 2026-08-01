@@ -1,0 +1,23 @@
+{{- /* Resolves the PDS endpoint for the site's DID via the PLC directory. Returns "" on failure.
+       Uses the /data endpoint because the bare DID document is served as
+       application/did+ld+json, which GetRemote cannot map to a media type. */ -}}
+{{- $pds := "" -}}
+{{- $url := printf "https://plc.directory/%s/data" site.Params.atproto.did -}}
+{{- with try (resources.GetRemote $url) -}}
+  {{- with .Err -}}
+    {{- warnf "atproto: PLC directory lookup failed: %s" . -}}
+  {{- else with .Value -}}
+    {{- with try (transform.Unmarshal .) -}}
+      {{- with .Err -}}
+        {{- warnf "atproto: decoding PLC data failed: %s" . -}}
+      {{- else with .Value -}}
+        {{- with .services -}}
+          {{- with .atproto_pds -}}
+            {{- $pds = .endpoint -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $pds -}}

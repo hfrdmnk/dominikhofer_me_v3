@@ -1,0 +1,54 @@
+{{- $result := partial "atproto/records.html" (dict "collection" "network.cosmik.collectionLink") -}}
+{{- $finds := slice -}}
+{{- if $result.ok -}}
+  {{- $pds := partialCached "atproto/pds.html" site -}}
+  {{- range $result.records -}}
+    {{- if ge (len $finds) 5 -}}
+      {{- break -}}
+    {{- end -}}
+    {{- if ne .value.collection.uri site.Params.semble.findsCollection -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- $query := collections.Querify "repo" site.Params.atproto.did "collection" "network.cosmik.card" "rkey" (path.Base .value.card.uri) -}}
+    {{- $url := printf "%s/xrpc/com.atproto.repo.getRecord?%s" $pds $query -}}
+    {{- with try (resources.GetRemote $url) -}}
+      {{- with .Err -}}
+        {{- warnf "semble: card fetch failed: %s" . -}}
+      {{- else with .Value -}}
+        {{- with try (transform.Unmarshal .) -}}
+          {{- with .Err -}}
+            {{- warnf "semble: decoding card failed: %s" . -}}
+          {{- else with .Value -}}
+            {{- $card := .value.content -}}
+            {{- with $card -}}
+              {{- with .url -}}
+                {{- $domain := strings.TrimPrefix "www." (urls.Parse .).Host -}}
+                {{- $title := "" -}}
+                {{- with $card.metadata -}}
+                  {{- $title = .title -}}
+                {{- end -}}
+                {{- $finds = $finds | append (dict "url" . "domain" $domain "title" ($title | default $domain)) -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if $finds }}
+<div class="finds">
+  <p class="data-note">This list auto-updates from <a href="https://semble.so/" target="_blank" rel="noopener noreferrer">Semble</a>.</p>
+  <ul class="post-list">
+    {{- range $finds }}
+    <li class="post-list__item">
+      <a class="post-list__link" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+        <span class="post-list__title">{{ .title }}</span>
+        <span class="post-list__date">{{ .domain }}</span>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+  <a class="button-underline" href="{{ site.Params.semble.profile }}" target="_blank" rel="noopener noreferrer">Check out all my discoveries</a>
+</div>
+{{- end }}

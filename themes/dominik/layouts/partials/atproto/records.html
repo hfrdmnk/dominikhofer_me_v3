@@ -1,0 +1,39 @@
+{{- /* Fetches all records of a collection from the site's PDS, following cursors.
+       Input: dict "collection". Returns dict "ok" (bool) "records" (slice). */ -}}
+{{- $failed := false -}}
+{{- $records := slice -}}
+{{- $collection := .collection -}}
+{{- $pds := partialCached "atproto/pds.html" site -}}
+{{- if $pds -}}
+  {{- $cursor := "" -}}
+  {{- range seq 20 -}}
+    {{- $query := collections.Querify "repo" site.Params.atproto.did "collection" $collection "limit" 100 "cursor" $cursor -}}
+    {{- $url := printf "%s/xrpc/com.atproto.repo.listRecords?%s" $pds $query -}}
+    {{- $cursor = "" -}}
+    {{- with try (resources.GetRemote $url) -}}
+      {{- with .Err -}}
+        {{- warnf "atproto: fetching %s failed: %s" $collection . -}}
+        {{- $failed = true -}}
+      {{- else with .Value -}}
+        {{- with try (transform.Unmarshal .) -}}
+          {{- with .Err -}}
+            {{- warnf "atproto: decoding %s failed: %s" $collection . -}}
+            {{- $failed = true -}}
+          {{- else with .Value -}}
+            {{- $response := . -}}
+            {{- with $response.records -}}
+              {{- $records = $records | append . -}}
+            {{- end -}}
+            {{- $cursor = $response.cursor | default "" -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if not $cursor -}}
+      {{- break -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $failed = true -}}
+{{- end -}}
+{{- return dict "ok" (not $failed) "records" $records -}}
