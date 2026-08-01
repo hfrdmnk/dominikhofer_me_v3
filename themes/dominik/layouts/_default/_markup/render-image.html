@@ -1,0 +1,16 @@
+{{- $url := urls.Parse .Destination -}}
+{{- $ext := strings.TrimPrefix "." (path.Ext $url.Path) | lower -}}
+{{- if in (slice "mp4" "webm" "mov") $ext -}}
+  {{- $src := .Destination -}}
+  {{- with .PageInner.Resources.Get $url.Path }}{{ $src = .RelPermalink }}{{ end -}}
+<video src="{{ $src }}" controls playsinline preload="metadata"></video>
+{{- else -}}
+  {{- $img := "" -}}
+  {{- if not $url.IsAbs }}{{ $img = .PageInner.Resources.Get $url.Path }}{{ end -}}
+  {{- with $img -}}
+<img src="{{ .RelPermalink }}" alt="{{ $.PlainText }}"
+  {{- if ne .MediaType.SubType "svg" }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} loading="lazy" decoding="async">
+  {{- else -}}
+<img src="{{ .Destination }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
+  {{- end -}}
+{{- end -}}

@@ -43,7 +43,7 @@ So 20 posts are 43'000 words.
 
 Now, 750 words in the best GPT-3 model (Davinci) cost only 2 cents.
 
-So let's calculate: 43'000 / 750 × $0.02 = $1.15
+So let's calculate: 43'000 / 750 × \$0.02 = \$1.15
 
 3/11
 
@@ -52,7 +52,7 @@ So let's calculate: 43'000 / 750 × $0.02 = $1.15
 When signing up for OpenAI, you get $18 worth of free credits.
 
 Meaning, you can generate:
-$18 / $1.15 * 20 posts = ~313 blog posts for free!
+\$18 / \$1.15 * 20 posts = ~313 blog posts for free!
 
 4/11
 

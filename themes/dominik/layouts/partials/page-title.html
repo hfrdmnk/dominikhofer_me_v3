@@ -13,4 +13,9 @@
   {{- $updated := time.AsTime . }}
   <p class="intro__updated">Last updated: <time datetime="{{ $updated.Format "2006-01-02" }}">{{ $updated.Format "January 2, 2006" }}</time></p>
   {{- end }}
+  {{- with .Params.cover }}
+  {{- with $.Resources.Get . }}
+  <img class="intro__cover" src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}">
+  {{- end }}
+  {{- end }}
 </header>

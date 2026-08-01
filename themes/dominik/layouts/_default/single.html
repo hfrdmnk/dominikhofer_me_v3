@@ -2,6 +2,15 @@
   {{- if .Section -}}
     <article class="prose">
       {{ .Content }}
+      {{- range .Params.media }}
+      {{- with $.Resources.Get . }}
+      {{- if eq .MediaType.MainType "video" }}
+      <p><video src="{{ .RelPermalink }}" controls playsinline preload="metadata"></video></p>
+      {{- else }}
+      <p><img src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" decoding="async"></p>
+      {{- end }}
+      {{- end }}
+      {{- end }}
     </article>
   {{- else -}}
     {{ .Content }}

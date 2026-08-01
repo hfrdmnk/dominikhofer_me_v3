@@ -46,8 +46,9 @@
         font-weight: 500;
     }
 
-    > * + blockquote,
-    > blockquote + * {
+    /* Special blocks get breathing room, except at the very start/end */
+    > * + :is(blockquote, .highlight, .video-embed, .katex-display, p:has(> :is(img, video):only-child)),
+    > :is(blockquote, .highlight, .video-embed, .katex-display, p:has(> :is(img, video):only-child)) + * {
         margin-block-start: var(--space-xl);
     }
 
@@ -137,7 +138,8 @@
         }
     }
 
-    > p:has(> img:only-child) {
+    /* Media blocks extend into the breakout area */
+    > :is(p:has(> :is(img, video):only-child), .highlight, .video-embed) {
         inline-size: calc(100% + (2 * var(--breakout)));
         margin-inline: calc(var(--breakout) * -1);
 
@@ -147,8 +149,40 @@
         }
     }
 
-    > p > img:only-child {
+    > p > :is(img, video):only-child {
         inline-size: 100%;
+        block-size: auto;
+        border-radius: var(--radius-lg);
+    }
+
+    .highlight pre {
+        background-color: var(--surface-lighter);
+        padding: var(--space-md) var(--space-lg);
+        border-radius: var(--radius-lg);
+        overflow-x: auto;
+        font-size: var(--text-sm);
+        line-height: 1.6;
+    }
+
+    .katex {
+        color: var(--primary);
+    }
+
+    .katex-display {
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-block: var(--space-2xs);
+    }
+}
+
+/* Responsive video embed (YouTube shortcode) */
+.video-embed {
+    aspect-ratio: 16 / 9;
+
+    iframe {
+        inline-size: 100%;
+        block-size: 100%;
+        border: 0;
         border-radius: var(--radius-lg);
     }
 }

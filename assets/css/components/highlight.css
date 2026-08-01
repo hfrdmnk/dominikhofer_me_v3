@@ -1,5 +1,5 @@
-/* Marker highlight */
-:where(mark, .highlight) {
+/* Marker highlight (`.highlight` is Chroma's code wrapper — mark only here) */
+mark {
     --highlight-angle: 87deg;
     --highlight-start: 90%;
     --highlight-leading: 82%;
@@ -34,8 +34,8 @@
     }
 }
 
-:where(p, li, blockquote):nth-of-type(3n + 2) :where(mark, .highlight),
-:where(mark, .highlight):nth-of-type(3n + 2) {
+:where(p, li, blockquote):nth-of-type(3n + 2) mark,
+mark:nth-of-type(3n + 2) {
     --highlight-angle: 92deg;
     --highlight-start: 62%;
     --highlight-leading: 78%;
@@ -47,8 +47,8 @@
     border-radius: 0.25em 0.5em;
 }
 
-:where(p, li, blockquote):nth-of-type(3n) :where(mark, .highlight),
-:where(mark, .highlight):nth-of-type(3n) {
+:where(p, li, blockquote):nth-of-type(3n) mark,
+mark:nth-of-type(3n) {
     --highlight-angle: 84deg;
     --highlight-start: 95%;
     --highlight-leading: 80%;

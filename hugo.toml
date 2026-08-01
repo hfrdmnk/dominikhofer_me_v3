@@ -4,6 +4,16 @@ title = 'Dominik Hofer'
 timeZone = 'Europe/Zurich'
 theme = 'dominik'
 
+[markup.highlight]
+noClasses = false
+
+[markup.goldmark.extensions.passthrough]
+enable = true
+
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['$$', '$$']]
+inline = [['$', '$']]
+
 [permalinks]
 posts = '/:slug/'
 races = '/:slug/'
