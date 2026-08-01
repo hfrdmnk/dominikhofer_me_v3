@@ -1017,7 +1017,7 @@ sequoia-subscribe::part(button):focus-visible {
 
 .race-card__header {
     grid-row: 1;
-    inline-size: min(58%, 22rem);
+    inline-size: 100%;
 }
 
 .race-card__meta {
@@ -1027,7 +1027,7 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .race-card__title {
-    margin-block-start: var(--space-sm);
+    margin-block-start: var(--space-2xs);
     font-family: var(--font-sans);
     font-size: var(--text-base);
     font-weight: 500;
@@ -1185,7 +1185,12 @@ sequoia-subscribe::part(button):focus-visible {
     flex: none;
     transition:
         background-color 180ms ease 80ms,
-        color 180ms ease 80ms;
+        color 180ms ease 80ms,
+        opacity 140ms ease;
+}
+
+.follow-card__submit:disabled[data-state="idle"] {
+    opacity: 0.6;
 }
 
 .follow-card__submit-state {
@@ -1198,7 +1203,6 @@ sequoia-subscribe::part(button):focus-visible {
 }
 
 .follow-card__submit[data-state="idle"] [data-button-state="idle"],
-.follow-card__submit[data-state="loading"] [data-button-state="loading"],
 .follow-card__submit[data-state="success"] [data-button-state="success"],
 .follow-card__submit[data-state="danger"] [data-button-state="danger"] {
     opacity: 1;
@@ -1224,6 +1228,7 @@ sequoia-subscribe::part(button):focus-visible {
         transition:
             background-color 180ms ease 80ms,
             color 180ms ease 80ms,
+            opacity 140ms ease,
             transform 100ms ease-out;
     }
 
@@ -1237,27 +1242,11 @@ sequoia-subscribe::part(button):focus-visible {
     }
 
     .follow-card__submit[data-state="idle"] [data-button-state="idle"],
-    .follow-card__submit[data-state="loading"] [data-button-state="loading"],
     .follow-card__submit[data-state="success"] [data-button-state="success"],
     .follow-card__submit[data-state="danger"] [data-button-state="danger"] {
         filter: blur(0);
         transform: scale(1);
         transition-delay: 70ms;
-    }
-
-    .follow-card__hourglass svg {
-        animation: follow-card-hourglass 900ms linear infinite;
-        animation-play-state: paused;
-    }
-
-    .follow-card__submit[data-state="loading"] .follow-card__hourglass svg {
-        animation-play-state: running;
-    }
-}
-
-@keyframes follow-card-hourglass {
-    to {
-        transform: rotate(360deg);
     }
 }
 

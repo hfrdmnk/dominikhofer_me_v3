@@ -60,14 +60,11 @@
 
   document.querySelectorAll(".follow-card__form").forEach((form) => {
     const submit = form.querySelector(".follow-card__submit");
-    const minimumLoadingTime = 900;
     const successDisplayTime = 5000;
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const minimumLoading = new Promise((resolve) => setTimeout(resolve, minimumLoadingTime));
 
-      submit.dataset.state = "loading";
       submit.setAttribute("aria-label", "Subscribing");
       submit.disabled = true;
       form.setAttribute("aria-busy", "true");
@@ -82,7 +79,6 @@
           throw new Error("Subscription failed");
         }
 
-        await minimumLoading;
         form.reset();
         submit.dataset.state = "success";
         submit.setAttribute("aria-label", "Subscribed successfully");
@@ -92,7 +88,6 @@
           submit.disabled = false;
         }, successDisplayTime);
       } catch {
-        await minimumLoading;
         submit.dataset.state = "danger";
         submit.setAttribute("aria-label", "Subscription failed. Try again");
         submit.disabled = false;

@@ -53,22 +53,32 @@ grep -Fq 'class="button-primary follow-card__submit"' "$homepage"
 grep -Fq 'data-state="idle"' "$homepage"
 grep -Fq 'd="M5 13L9 17L19 7"' "$homepage"
 grep -Fq 'd="M6.75827 17.2426L12.0009 12' "$homepage"
-grep -Fq 'd="M12 12C15.866 12 19 8.86599 19 5H5' "$homepage"
+
+if grep -Fq 'data-button-state="loading"' "$homepage"; then
+    echo "The follow card still renders a loading icon." >&2
+    exit 1
+fi
 
 if grep -Fq 'follow-card__status' "$homepage"; then
     echo "The follow card still renders a separate submission status." >&2
     exit 1
 fi
 
-grep -Fq 'minimumLoadingTime' "$test_dir/public/js/site.js"
 grep -Fq 'successDisplayTime = 5000' "$test_dir/public/js/site.js"
-grep -Fq 'submit.dataset.state = "loading"' "$test_dir/public/js/site.js"
 grep -Fq 'submit.dataset.state = "success"' "$test_dir/public/js/site.js"
 grep -Fq 'submit.dataset.state = "danger"' "$test_dir/public/js/site.js"
-grep -Fq 'animation-play-state: paused' "$test_dir/public/css/main.css"
+grep -Fq 'submit.disabled = true' "$test_dir/public/js/site.js"
+
+if grep -Fq 'minimumLoading' "$test_dir/public/js/site.js"; then
+    echo "The follow card still applies an artificial loading delay." >&2
+    exit 1
+fi
+
 grep -Fq '@media (prefers-reduced-motion: no-preference)' "$test_dir/public/css/main.css"
 grep -Fq 'background-color: oklch(79.2% 0.209 151.711)' "$test_dir/public/css/main.css"
 grep -Fq 'background-color: oklch(64.5% 0.246 16.439)' "$test_dir/public/css/main.css"
+grep -Fq '.follow-card__submit:disabled[data-state="idle"]' "$test_dir/public/css/main.css"
+grep -Fq 'opacity: 0.6' "$test_dir/public/css/main.css"
 grep -Fq 'inline-size: 1.125rem' "$test_dir/public/css/main.css"
 grep -Fq 'class="follow-card__alternatives"' "$homepage"
 grep -Fq 'class="button-underline follow-card__link"' "$homepage"
