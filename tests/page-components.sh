@@ -70,8 +70,8 @@ Post body.
 EOF
 }
 
-create_post "favorite-one" "2026-01-01" true '"writing"'
-create_post "favorite-two" "2026-01-02" true '"design"'
+create_post "favorite-one" "2024-01-01" true '"writing"'
+create_post "favorite-two" "2025-01-02" true '"design"'
 create_post "favorite-three" "2026-01-03" true '"writing", "indieweb carnival"'
 create_post "recent-one" "2026-02-01" false '"writing"'
 create_post "recent-two" "2026-02-02" false '"design"'
@@ -156,6 +156,11 @@ test "$(grep -o 'post-list__title"><mark>' "$posts_page" | wc -l | tr -d ' ')" =
 grep -Fq 'data-query-filter' "$posts_page"
 grep -Fq 'data-favorite="true"' "$posts_page"
 grep -Fq 'data-tags=' "$posts_page"
+grep -Fq 'data-favorite-toggle>Show only favorites</button>' "$posts_page"
+grep -Fq 'href="#posts-2026" data-archive-year-link="2026" aria-current="location">2026 (4)</a>' "$posts_page"
+grep -Fq 'href="#posts-2025" data-archive-year-link="2025">2025 (1)</a>' "$posts_page"
+grep -Fq 'href="#posts-2024" data-archive-year-link="2024">2024 (1)</a>' "$posts_page"
+test "$(grep -o 'data-archive-year-anchor=' "$posts_page" | wc -l | tr -d ' ')" = 3
 if grep -Fq 'archived-favorite' "$posts_page"; then
     echo "An archived post appears on the posts page." >&2
     exit 1

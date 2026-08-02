@@ -5,8 +5,8 @@
   {{- $byline = "/" -}}
 {{- end -}}
 
-{{- $fontSize := 90 -}}
-{{- $lineSpacing := 10 -}}
+{{- $fontSize := 72 -}}
+{{- $lineSpacing := 18 -}}
 {{- $lineLength := 44 -}}
 
 {{- $lines := slice -}}
@@ -44,9 +44,9 @@
 
 {{- $lineCount := len $lines -}}
 {{- $titleHeight := add (mul $lineCount $fontSize) (mul (sub $lineCount 1) $lineSpacing) -}}
-{{- $groupHeight := add 116 $titleHeight -}}
+{{- $groupHeight := add 80 $titleHeight -}}
 {{- $groupTop := sub (div (sub 1260 $groupHeight) 2) 48 -}}
-{{- $titleTop := add $groupTop 116 -}}
+{{- $titleTop := add $groupTop 80 -}}
 
 {{- $base := resources.Get "images/og-base.png" -}}
 {{- $font := resources.Get "fonts/Newsreader72pt-Medium.ttf" -}}
@@ -60,7 +60,7 @@
 {{- $bylineFilter := images.Text $byline (dict
   "aligny" "top"
   "color" "#737373"
-  "size" 60
+  "size" 48
   "x" 144
   "y" $groupTop
 ) -}}

@@ -172,12 +172,6 @@
 }
 
 .nav__home {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    color: inherit;
-    transition: color 150ms ease;
-
     @media (width >= 60rem) {
         position: relative;
 
@@ -212,15 +206,9 @@
 .progress {
     position: relative;
     align-self: flex-start;
-    display: flex;
     align-items: flex-start;
-    color: var(--tertiary);
-    font-size: var(--text-sm);
 
     &:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: var(--space-2xs);
-
         .progress__label {
             opacity: 1;
             transform: translate(0, -50%);

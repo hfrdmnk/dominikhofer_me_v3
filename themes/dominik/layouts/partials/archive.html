@@ -21,11 +21,26 @@
   {{- end -}}
 {{- end -}}
 {{- $pages = $pages.ByDate.Reverse -}}
+{{- $yearGroups := $pages.GroupByDate "2006" -}}
 
 <div class="archive archive--{{ if gt $count 0 }}excerpt{{ else }}full{{ end }}"{{ with $filter }} data-filter="{{ . }}"{{ end }}{{ if $queryFilter }} data-query-filter{{ end }}>
+  {{- if $queryFilter }}
+  <nav class="archive-nav" aria-label="Posts by year" data-archive-nav>
+    <div class="archive-nav__years">
+      {{- range $index, $group := $yearGroups }}
+      <a href="#posts-{{ $group.Key }}" data-archive-year-link="{{ $group.Key }}"{{ if eq $index 0 }} aria-current="location"{{ end }}>{{ $group.Key }} ({{ len $group.Pages }})</a>
+      {{- end }}
+    </div>
+    <button class="archive-nav__favorites" type="button" aria-pressed="false" data-favorite-toggle>Show only favorites</button>
+  </nav>
+  {{- end }}
   <ul class="post-list archive__list">
-    {{- range $pages }}
-      <li class="post-list__item" data-favorite="{{ .Params.favorite | default false }}" data-tags="{{ delimit (.Params.tags | default (slice)) "|" }}">
+    {{- range $group := $yearGroups }}
+      {{- if $queryFilter }}
+      <li class="archive__year-anchor" id="posts-{{ $group.Key }}" data-archive-year-anchor="{{ $group.Key }}" aria-hidden="true"></li>
+      {{- end }}
+      {{- range $group.Pages }}
+      <li class="post-list__item" data-post-year="{{ $group.Key }}" data-favorite="{{ .Params.favorite | default false }}" data-tags="{{ delimit (.Params.tags | default (slice)) "|" }}">
         <a class="post-list__link" href="{{ .RelPermalink }}">
           <span class="post-list__title">
             {{- if and (ne $filter "favorite") .Params.favorite }}<mark>{{ end -}}
@@ -35,6 +50,7 @@
           <time class="post-list__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
         </a>
       </li>
+      {{- end }}
     {{- end }}
   </ul>
   {{- if gt $count 0 }}

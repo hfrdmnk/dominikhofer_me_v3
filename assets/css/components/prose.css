@@ -138,6 +138,22 @@
         }
     }
 
+    > .post-reply__separator {
+        margin-block: var(--space-xl);
+        border: none;
+        border-block-start: 1px solid var(--border-light);
+    }
+
+    .meta-link {
+        color: var(--tertiary);
+        text-decoration-line: none;
+
+        &:hover,
+        &:focus-visible {
+            color: var(--primary);
+        }
+    }
+
     /* Media blocks extend into the breakout area */
     > :is(p:has(> :is(img, video):only-child), .highlight, .video-embed) {
         inline-size: calc(100% + (2 * var(--breakout)));

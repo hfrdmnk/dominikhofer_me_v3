@@ -11,7 +11,7 @@ favorite: false
 
 A simple trick I picked up from the [Runna](https://www.runna.com/) app:
 
-*If you want to increase your cadence, drive your arms faster.*
+> If you want to increase your cadence, drive your arms faster.
 
 You don’t even have to think about your legs, because they will speed up automatically. Getting out of sync with your faster-moving arms is nearly impossible.
 

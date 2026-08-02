@@ -11,6 +11,32 @@
     border: 0;
 }
 
+.meta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--tertiary);
+    font-size: var(--text-sm);
+    transition: color 150ms ease;
+
+    .iconoir,
+    > svg {
+        inline-size: 1rem;
+        block-size: 1rem;
+        flex: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+        color: var(--primary);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: var(--space-2xs);
+    }
+}
+
 .button-primary {
     display: inline-flex;
     align-items: center;

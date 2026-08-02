@@ -28,7 +28,10 @@ Of course I will continue working on Morgenblau and updating you on how it’s g
 
 To close this PACT, here are a couple of screenshots of the current version of Morgenblau:
 
-![Morgenblau login screen with the tagline "Find. Read. Share." and an Atmosphere account sign-in field caption: Signing in with an Atmosphere account][//8locljr18ve7g6zu](//8locljr18ve7g6zu)
-![Morgenblau digest view showing a date scrubber and a mixed feed of blog posts, YouTube videos and Bluesky posts caption: The daily digest][//jy1drcwin9eveu6g](//jy1drcwin9eveu6g)
-![Morgenblau reader view showing the article "Doing the ground work" with a hero image and clean reading layout caption: The minimal reader view][//aobh13erjffodiak](//aobh13erjffodiak)
-![Morgenblau source page for "Dominik Hofer | Posts" showing feed stats and a list of recent posts caption: A single source with its stats and posts][//tzezlfltsyugls9o](//tzezlfltsyugls9o)
+![Morgenblau login screen with the tagline "Find. Read. Share." and an Atmosphere account sign-in field](01_login.png)
+
+![Morgenblau digest view showing a date scrubber and a mixed feed of blog posts, YouTube videos and Bluesky posts](02_digest.png)
+
+![Morgenblau reader view showing the article "Doing the ground work" with a hero image and clean reading layout](03_reader.png)
+
+![Morgenblau source page for "Dominik Hofer | Posts" showing feed stats and a list of recent posts](04_source.png)

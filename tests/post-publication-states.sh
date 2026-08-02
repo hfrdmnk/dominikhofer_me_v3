@@ -37,6 +37,10 @@ draft: false
 ---
 
 NORMAL_BODY_MARKER
+
+Normal post with a footnote.[^1]
+
+[^1]: NORMAL_FOOTNOTE_MARKER
 EOF
 
 cat > "$content_dir/posts/feed-only/index.md" <<'EOF'
@@ -102,6 +106,17 @@ section_feed="$public_dir/posts/index.xml"
 tag_feed="$public_dir/tags/publication-state/index.xml"
 
 grep -Fq 'NORMAL_BODY_MARKER' "$normal_page"
+grep -Fq 'class="reply-by-email meta-link"' "$normal_page"
+grep -Fq '<span>Reply by email</span>' "$normal_page"
+grep -Fq 'subject=Re%3A%20Normal%20post' "$normal_page"
+awk '
+    /<div class="footnotes" role="doc-endnotes">/ { in_footnotes = 1 }
+    in_footnotes && /<ol>/ { list = NR }
+    in_footnotes && /<\/div>/ { footnotes_end = NR; in_footnotes = 0 }
+    /class="post-reply__separator"/ { separator = NR }
+    /class="reply-by-email meta-link"/ { reply = NR }
+    END { exit !(list < footnotes_end && footnotes_end < separator && separator < reply) }
+' "$normal_page"
 if grep -Fq 'name="robots" content="noindex, nofollow"' "$normal_page"; then
     echo "Normal post unexpectedly has noindex metadata." >&2
     exit 1
@@ -110,6 +125,9 @@ fi
 grep -Fq '<h1 class="intro__title">Feed-only post</h1>' "$feed_only_page"
 grep -Fq 'August 2, 2026' "$feed_only_page"
 grep -Fq 'This post was published through RSS and standard.site.' "$feed_only_page"
+grep -Fq 'class="post-reply__separator"' "$feed_only_page"
+grep -Fq 'class="reply-by-email meta-link"' "$feed_only_page"
+grep -Fq 'subject=Re%3A%20Feed-only%20post' "$feed_only_page"
 grep -Fq 'name="robots" content="noindex, nofollow"' "$feed_only_page"
 grep -Fq 'rel="site.standard.document" href="at://did:plc:test/site.standard.document/feed-only"' "$feed_only_page"
 if grep -Fq 'FEED_ONLY_BODY_MARKER' "$feed_only_page" || \
@@ -149,11 +167,31 @@ do
     grep -Fq '/normal-post/' "$feed"
     grep -Fq '/feed-only-post/' "$feed"
     grep -Fq 'FEED_ONLY_BODY_MARKER' "$feed"
+    grep -Fq 'Thanks for using RSS!' "$feed"
+    grep -Fq 'View this post on my site' "$feed"
+    grep -Fq 'reply via email' "$feed"
+    grep -Fq 'subject=Re%3A%20Normal%20post' "$feed"
+    grep -Fq 'subject=Re%3A%20Feed-only%20post' "$feed"
+    if grep -Fq 'mailto:' "$feed"; then
+        echo "The reply address is exposed in $feed." >&2
+        exit 1
+    fi
     if grep -Fq '/archived-post/' "$feed" || grep -Fq '/draft-post/' "$feed"; then
         echo "Archived or draft content unexpectedly appears in $feed." >&2
         exit 1
     fi
 done
+
+if grep -Fq 'mailto:' "$normal_page" || grep -Fq 'mailto:' "$feed_only_page"; then
+    echo "The reply address is exposed in a post page." >&2
+    exit 1
+fi
+
+feed_only_item=$(sed -n '/<title>Feed-only post<\/title>/,/<\/item>/p' "$posts_feed")
+if printf '%s' "$feed_only_item" | grep -Fq 'View this post on my site'; then
+    echo "The feed-only RSS note links to its site landing page." >&2
+    exit 1
+fi
 
 invalid_content_dir="$test_dir/invalid-content"
 mkdir -p "$invalid_content_dir/posts/invalid"

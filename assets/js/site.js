@@ -42,12 +42,6 @@
     const tag = (params.get("tag") ?? params.get("tags"))?.trim().toLocaleLowerCase();
 
     if (favoriteOnly || tag) {
-      if (favoriteOnly) {
-        postsArchive
-          .querySelectorAll(".post-list__title mark")
-          .forEach((mark) => mark.replaceWith(mark.textContent));
-      }
-
       postsArchive.querySelectorAll(".post-list__item").forEach((post) => {
         const tags = post.dataset.tags
           .split("|")
@@ -56,6 +50,52 @@
           (favoriteOnly && post.dataset.favorite !== "true") || (tag && !tags.includes(tag));
       });
     }
+
+    const archiveNav = postsArchive.querySelector("[data-archive-nav]");
+    const favoriteToggle = postsArchive.querySelector("[data-favorite-toggle]");
+    const yearLinks = [...postsArchive.querySelectorAll("[data-archive-year-link]")];
+
+    favoriteToggle.setAttribute("aria-pressed", String(favoriteOnly));
+    favoriteToggle.addEventListener("click", () => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("favorites");
+      if (favoriteOnly) url.searchParams.delete("favorite");
+      else url.searchParams.set("favorite", "true");
+      window.location.assign(url.toString());
+    });
+
+    const visibleYearLinks = yearLinks.filter((link) => {
+      const hasVisiblePosts = [...postsArchive.querySelectorAll(`[data-post-year="${link.dataset.archiveYearLink}"]`)].some(
+        (post) => !post.hidden,
+      );
+      link.hidden = !hasVisiblePosts;
+      return hasVisiblePosts;
+    });
+
+    let scrollFrame;
+    const updateActiveYear = () => {
+      scrollFrame = undefined;
+      const marker = archiveNav.getBoundingClientRect().bottom + 1;
+      let activeLink = visibleYearLinks[0];
+
+      visibleYearLinks.forEach((link) => {
+        const anchor = document.getElementById(link.hash.slice(1));
+        if (anchor.getBoundingClientRect().top <= marker) activeLink = link;
+      });
+
+      yearLinks.forEach((link) => {
+        if (link === activeLink) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+    const requestYearUpdate = () => {
+      if (scrollFrame) return;
+      scrollFrame = requestAnimationFrame(updateActiveYear);
+    };
+
+    updateActiveYear();
+    window.addEventListener("scroll", requestYearUpdate, { passive: true });
+    window.addEventListener("resize", requestYearUpdate);
   }
 
   document.querySelectorAll(".follow-card__form").forEach((form) => {

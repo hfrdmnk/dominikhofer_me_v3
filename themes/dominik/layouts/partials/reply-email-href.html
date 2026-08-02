@@ -1,0 +1,3 @@
+{{- $subject := replace (urlquery (printf "Re: %s" .Title)) "+" "%20" -}}
+{{- $mailto := printf "mailto:%s" site.Params.replyEmail -}}
+{{- range seq 0 (sub (len $mailto) 1) -}}&#{{ index $mailto . }};{{- end -}}?subject={{ $subject }}

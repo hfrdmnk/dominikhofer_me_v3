@@ -1,0 +1,3 @@
+{{- $href := partial "reply-email-href.html" . | strings.TrimSpace -}}
+<hr>
+<p>Thanks for using RSS! {{ if not .Params.feed_only }}<a href="{{ .Permalink }}">View this post on my site</a> or {{ end }}<a {{ printf "href=\"%s\"" $href | safeHTMLAttr }}>reply via email</a>.</p>

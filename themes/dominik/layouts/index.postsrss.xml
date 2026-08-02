@@ -20,7 +20,8 @@
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
       <guid>{{ .Permalink }}</guid>
-      <description>{{ .Content | transform.XMLEscape }}</description>
+      {{- $description := printf "%s%s" .Content (partial "rss-post-footer.html" .) }}
+      <description>{{ $description | transform.XMLEscape }}</description>
     </item>
     {{- end }}
   </channel>

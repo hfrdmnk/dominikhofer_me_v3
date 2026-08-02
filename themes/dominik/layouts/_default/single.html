@@ -2,18 +2,26 @@
   {{- if .Params.feed_only -}}
     <div class="prose">
       <p>This post was published through RSS and standard.site. Its full content is not available on this website.</p>
+      <hr class="post-reply__separator">
+      {{ partial "reply-by-email.html" . }}
     </div>
   {{- else if .Section -}}
     <article class="prose">
-      {{ .Content }}
-      {{- range .Params.media }}
-      {{- with $.Resources.Get . }}
-      {{- if eq .MediaType.MainType "video" }}
-      <p><video src="{{ .RelPermalink }}" controls playsinline preload="metadata"></video></p>
+      {{- $media := partial "post-media.html" . -}}
+      {{- if eq .Section "posts" -}}
+        {{- $footnotesStart := "<div class=\"footnotes\" role=\"doc-endnotes\">\n<hr>" -}}
+        {{- if in .Content $footnotesStart -}}
+          {{- $replacement := printf "%s%s" $media $footnotesStart -}}
+          {{ replace .Content $footnotesStart $replacement | safeHTML }}
+        {{- else }}
+          {{ .Content }}
+          {{ $media | safeHTML }}
+        {{- end }}
+        <hr class="post-reply__separator">
+        {{ partial "reply-by-email.html" . }}
       {{- else }}
-      <p><img src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" decoding="async"></p>
-      {{- end }}
-      {{- end }}
+        {{ .Content }}
+        {{ $media | safeHTML }}
       {{- end }}
     </article>
   {{- else -}}
