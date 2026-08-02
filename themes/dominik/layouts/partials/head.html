@@ -1,8 +1,17 @@
 <head>
+  {{- partial "validate-post-state.html" . }}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ if or .IsHome (not .Title) }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+  {{- if .Params.feed_only }}
+  <meta name="description" content="{{ site.Params.description }}">
+  {{- else }}
   {{ with .Description | default site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
+  {{- end }}
+  {{- if or .Params.archived .Params.feed_only }}
+  <meta name="robots" content="noindex, nofollow">
+  {{- end }}
+  {{ partial "social-meta.html" . }}
   <link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/png" sizes="48x48">
   <link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="16x16 32x32 48x48">
   <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}" sizes="180x180">
@@ -14,7 +23,7 @@
     {{- end }}
   {{- end }}
   {{- with .Params.atUri }}
-  <link rel="site.standard.document" href="{{ . }}">
+  <link rel="site.standard.document" href="{{ . | safe.URL }}">
   {{- end }}
   <script>
     document.documentElement.dataset.day =

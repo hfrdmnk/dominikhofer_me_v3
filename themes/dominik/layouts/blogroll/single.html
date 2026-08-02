@@ -1,0 +1,41 @@
+{{ define "main" }}
+  {{- $resourceName := "feeds.opml" -}}
+  {{- with .Resources.Get $resourceName -}}
+    {{- $opml := transform.Unmarshal (dict "format" "xml") . -}}
+    {{- $sections := $opml.body.outline -}}
+    {{- if not $sections -}}
+      {{- errorf "Blogroll resource %q does not contain any sections" $resourceName -}}
+    {{- end -}}
+    {{- if not (reflect.IsSlice $sections) -}}
+      {{- $sections = slice $sections -}}
+    {{- end -}}
+    <div class="prose blogroll">
+      {{- range $sections }}
+        {{- $sectionTitle := index . "-title" -}}
+        {{- $feeds := .outline -}}
+        {{- if not (reflect.IsSlice $feeds) -}}
+          {{- $feeds = slice $feeds -}}
+        {{- end -}}
+        {{- $sectionID := $sectionTitle | anchorize -}}
+        <section class="blogroll__section" aria-labelledby="{{ $sectionID }}">
+          <h2 id="{{ $sectionID }}">{{ $sectionTitle }}</h2>
+          <ul class="blogroll__list">
+            {{- range $feeds }}
+              {{- $title := index . "-title" -}}
+              {{- $htmlURL := index . "-htmlUrl" -}}
+              {{- $xmlURL := index . "-xmlUrl" -}}
+              <li class="blogroll__item">
+                <a class="blogroll__site" href="{{ $htmlURL | safeURL }}" target="_blank" rel="noopener noreferrer">{{ $title }}</a>
+                <a class="blogroll__feed" href="{{ $xmlURL | safeURL }}" target="_blank" rel="noopener noreferrer" aria-label="RSS feed for {{ $title }}">
+                  {{ partial "icons/rss.html" . }}
+                </a>
+              </li>
+            {{- end }}
+          </ul>
+        </section>
+      {{- end }}
+    </div>
+  {{- else -}}
+    {{- errorf "Unable to get blogroll resource %q" $resourceName -}}
+  {{- end -}}
+{{ end }}

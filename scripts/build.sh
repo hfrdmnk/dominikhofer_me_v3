@@ -11,4 +11,10 @@ if [ -f .env ]; then
 fi
 
 node scripts/races.mjs
+
+blogroll_updated=$(git log -1 --format=%cI -- content/blogroll/feeds.opml 2>/dev/null || true)
+if [ -n "$blogroll_updated" ]; then
+    export HUGO_PARAMS_BLOGROLLUPDATED="$blogroll_updated"
+fi
+
 exec hugo "$@"

@@ -26,8 +26,8 @@ if [ ! -f "$source_config" ]; then
     exit 1
 fi
 
-is_excluded() {
-    awk '
+frontmatter_is_true() {
+    awk -v field="$2" '
         NR == 1 && $0 == "---" {
             in_frontmatter = 1
             next
@@ -37,13 +37,38 @@ is_excluded() {
         }
         in_frontmatter {
             line = tolower($0)
-            if (line ~ /^[[:space:]]*(archived|draft):[[:space:]]*true[[:space:]]*($|#)/) {
-                excluded = 1
+            pattern = "^[[:space:]]*" field ":[[:space:]]*true[[:space:]]*($|#)"
+            if (line ~ pattern) {
+                found = 1
                 exit
             }
         }
         END {
-            exit excluded ? 0 : 1
+            exit found ? 0 : 1
+        }
+    ' "$1"
+}
+
+frontmatter_value() {
+    awk -v field="$2" '
+        NR == 1 && $0 == "---" {
+            in_frontmatter = 1
+            next
+        }
+        in_frontmatter && $0 == "---" {
+            exit
+        }
+        in_frontmatter {
+            line = $0
+            lower = tolower(line)
+            pattern = "^[[:space:]]*" field ":[[:space:]]*"
+            if (lower ~ pattern) {
+                sub(/^[[:space:]]*[^:]+:[[:space:]]*/, "", line)
+                sub(/[[:space:]]*#[[:space:]].*$/, "", line)
+                gsub(/^["'\'']|["'\'']$/, "", line)
+                print line
+                exit
+            }
         }
     ' "$1"
 }
@@ -52,7 +77,31 @@ printf '%s\n' '_index.md' > "$ignore_file"
 
 find "$content_dir" -type f \( -name '*.md' -o -name '*.mdx' -o -name '*.qmd' \) |
 while IFS= read -r file; do
-    if is_excluded "$file"; then
+    archived=false
+    draft=false
+    feed_only=false
+
+    if frontmatter_is_true "$file" archived; then archived=true; fi
+    if frontmatter_is_true "$file" draft; then draft=true; fi
+    if frontmatter_is_true "$file" feed_only; then feed_only=true; fi
+
+    if [ "$archived" = true ] && [ "$feed_only" = true ]; then
+        echo "$file cannot set both archived and feed_only." >&2
+        exit 1
+    fi
+
+    if [ "$archived" = true ]; then
+        at_uri=$(frontmatter_value "$file" aturi)
+        if [ -n "$at_uri" ]; then
+            echo "Previously published archived post must be deleted from Standard Site first:" >&2
+            echo "  File: $file" >&2
+            echo "  Record: $at_uri" >&2
+            echo "Delete the record from the PDS, remove atUri from frontmatter, and retry." >&2
+            exit 1
+        fi
+    fi
+
+    if [ "$archived" = true ] || [ "$draft" = true ]; then
         printf '%s\n' "${file#"$content_dir"/}"
     else
         printf '%s\n' "$file" >> "$eligible_file"

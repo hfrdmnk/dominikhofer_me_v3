@@ -1,0 +1,43 @@
+.blogroll__section + .blogroll__section {
+    margin-block-start: var(--space-xl);
+}
+
+.blogroll__list {
+    margin-block-start: var(--space-md);
+}
+
+.blogroll__item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    min-inline-size: 0;
+}
+
+.blogroll__site {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+}
+
+.prose .blogroll__feed {
+    display: inline-flex;
+    flex: none;
+    color: var(--tertiary);
+    text-decoration-line: none;
+
+    &:focus-visible {
+        border-radius: var(--radius);
+        outline: 2px solid var(--accent);
+        outline-offset: var(--space-2xs);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            color: var(--accent);
+        }
+    }
+}
+
+.blogroll__rss-icon {
+    inline-size: 1em;
+    block-size: 1em;
+}

@@ -1,5 +1,9 @@
 {{ define "main" }}
-  {{- if .Section -}}
+  {{- if .Params.feed_only -}}
+    <div class="prose">
+      <p>This post was published through RSS and standard.site. Its full content is not available on this website.</p>
+    </div>
+  {{- else if .Section -}}
     <article class="prose">
       {{ .Content }}
       {{- range .Params.media }}

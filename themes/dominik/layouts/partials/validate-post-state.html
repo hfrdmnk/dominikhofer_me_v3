@@ -1,0 +1,3 @@
+{{- if and .Params.archived .Params.feed_only -}}
+  {{- errorf "%s cannot set both archived and feed_only" .File.Path -}}
+{{- end -}}

@@ -1,0 +1,77 @@
+{{- $page := .page -}}
+{{- $title := .title -}}
+{{- $byline := strings.TrimSuffix "/" $page.RelPermalink -}}
+{{- if $page.IsHome -}}
+  {{- $byline = "/" -}}
+{{- end -}}
+
+{{- $fontSize := 90 -}}
+{{- $lineSpacing := 10 -}}
+{{- $lineLength := 44 -}}
+
+{{- $lines := slice -}}
+{{- $current := "" -}}
+{{- $truncated := false -}}
+{{- range strings.Split (strings.TrimSpace $title) " " -}}
+  {{- $word := . -}}
+  {{- if and $word (not $truncated) -}}
+    {{- $candidate := $word -}}
+    {{- with $current -}}
+      {{- $candidate = printf "%s %s" . $word -}}
+    {{- end -}}
+    {{- if le (strings.RuneCount $candidate) $lineLength -}}
+      {{- $current = $candidate -}}
+    {{- else if not $current -}}
+      {{- $current = printf "%s" (strings.Truncate $lineLength "…" $word) -}}
+      {{- $truncated = true -}}
+    {{- else if lt (len $lines) 2 -}}
+      {{- $lines = $lines | append $current -}}
+      {{- $current = $word -}}
+      {{- if gt (strings.RuneCount $current) $lineLength -}}
+        {{- $current = printf "%s" (strings.Truncate $lineLength "…" $current) -}}
+        {{- $truncated = true -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $current = printf "%s" (strings.Truncate $lineLength "…" $candidate) -}}
+      {{- $truncated = true -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $current -}}
+  {{- $lines = $lines | append . -}}
+{{- end -}}
+{{- $wrappedTitle := delimit $lines "\n" -}}
+
+{{- $lineCount := len $lines -}}
+{{- $titleHeight := add (mul $lineCount $fontSize) (mul (sub $lineCount 1) $lineSpacing) -}}
+{{- $groupHeight := add 116 $titleHeight -}}
+{{- $groupTop := sub (div (sub 1260 $groupHeight) 2) 48 -}}
+{{- $titleTop := add $groupTop 116 -}}
+
+{{- $base := resources.Get "images/og-base.png" -}}
+{{- $font := resources.Get "fonts/Newsreader72pt-Medium.ttf" -}}
+{{- if not $base -}}
+  {{- errorf "Open Graph base image not found" -}}
+{{- end -}}
+{{- if not $font -}}
+  {{- errorf "Open Graph title font not found" -}}
+{{- end -}}
+
+{{- $bylineFilter := images.Text $byline (dict
+  "aligny" "top"
+  "color" "#737373"
+  "size" 60
+  "x" 144
+  "y" $groupTop
+) -}}
+{{- $titleFilter := images.Text $wrappedTitle (dict
+  "aligny" "top"
+  "color" "#1f1f1f"
+  "font" $font
+  "linespacing" $lineSpacing
+  "size" $fontSize
+  "x" 144
+  "y" $titleTop
+) -}}
+{{- $rendered := $base.Filter $bylineFilter $titleFilter -}}
+{{- return ($rendered.Process "resize 1200x630 png lanczos") -}}

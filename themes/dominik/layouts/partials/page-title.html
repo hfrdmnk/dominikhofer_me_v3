@@ -6,16 +6,31 @@
 {{- if and .IsPage (not $kicker) .Title (not .Date.IsZero) -}}
   {{- $kicker = .Date.Format "January 2, 2006" -}}
 {{- end -}}
+{{- $updated := "" -}}
+{{- if not .Params.feed_only -}}
+  {{- $updated = .Params.updated -}}
+{{- end -}}
+{{- if and (not .Params.feed_only) .Params.updatedResource (not $updated) -}}
+  {{- $updated = site.Params.blogrollupdated -}}
+  {{- if and (not $updated) .File -}}
+    {{- $resourcePath := path.Join .File.Dir .Params.updatedResource -}}
+    {{- with os.Stat $resourcePath -}}
+      {{- $updated = .ModTime -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 <header class="intro">
   {{- with $kicker }}<p class="intro__kicker">{{ . }}</p>{{ end }}
   <h1 class="intro__title">{{ $title }}</h1>
-  {{- with .Params.updated }}
-  {{- $updated := time.AsTime . }}
-  <p class="intro__updated">Last updated: <time datetime="{{ $updated.Format "2006-01-02" }}">{{ $updated.Format "January 2, 2006" }}</time></p>
+  {{- with $updated }}
+  {{- $updatedTime := time.AsTime . }}
+  <p class="intro__updated">Last updated: <time datetime="{{ $updatedTime.Format "2006-01-02" }}">{{ $updatedTime.Format "January 2, 2006" }}</time></p>
   {{- end }}
+  {{- if not .Params.feed_only -}}
   {{- with .Params.cover }}
   {{- with $.Resources.Get . }}
   <img class="intro__cover" src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}">
+  {{- end }}
   {{- end }}
   {{- end }}
 </header>
