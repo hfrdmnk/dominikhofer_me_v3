@@ -3,13 +3,25 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-lg);
-    margin-block: var(--space-lg) var(--space-xl);
+    margin-block: var(--space-xl) 0;
     padding: 0;
     list-style: none;
 
     @media (width < 48rem) {
         grid-template-columns: minmax(0, 1fr);
     }
+}
+
+.race-list__note {
+    margin-block-end: var(--space-2xl);
+}
+
+.personal-bests-list {
+    margin-block-start: var(--space-md);
+}
+
+.personal-best-date {
+    color: var(--tertiary);
 }
 
 .race-card {

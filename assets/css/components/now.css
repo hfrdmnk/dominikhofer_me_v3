@@ -80,35 +80,6 @@
     font-size: var(--text-xs);
 }
 
-.data-note {
-    color: var(--tertiary);
-    font-size: var(--text-sm);
-    font-style: italic;
-}
-
-.data-note a {
-    color: var(--primary);
-    text-decoration-line: underline;
-    text-decoration-style: wavy;
-    text-decoration-color: var(--border);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
-
-    &:focus-visible {
-        text-decoration-color: var(--accent);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        &:hover {
-            text-decoration-color: var(--accent);
-        }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-        transition: text-decoration-color 150ms ease;
-    }
-}
-
 .data-note + .reading__list,
 .data-note + .post-list {
     margin-block-start: var(--space-sm);
