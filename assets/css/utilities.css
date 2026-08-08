@@ -24,9 +24,11 @@
         inline-size: 1rem;
         block-size: 1rem;
         flex: none;
+        translate: 0 0;
+        scale: 1;
     }
 
-    &:hover,
+    &:not(.progress):hover,
     &:focus-visible {
         color: var(--primary);
     }
@@ -34,6 +36,22 @@
     &:focus-visible {
         outline: 2px solid var(--accent);
         outline-offset: var(--space-2xs);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .meta-link:not(.progress):hover > svg,
+    .meta-link:not(.progress):hover .iconoir,
+    .progress__label:hover .iconoir {
+        animation: meta-link-icon-jump 500ms cubic-bezier(0.23, 1, 0.32, 1);
+        animation-delay: 60ms;
+    }
+}
+
+@keyframes meta-link-icon-jump {
+    40% {
+        translate: var(--meta-link-icon-x, 0) var(--meta-link-icon-y, 0);
+        scale: 1.05;
     }
 }
 

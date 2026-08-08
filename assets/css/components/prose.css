@@ -154,6 +154,11 @@
         }
     }
 
+    .reply-by-email {
+        --meta-link-icon-x: 0.25rem;
+        --meta-link-icon-y: -0.25rem;
+    }
+
     /* Media blocks extend into the breakout area */
     > :is(p:has(> :is(img, video):only-child), .highlight, .video-embed) {
         inline-size: calc(100% + (2 * var(--breakout)));

@@ -172,6 +172,8 @@
 }
 
 .nav__home {
+    --meta-link-icon-x: -0.25rem;
+
     @media (width >= 60rem) {
         position: relative;
 
@@ -204,9 +206,19 @@
 
 /* Progress ring + back to top */
 .progress {
+    --meta-link-icon-y: -0.25rem;
+
     position: relative;
     align-self: flex-start;
     align-items: flex-start;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: 100%;
+        inline-size: var(--space-sm);
+    }
 
     &:focus-visible {
         .progress__label {
@@ -220,10 +232,19 @@
             opacity: 1;
             transform: translate(0, -50%);
         }
+
+        .progress__label:hover {
+            color: var(--primary);
+        }
     }
 
     @media (width < 60rem) {
         align-self: center;
+
+        &::before {
+            inset-inline-start: auto;
+            inset-inline-end: 100%;
+        }
     }
 }
 
@@ -279,9 +300,10 @@
     align-items: center;
     gap: var(--space-xs);
     white-space: nowrap;
+    color: inherit;
     opacity: 0;
     transform: translate(-4px, -50%);
-    transition: opacity 150ms ease, transform 150ms ease;
+    transition: color 150ms ease, opacity 150ms ease, transform 150ms ease;
 
     @media (width < 60rem) {
         inset-inline-start: auto;
