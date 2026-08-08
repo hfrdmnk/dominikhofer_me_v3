@@ -1,5 +1,5 @@
 ---
-title: "What's going on."
+title: "What's going on?"
 kicker: "Now"
 updated: 2026-07-31
 ---

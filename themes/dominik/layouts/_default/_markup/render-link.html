@@ -1,4 +1,5 @@
 {{- $destination := urls.Parse .Destination -}}
 {{- $site := urls.Parse site.BaseURL -}}
 {{- $external := and $destination.Host (ne $destination.Host $site.Host) -}}
-<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>{{- "\u2060" | safeHTML -}}
+{{- $buttonUnderline := eq .Title "button-underline" -}}
+<a{{ if $buttonUnderline }} class="button-underline"{{ end }} href="{{ .Destination | safeURL }}"{{ if and .Title (not $buttonUnderline) }} title="{{ .Title }}"{{ end }}{{ if $external }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>{{- "\u2060" | safeHTML -}}

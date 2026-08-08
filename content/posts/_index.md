@@ -1,5 +1,5 @@
 ---
-title: "Thinking in public"
+title: "Thinking in public."
 kicker: "Posts"
 ---
 

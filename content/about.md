@@ -1,5 +1,5 @@
 ---
-title: "Nice to meet you"
+title: "Nice to meet you!"
 kicker: "About"
 photo_pair:
   photos:

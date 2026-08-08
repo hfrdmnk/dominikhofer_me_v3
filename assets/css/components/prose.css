@@ -41,6 +41,20 @@
         }
     }
 
+    a.button-underline {
+        text-decoration-line: none;
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition:
+                background-size 150ms ease,
+                transform 100ms ease-out;
+        }
+    }
+
+    a.button-underline + a.button-underline {
+        margin-inline-start: var(--space-lg);
+    }
+
     strong {
         color: var(--primary);
         font-weight: 500;
