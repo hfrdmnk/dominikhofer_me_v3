@@ -54,8 +54,8 @@ These are just random subjects that always bring me joy and/or make my life bett
 - Backpack: [North Face Base Camp Voyager Duffel](https://www.thenorthface.com/en-us/p/bags-and-gear/luggage-and-duffels/duffel-bags-224547/base-camp-voyager-duffel32l-NF0A52RR?color=KT0&size=OS)
 - Running Shoes: [Adidas Adizero Boston 13](https://www.adidas.com/us/adizero_boston) (Speed & Races), [Hoka Bondi 9](https://www.hoka.com/en/us/mens-everyday-running-shoes/bondi-9/1162011.html) (Easy & Recovery)
 - Favorite Shorts: [North Face 24/7 Shorts](https://www.thenorthface.com/en-gb/p/men-211701/men-s-24-7-7-shorts-NF0A3O1B)
-- Fan: [Stadler Leo](https://www.stadlerform.com/en/fans/leo-white-l-037)
-- Soda Maker: [SodaStream Art](https://sodastream.com/products/art)
+- Fan: [Stadler Leo](https://www.stadlerform.com/en/fan/leo-white-l-035)
+- Sparkling Water Maker: [SodaStream Art](https://sodastream.com/products/art)
 
 ## Indie
 
