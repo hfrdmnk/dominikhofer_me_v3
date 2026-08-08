@@ -1,12 +1,12 @@
 {{- $page := .page -}}
 {{- $title := .title -}}
-{{- $byline := strings.TrimSuffix "/" $page.RelPermalink -}}
+{{- $slug := strings.TrimSuffix "/" $page.RelPermalink -}}
 {{- if $page.IsHome -}}
-  {{- $byline = "/" -}}
+  {{- $slug = "/" -}}
 {{- end -}}
 
-{{- $fontSize := 72 -}}
-{{- $lineSpacing := 18 -}}
+{{- $fontSize := 48 -}}
+{{- $lineSpacing := 8 -}}
 {{- $lineLength := 44 -}}
 
 {{- $lines := slice -}}
@@ -42,36 +42,55 @@
 {{- end -}}
 {{- $wrappedTitle := delimit $lines "\n" -}}
 
-{{- $lineCount := len $lines -}}
-{{- $titleHeight := add (mul $lineCount $fontSize) (mul (sub $lineCount 1) $lineSpacing) -}}
-{{- $groupHeight := add 80 $titleHeight -}}
-{{- $groupTop := sub (div (sub 1260 $groupHeight) 2) 48 -}}
-{{- $titleTop := add $groupTop 80 -}}
-
-{{- $base := resources.Get "images/og-base.png" -}}
-{{- $font := resources.Get "fonts/Newsreader72pt-Medium.ttf" -}}
-{{- if not $base -}}
+{{- $baseSource := resources.Get "images/og-base.png" -}}
+{{- $font := resources.Get "fonts/Newsreader48pt-Medium.ttf" -}}
+{{- $weekday := lower (printf "%s" now.Weekday) -}}
+{{- $accents := dict
+  "monday" "#ff3333"
+  "tuesday" "#ff8801"
+  "wednesday" "#ffcc00"
+  "thursday" "#32cc77"
+  "friday" "#00ccdd"
+  "saturday" "#0088ff"
+  "sunday" "#5555ff"
+-}}
+{{- $accent := index $accents $weekday -}}
+{{- $markerSource := resources.Get (printf "images/og-marker-%s.png" $weekday) -}}
+{{- if not $baseSource -}}
   {{- errorf "Open Graph base image not found" -}}
 {{- end -}}
 {{- if not $font -}}
   {{- errorf "Open Graph title font not found" -}}
 {{- end -}}
+{{- if not $markerSource -}}
+  {{- errorf "Open Graph marker image not found for %s" $weekday -}}
+{{- end -}}
+{{- $base := $baseSource.Process "resize 1200x630 png lanczos" -}}
+{{- $marker := $markerSource.Process "resize 158x24 png lanczos" -}}
 
-{{- $bylineFilter := images.Text $byline (dict
+{{- $markerFilter := images.Overlay $marker 59 545 -}}
+{{- $slugFilter := images.Text $slug (dict
   "aligny" "top"
   "color" "#737373"
-  "size" 48
-  "x" 144
-  "y" $groupTop
+  "size" 24
+  "x" 64
+  "y" 242
 ) -}}
 {{- $titleFilter := images.Text $wrappedTitle (dict
   "aligny" "top"
-  "color" "#1f1f1f"
+  "color" "#171717"
   "font" $font
   "linespacing" $lineSpacing
   "size" $fontSize
-  "x" 144
-  "y" $titleTop
+  "x" 64
+  "y" 298
 ) -}}
-{{- $rendered := $base.Filter $bylineFilter $titleFilter -}}
-{{- return ($rendered.Process "resize 1200x630 png lanczos") -}}
+{{- $urlFilter := images.Text "dominikhofer.me" (dict
+  "aligny" "top"
+  "color" $accent
+  "size" 20
+  "x" 64
+  "y" 546
+) -}}
+{{- $rendered := $base.Filter $markerFilter $slugFilter $titleFilter $urlFilter -}}
+{{- return $rendered -}}
