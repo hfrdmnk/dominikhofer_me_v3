@@ -14,5 +14,8 @@
     {{ block "page-aside" . }}{{ end }}
     {{ partialCached "colophon.html" . }}
   </div>
+  {{- if hugo.IsDevelopment }}
+  {{ partial "dev-theme-picker.html" . }}
+  {{- end }}
 </body>
 </html>

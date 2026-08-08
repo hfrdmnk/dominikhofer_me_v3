@@ -26,10 +26,17 @@
   <link rel="site.standard.document" href="{{ . | safe.URL }}">
   {{- end }}
   <script>
-    document.documentElement.dataset.day =
+    const currentDay =
       { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[
         new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Zurich", weekday: "short" }).format()
       ];
+    {{- if hugo.IsDevelopment }}
+    const storedDay = localStorage.getItem("dev-theme-day");
+    document.documentElement.dataset.currentDay = currentDay;
+    document.documentElement.dataset.day = /^[0-6]$/.test(storedDay) ? storedDay : currentDay;
+    {{- else }}
+    document.documentElement.dataset.day = currentDay;
+    {{- end }}
   </script>
   <link rel="preload" href="{{ "fonts/Newsreader-Roman-VF.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ "fonts/Newsreader-Italic-VF.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
@@ -38,6 +45,9 @@
   {{ range slice "fonts" "reset" "tokens" "base" "typography" "utilities" "layout" }}
   {{ $css = $css | append (resources.Get (printf "css/%s.css" .)) }}
   {{ end }}
+  {{- if hugo.IsDevelopment }}
+  {{ $css = $css | append (resources.Get "css/dev.css") }}
+  {{- end }}
   {{ $css = $css | append (resources.Match "css/components/*.css") }}
   {{ with $css | resources.Concat "css/main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ .RelPermalink }}">
@@ -49,6 +59,11 @@
   {{ with resources.Get "js/site.js" }}
   <script src="{{ .RelPermalink }}?v={{ md5 .Content }}" defer></script>
   {{ end }}
+  {{- if hugo.IsDevelopment }}
+  {{ with resources.Get "js/dev-theme-picker.js" }}
+  <script src="{{ .RelPermalink }}?v={{ md5 .Content }}" defer></script>
+  {{ end }}
+  {{- end }}
   {{- $followPages := slice "/" "/about/" "/now/" "/posts/" "/hello/" }}
   {{- if in $followPages .RelPermalink }}
     {{- with resources.Get "js/sequoia-subscribe.js" }}

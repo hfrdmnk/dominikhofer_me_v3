@@ -1,0 +1,96 @@
+.dev-theme-picker {
+    position: fixed;
+    inset-block-end: var(--space-md);
+    inset-inline-start: 50%;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    padding: var(--space-2xs) var(--space-xs);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    box-shadow: var(--shadow-lg);
+    color: var(--tertiary);
+    transform: translateX(-50%);
+}
+
+.dev-theme-picker__swatch {
+    --swatch: transparent;
+
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+
+    &::before {
+        content: "";
+        inline-size: 0.75rem;
+        block-size: 0.75rem;
+        border: 1px solid color-mix(in oklab, var(--primary), transparent 80%);
+        border-radius: 50%;
+        background: var(--swatch);
+    }
+
+    &[data-theme-day="1"] {
+        --swatch: var(--red);
+    }
+
+    &[data-theme-day="2"] {
+        --swatch: var(--orange);
+    }
+
+    &[data-theme-day="3"] {
+        --swatch: var(--yellow);
+    }
+
+    &[data-theme-day="4"] {
+        --swatch: var(--green);
+    }
+
+    &[data-theme-day="5"] {
+        --swatch: var(--teal);
+    }
+
+    &[data-theme-day="6"] {
+        --swatch: var(--blue);
+    }
+
+    &[data-theme-day="0"] {
+        --swatch: var(--violet);
+    }
+
+    &[aria-pressed="true"]::after {
+        content: "";
+        position: absolute;
+        inset: 0.125rem;
+        border: 1px solid var(--primary);
+        border-radius: 50%;
+    }
+}
+
+.dev-theme-picker__swatch:focus-visible,
+.dev-theme-picker__reset:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.dev-theme-picker__reset {
+    min-block-size: 1.5rem;
+    margin-inline-start: var(--space-2xs);
+    padding: 0 0 0 var(--space-xs);
+    border: 0;
+    border-inline-start: 1px solid var(--border);
+    background: transparent;
+    color: inherit;
+    font-size: var(--text-xs);
+
+    &:hover {
+        color: var(--primary);
+    }
+}
