@@ -1,7 +1,6 @@
 <header class="topbar">
   <p class="topbar__status">
-    <time class="topbar__clock" data-clock>{{ now.Format "15:04" }}</time>
-    <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span>
+    <a href="{{ "/" | relURL }}"><time class="topbar__clock" data-clock>{{ now.Format "15:04" }}</time> <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span></a>
   </p>
   {{ with partialCached "lastfm/fetch.html" . "lastfm" }}
     {{- $track := printf "%s, %s" .track .artist | strings.Truncate 60 "…" -}}

@@ -115,7 +115,10 @@
     let scrollFrame;
     const updateActiveYear = () => {
       scrollFrame = undefined;
-      const marker = archiveNav.getBoundingClientRect().bottom + 1;
+      const marker = Math.max(
+        archiveNav.getBoundingClientRect().bottom,
+        Number.parseFloat(getComputedStyle(document.body, "::before").height) || 0,
+      ) + 1;
       let activeLink = visibleYearLinks[0];
 
       visibleYearLinks.forEach((link) => {

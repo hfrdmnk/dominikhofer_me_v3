@@ -31,6 +31,17 @@
                 transparent 100%);
         pointer-events: none;
     }
+
+    @media (width < 60rem) {
+        position: static;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+
+        &::before {
+            content: none;
+        }
+    }
 }
 
 .archive-nav__years {
@@ -43,6 +54,11 @@
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    @media (width < 60rem) {
+        flex: none;
+        inline-size: 100%;
     }
 
     a {
@@ -75,7 +91,11 @@
 
 .archive__year-anchor {
     block-size: 0;
-    scroll-margin-block-start: calc(var(--topbar-line) + (2 * var(--space-sm)));
+    scroll-margin-top: calc(var(--topbar-line) + var(--space-sm) + var(--space-sm));
+
+    @media (width < 60rem) {
+        scroll-margin-top: var(--mobile-menu-fade-size);
+    }
 }
 
 .archive__more {

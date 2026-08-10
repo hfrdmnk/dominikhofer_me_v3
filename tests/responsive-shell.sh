@@ -29,8 +29,9 @@ posts="$test_dir/public/posts/index.html"
 
 grep -Fq 'aria-controls="primary-navigation"' "$homepage"
 grep -Fq 'data-menu-panel' "$homepage"
+grep -Fq '<a href="/"><time class="topbar__clock"' "$homepage"
+grep -Fq '<a href="/"><time class="topbar__clock"' "$posts"
 grep -Fq 'class="page page--has-header-media"' "$homepage"
-grep -Fq 'class="content__home meta-link"' "$posts"
 grep -Fq '<a href="/" aria-current="page">/</a>' "$homepage"
 grep -Fq '<a href="/">/</a>' "$posts"
 grep -Fq 'class="nav__home meta-link"' "$posts"
@@ -38,6 +39,11 @@ grep -Fq 'class="progress meta-link"' "$homepage"
 
 if grep -Fq 'class="nav__brand"' "$homepage"; then
     echo "Homepage still renders the mobile logo." >&2
+    exit 1
+fi
+
+if grep -Fq 'class="content__home meta-link"' "$posts"; then
+    echo "Posts archive still renders the mobile Back home link." >&2
     exit 1
 fi
 

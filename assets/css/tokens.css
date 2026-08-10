@@ -87,6 +87,7 @@
     --pad-block: clamp(1.75rem, 4vh, 2.75rem);
     --gap-col: clamp(1.5rem, 4vw, 3rem);
     --headroom: clamp(14rem, 22vh, 16rem);
+    --mobile-menu-fade-size: calc(var(--pad-block) + 2.75rem + var(--space-2xl));
     --footer-gap: clamp(2rem, 4vh, 2.75rem);
     --topbar-line: 1.3125rem;
 
