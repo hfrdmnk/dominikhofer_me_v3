@@ -71,12 +71,15 @@
     padding: var(--space-sm) 2rem 2rem var(--space-xs);
 
     @media (width < 60rem) {
+        grid-column: 1;
+        grid-row: r-head-end / span 1;
         align-self: center;
+        justify-self: end;
         margin-block-start: 0;
     }
 
     @media (width < 36rem) {
-        --portrait-size: 7rem;
+        --portrait-size: clamp(5.75rem, 29vw, 7rem);
     }
 }
 

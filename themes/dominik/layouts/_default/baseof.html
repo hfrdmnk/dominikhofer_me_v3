@@ -2,11 +2,17 @@
 <html lang="{{ site.Language.Lang }}">
 {{ partial "head.html" . }}
 <body id="top">
-  <div class="page">
+  <div class="page{{ if or .IsHome .Params.photo_pair }} page--has-header-media{{ end }}">
     <a class="skip-link" href="#content">Skip to content</a>
     {{ partial "topbar.html" . }}
     {{ partial "sidebar.html" . }}
     <main class="content" id="content">
+      {{- if not .IsHome }}
+      <a class="content__home meta-link" href="{{ "/" | relURL }}">
+        {{ partial "icons/nav-arrow-left.html" }}
+        Back home
+      </a>
+      {{- end }}
       {{ partial "page-title.html" . }}
       {{ block "main" . }}{{ end }}
       {{ partialCached "follow-card.html" . }}

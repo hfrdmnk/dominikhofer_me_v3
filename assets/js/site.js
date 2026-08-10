@@ -1,5 +1,45 @@
 // Live Bern clock + relative "last deployed" time for the shell chrome.
 (function () {
+  const menu = document.querySelector("[data-menu]");
+  if (menu) {
+    const toggle = menu.querySelector("[data-menu-toggle]");
+    const panel = menu.querySelector("[data-menu-panel]");
+    const compactMenu = window.matchMedia("(width < 60rem)");
+
+    const setMenuOpen = (open, returnFocus = false) => {
+      menu.toggleAttribute("data-menu-open", open);
+      document.body.toggleAttribute("data-menu-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+      panel.inert = compactMenu.matches && !open;
+
+      if (open) panel.querySelector("a")?.focus();
+      else if (returnFocus) toggle.focus();
+    };
+
+    const syncMenu = () => {
+      if (!compactMenu.matches) {
+        setMenuOpen(false);
+        panel.inert = false;
+      } else {
+        panel.inert = !menu.hasAttribute("data-menu-open");
+      }
+    };
+
+    toggle.addEventListener("click", () => {
+      setMenuOpen(!menu.hasAttribute("data-menu-open"));
+    });
+    panel.addEventListener("click", (event) => {
+      if (event.target.closest("a")) setMenuOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.hasAttribute("data-menu-open")) {
+        setMenuOpen(false, true);
+      }
+    });
+    compactMenu.addEventListener("change", syncMenu);
+    syncMenu();
+  }
+
   const clock = document.querySelector("[data-clock]");
   if (clock) {
     const fmt = new Intl.DateTimeFormat("en-GB", {
@@ -220,7 +260,11 @@
   document.addEventListener("pointerleave", resetTilt);
   tiltPointer.addEventListener("change", resetTilt);
 
-  const particleSource = document.querySelector(".topbar__particle");
+  const particleSource = document.querySelector(
+    window.matchMedia("(width < 60rem)").matches
+      ? ".nav__now [data-now-playing-particle]"
+      : ".topbar__now [data-now-playing-particle]",
+  );
   if (particleSource) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const particles = new Set();
@@ -242,7 +286,7 @@
       }
 
       const particle = document.createElement("span");
-      particle.className = "topbar__particle-trail";
+      particle.className = "now-playing__particle-trail";
       particleSource.append(particle);
 
       const endX = randomBetween(-18, 18);

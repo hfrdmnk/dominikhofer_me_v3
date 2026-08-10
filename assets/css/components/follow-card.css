@@ -6,6 +6,7 @@
     background: var(--surface-lighter);
     color: var(--secondary);
     text-align: start;
+    container: follow-card / inline-size;
 
     @media (width < 36rem) {
         padding: var(--space-lg);
@@ -32,7 +33,7 @@
     gap: var(--space-sm);
     margin-block-start: var(--space-lg);
 
-    @media (width < 36rem) {
+    @container follow-card (width < 28rem) {
         grid-template-columns: minmax(0, 1fr);
     }
 }

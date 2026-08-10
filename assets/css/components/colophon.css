@@ -10,10 +10,12 @@
     color: var(--tertiary);
 
     @media (width < 60rem) {
+        grid-column: 1;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: var(--space-md);
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-lg);
+        text-align: center;
     }
 }
 
@@ -21,6 +23,13 @@
     display: flex;
     align-items: baseline;
     gap: var(--space-sm);
+
+    @media (width < 60rem) {
+        order: 3;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-xs);
+    }
 }
 
 .colophon__version {
@@ -38,8 +47,8 @@
     font-size: var(--text-xs);
     color: inherit;
 
-    @media (width < 36rem) {
-        justify-self: start;
+    @media (width < 60rem) {
+        order: 2;
     }
 }
 
@@ -56,6 +65,8 @@
     }
 
     @media (width < 60rem) {
-        inline-size: min(5rem, 25%);
+        order: 1;
+        inline-size: 5rem;
+        transform: none;
     }
 }

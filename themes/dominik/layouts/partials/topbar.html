@@ -1,19 +1,14 @@
-{{- $path := "/" -}}
-{{- if not .IsHome }}{{ $path = strings.TrimSuffix "/" .RelPermalink }}{{ end -}}
 <header class="topbar">
-  <p class="topbar__page">
-    <span class="topbar__path">{{ $path }}</span>
-    <span class="topbar__status">
-      <time class="topbar__clock" data-clock>{{ now.Format "15:04" }}</time>
-      <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span>
-    </span>
+  <p class="topbar__status">
+    <time class="topbar__clock" data-clock>{{ now.Format "15:04" }}</time>
+    <span class="topbar__loc">in {{ site.Params.location | default "Bern, CH" }}</span>
   </p>
   {{ with partialCached "lastfm/fetch.html" . "lastfm" }}
     {{- $track := printf "%s, %s" .track .artist | strings.Truncate 60 "…" -}}
     <a class="topbar__now" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
       <span class="visually-hidden">Last listened: </span>
-      <span class="topbar__particle" aria-hidden="true"></span>
       <span class="topbar__track">{{ $track }}</span>
+      <span class="now-playing__particle" data-now-playing-particle aria-hidden="true"></span>
     </a>
   {{ end }}
 </header>

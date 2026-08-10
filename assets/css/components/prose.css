@@ -127,6 +127,34 @@
         }
     }
 
+    @media (width < 60rem) {
+        ol {
+            padding-inline-start: var(--space-lg);
+        }
+
+        ul {
+            padding-inline-start: 0;
+        }
+
+        ul li {
+            padding-inline-start: var(--space-lg);
+
+            &::before {
+                inset-inline-start: 0;
+                inset-inline-end: auto;
+            }
+        }
+
+        blockquote {
+            padding-inline: var(--space-md);
+            border-inline-start: 1px solid var(--border);
+
+            p:first-of-type {
+                text-indent: 0;
+            }
+        }
+    }
+
     sup a {
         text-decoration-line: none;
     }
@@ -178,7 +206,7 @@
         inline-size: calc(100% + (2 * var(--breakout)));
         margin-inline: calc(var(--breakout) * -1);
 
-        @media (width < 36rem) {
+        @media (width < 60rem) {
             inline-size: 100%;
             margin-inline: 0;
         }

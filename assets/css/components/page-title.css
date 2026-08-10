@@ -31,7 +31,7 @@
     margin-block-start: var(--space-xl);
     border-radius: var(--radius-lg);
 
-    @media (width < 36rem) {
+    @media (width < 60rem) {
         inline-size: 100%;
         max-inline-size: 100%;
         margin-inline: 0;

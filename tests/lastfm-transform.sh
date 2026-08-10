@@ -43,7 +43,7 @@ assert_hidden() {
     fixture=$1
 
     render "$fixture"
-    if grep -Fq 'class="topbar__now"' "$homepage"; then
+    if grep -Fq 'class="topbar__now"' "$homepage" || grep -Fq 'class="nav__now"' "$homepage"; then
         echo "$fixture: expected the Last.fm item to be hidden" >&2
         exit 1
     fi

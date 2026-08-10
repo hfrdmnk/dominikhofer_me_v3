@@ -1,6 +1,13 @@
 {{- $page := . -}}
-<div class="sidebar">
-  <nav class="nav" aria-label="Primary">
+<div class="sidebar" data-menu>
+  <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
+    <span class="visually-hidden">Toggle menu</span>
+    <span class="nav__toggle-icon" aria-hidden="true">
+      <span class="nav__toggle-bars"><span></span><span></span><span></span></span>
+      <span class="nav__toggle-close"><span></span><span></span></span>
+    </span>
+  </button>
+  <nav class="nav" id="primary-navigation" aria-label="Primary" data-menu-panel>
     {{- if not $page.IsHome }}
     <a class="nav__home meta-link" href="{{ "/" | relURL }}">
       {{ partial "icons/nav-arrow-left.html" }}
@@ -8,12 +15,21 @@
     </a>
     {{- end }}
     <ul class="nav__list">
+      <li class="nav__root"><a href="{{ "/" | relURL }}"{{ if $page.IsHome }} aria-current="page"{{ end }}>/</a></li>
       {{- range slice "/about" "/now" "/posts" "/races" "/uses" "/hello" }}
       {{- $parentPath := printf "%s/" . }}
       {{- $active := or (strings.HasPrefix $page.RelPermalink $parentPath) (and (or (eq . "/posts") (eq . "/races")) (eq $page.Section (strings.TrimPrefix "/" .))) }}
       <li><a href="{{ . | relURL }}"{{ if $active }} aria-current="page"{{ end }}>{{ . }}</a></li>
       {{- end }}
     </ul>
+    {{ with partialCached "lastfm/fetch.html" . "lastfm" }}
+      {{- $track := printf "%s, %s" .track .artist | strings.Truncate 60 "…" -}}
+      <a class="nav__now" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+        <span class="visually-hidden">Last listened: </span>
+        <span class="nav__track">{{ $track }}</span>
+        <span class="now-playing__particle" data-now-playing-particle aria-hidden="true"></span>
+      </a>
+    {{ end }}
   </nav>
   <a class="progress meta-link" href="#top" aria-label="Back to top">
     <span class="progress__ring" aria-hidden="true">
