@@ -4,7 +4,7 @@ slug: "new-personal-internet-home"
 date: 2026-01-28T17:25:00
 description: "Process, thoughts and a look behind the scenes for the v2 launch of my personal website."
 tags: ["personalwebsite", "indieweb", "siteupdate"]
-cover: "personal-internet-home.png"
+cover: "personal-internet-home.webp"
 archived: false
 draft: false
 favorite: false

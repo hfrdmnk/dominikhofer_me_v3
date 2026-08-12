@@ -4,7 +4,7 @@ slug: "30-days-of-writing"
 date: 2026-04-11T17:05:00
 description: "Today is the last day of my writing PACT where I set out to write and publish a blog post every day for 30 days."
 tags: ["writing"]
-cover: "tracker.jpeg"
+cover: "tracker.webp"
 archived: false
 draft: false
 favorite: false

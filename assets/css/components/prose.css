@@ -61,8 +61,8 @@
     }
 
     /* Special blocks get breathing room, except at the very start/end */
-    > * + :is(blockquote, .highlight, .video-embed, .katex-display, p:has(> :is(img, video):only-child)),
-    > :is(blockquote, .highlight, .video-embed, .katex-display, p:has(> :is(img, video):only-child)) + * {
+    > * + :is(blockquote, .highlight, .video-embed, .katex-display, p:has(> :is(img, picture, video):only-child)),
+    > :is(blockquote, .highlight, .video-embed, .katex-display, p:has(> :is(img, picture, video):only-child)) + * {
         margin-block-start: var(--space-xl);
     }
 
@@ -202,7 +202,7 @@
     }
 
     /* Media blocks extend into the breakout area */
-    > :is(p:has(> :is(img, video):only-child), .highlight, .video-embed) {
+    > :is(p:has(> :is(img, picture, video):only-child), .highlight, .video-embed) {
         inline-size: calc(100% + (2 * var(--breakout)));
         margin-inline: calc(var(--breakout) * -1);
 
@@ -212,10 +212,16 @@
         }
     }
 
-    > p > :is(img, video):only-child {
+    > p > :is(img, picture, video):only-child {
         inline-size: 100%;
         block-size: auto;
         border-radius: var(--radius-lg);
+    }
+
+    > p > picture:only-child > img {
+        inline-size: 100%;
+        block-size: auto;
+        border-radius: inherit;
     }
 
     .highlight pre {

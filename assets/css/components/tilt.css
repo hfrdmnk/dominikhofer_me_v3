@@ -142,6 +142,11 @@
     object-fit: cover;
 }
 
+.tilt-photo__picture {
+    inline-size: 100%;
+    block-size: 100%;
+}
+
 .tilt-photo__tooltip {
     position: absolute;
     inset-block-end: calc(100% - var(--photo-offset-y) + var(--space-md) + var(--space-2xs));

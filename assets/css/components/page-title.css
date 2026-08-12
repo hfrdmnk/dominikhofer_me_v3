@@ -23,17 +23,22 @@
     font-style: italic;
 }
 
-.intro__cover {
+.intro__cover-frame {
     inline-size: calc(100% + (2 * var(--breakout)));
     max-inline-size: none;
-    block-size: auto;
     margin-inline: calc(var(--breakout) * -1);
     margin-block-start: var(--space-xl);
-    border-radius: var(--radius-lg);
 
     @media (width < 60rem) {
         inline-size: 100%;
         max-inline-size: 100%;
         margin-inline: 0;
     }
+}
+
+.intro__cover {
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: auto;
+    border-radius: var(--radius-lg);
 }

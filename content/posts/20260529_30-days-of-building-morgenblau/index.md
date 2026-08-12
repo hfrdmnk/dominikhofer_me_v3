@@ -4,7 +4,7 @@ slug: "30-days-of-building-morgenblau"
 date: 2026-05-29T07:25:00
 description: "Last Tuesday, I completed my latest PACT."
 tags: ["morgenblau", "buildinpublic"]
-cover: "pact.jpeg"
+cover: "pact.webp"
 archived: false
 draft: false
 favorite: false
@@ -28,10 +28,10 @@ Of course I will continue working on Morgenblau and updating you on how it’s g
 
 To close this PACT, here are a couple of screenshots of the current version of Morgenblau:
 
-![Morgenblau login screen with the tagline "Find. Read. Share." and an Atmosphere account sign-in field](01_login.png)
+![Morgenblau login screen with the tagline "Find. Read. Share." and an Atmosphere account sign-in field](01_login.webp)
 
-![Morgenblau digest view showing a date scrubber and a mixed feed of blog posts, YouTube videos and Bluesky posts](02_digest.png)
+![Morgenblau digest view showing a date scrubber and a mixed feed of blog posts, YouTube videos and Bluesky posts](02_digest.webp)
 
-![Morgenblau reader view showing the article "Doing the ground work" with a hero image and clean reading layout](03_reader.png)
+![Morgenblau reader view showing the article "Doing the ground work" with a hero image and clean reading layout](03_reader.webp)
 
-![Morgenblau source page for "Dominik Hofer | Posts" showing feed stats and a list of recent posts](04_source.png)
+![Morgenblau source page for "Dominik Hofer | Posts" showing feed stats and a list of recent posts](04_source.webp)

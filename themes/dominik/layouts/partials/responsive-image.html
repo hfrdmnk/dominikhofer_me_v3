@@ -1,0 +1,41 @@
+{{- $image := .image -}}
+{{- $alt := .alt | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $pictureClass := .pictureClass | default "" -}}
+{{- $sizes := .sizes | default "(max-width: 60rem) calc(100vw - 3rem), 45rem" -}}
+{{- $widths := .widths | default (slice 480 768 1200 1440) -}}
+{{- $loading := .loading | default "" -}}
+{{- $decoding := .decoding | default "" -}}
+{{- if reflect.IsImageResourceProcessable $image -}}
+  {{- $candidateWidths := slice -}}
+  {{- range $widths -}}
+    {{- if le . $image.Width -}}
+      {{- $candidateWidths = $candidateWidths | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $largestWidth := index $widths (sub (len $widths) 1) -}}
+  {{- if and (lt $image.Width $largestWidth) (not (in $candidateWidths $image.Width)) -}}
+    {{- $candidateWidths = $candidateWidths | append $image.Width -}}
+  {{- end -}}
+  {{- $avifSrcset := slice -}}
+  {{- $webpSrcset := slice -}}
+  {{- range $candidateWidths -}}
+    {{- $avif := $image.Process (printf "resize %dx avif" .) -}}
+    {{- $webp := $image.Process (printf "resize %dx webp" .) -}}
+    {{- $avifSrcset = $avifSrcset | append (printf "%s %dw" $avif.RelPermalink .) -}}
+    {{- $webpSrcset = $webpSrcset | append (printf "%s %dw" $webp.RelPermalink .) -}}
+  {{- end -}}
+<picture{{ with $pictureClass }} class="{{ . }}"{{ end }}>
+  <source type="image/avif" srcset="{{ delimit $avifSrcset ", " }}" sizes="{{ $sizes }}">
+  <source type="image/webp" srcset="{{ delimit $webpSrcset ", " }}" sizes="{{ $sizes }}">
+  <img src="{{ $image.RelPermalink }}" alt="{{ $alt }}" width="{{ $image.Width }}" height="{{ $image.Height }}"
+    {{- with $class }} class="{{ . }}"{{ end }}
+    {{- with $loading }} loading="{{ . }}"{{ end }}
+    {{- with $decoding }} decoding="{{ . }}"{{ end }}>
+</picture>
+{{- else -}}
+<img src="{{ $image.RelPermalink }}" alt="{{ $alt }}"
+  {{- with $class }} class="{{ . }}"{{ end }}
+  {{- with $loading }} loading="{{ . }}"{{ end }}
+  {{- with $decoding }} decoding="{{ . }}"{{ end }}>
+{{- end -}}

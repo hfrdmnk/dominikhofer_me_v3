@@ -4,7 +4,7 @@ slug: "the-first-few-days"
 date: 2026-04-10T15:50:00
 description: "The recent happy moments with our dog."
 tags: ["naida"]
-cover: "naida.jpeg"
+cover: "naida.webp"
 archived: false
 draft: false
 favorite: false

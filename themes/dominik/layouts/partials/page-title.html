@@ -30,7 +30,12 @@
   {{- if not .Params.feed_only -}}
   {{- with .Params.cover }}
   {{- with $.Resources.Get . }}
-  <img class="intro__cover" src="{{ .RelPermalink }}" alt="" width="{{ .Width }}" height="{{ .Height }}">
+  {{ partial "responsive-image.html" (dict
+    "image" .
+    "alt" ""
+    "class" "intro__cover"
+    "pictureClass" "intro__cover-frame"
+  ) }}
   {{- end }}
   {{- end }}
   {{- end }}

@@ -4,7 +4,7 @@ slug: "welcome-naida"
 date: 2026-04-06T20:40:00
 description: "Today was a big day!"
 tags: ["life update", "naida"]
-cover: "naida.jpeg"
+cover: "naida.webp"
 archived: false
 draft: false
 favorite: false

@@ -4,7 +4,7 @@ slug: "the-art-of-spending-money"
 date: 2026-03-17T18:55:00
 description: "A finance book that reads like a piece of philosophy."
 tags: ["book", "personal finance"]
-cover: "cover.jpg"
+cover: "cover.webp"
 archived: false
 draft: false
 favorite: false

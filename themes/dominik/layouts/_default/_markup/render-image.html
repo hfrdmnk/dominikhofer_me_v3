@@ -8,8 +8,12 @@
   {{- $img := "" -}}
   {{- if not $url.IsAbs }}{{ $img = .PageInner.Resources.Get $url.Path }}{{ end -}}
   {{- with $img -}}
-<img src="{{ .RelPermalink }}" alt="{{ $.PlainText }}"
-  {{- if ne .MediaType.SubType "svg" }} width="{{ .Width }}" height="{{ .Height }}"{{ end }} loading="lazy" decoding="async">
+{{ partial "responsive-image.html" (dict
+  "image" .
+  "alt" $.PlainText
+  "loading" "lazy"
+  "decoding" "async"
+) }}
   {{- else -}}
 <img src="{{ .Destination }}" alt="{{ .PlainText }}" loading="lazy" decoding="async">
   {{- end -}}

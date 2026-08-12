@@ -37,7 +37,15 @@
         <figure class="reading__cover tilt-photo" data-tilt>
           <div class="tilt-photo__surface">
             {{- with $cover }}
-            <img class="tilt-photo__image" src="{{ .RelPermalink }}" width="120" height="180" alt="" loading="lazy">
+            {{ partial "responsive-image.html" (dict
+              "image" .
+              "alt" ""
+              "class" "tilt-photo__image"
+              "pictureClass" "tilt-photo__picture"
+              "sizes" "120px"
+              "widths" (slice 120 240)
+              "loading" "lazy"
+            ) }}
             {{- else }}
             <span class="reading__placeholder" aria-hidden="true"><span>{{ $book.title }}</span></span>
             {{- end }}

@@ -4,7 +4,7 @@ slug: "change-of-plans"
 date: 2026-01-31T13:40:00
 description: "I’m building my own RSS reader."
 tags: ["buildinpublic", "morgenblau"]
-cover: "morgenblau-banner.jpg"
+cover: "morgenblau-banner.webp"
 archived: false
 draft: false
 favorite: false

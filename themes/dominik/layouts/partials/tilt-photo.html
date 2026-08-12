@@ -11,13 +11,14 @@
   {{- with .tooltip }} tabindex="0" aria-describedby="{{ $.tooltipId }}"{{ end -}}
 >
   <div class="tilt-photo__surface">
-    <img
-      class="tilt-photo__image"
-      src="{{ $image.RelPermalink }}"
-      width="{{ $image.Width }}"
-      height="{{ $image.Height }}"
-      alt="{{ .alt }}"
-    >
+    {{ partial "responsive-image.html" (dict
+      "image" $image
+      "alt" .alt
+      "class" "tilt-photo__image"
+      "pictureClass" "tilt-photo__picture"
+      "sizes" "128px"
+      "widths" (slice 128 256)
+    ) }}
   </div>
   {{- with .tooltip }}
     <span class="tilt-photo__tooltip" id="{{ $.tooltipId }}" role="tooltip">{{ . }}</span>
