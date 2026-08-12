@@ -1,0 +1,22 @@
+/rss /rss.xml 301
+/rss/ /rss.xml 301
+/posts/rss /rss.xml 301
+/posts/rss/ /rss.xml 301
+/posts/rss.xml /rss.xml 301
+/notes/rss /rss.xml 301
+/notes/rss/ /rss.xml 301
+/notes/rss.xml /rss.xml 301
+/photos/rss /rss.xml 301
+/photos/rss/ /rss.xml 301
+/photos/rss.xml /rss.xml 301
+/races/rss /rss.xml 301
+/races/rss/ /rss.xml 301
+/races/rss.xml /rss.xml 301
+/newsletter.xml /rss.xml 301
+
+/notes /posts/ 301
+/notes/ /posts/ 301
+/photos /about/ 301
+/photos/ /about/ 301
+/slash / 301
+/slash/ / 301

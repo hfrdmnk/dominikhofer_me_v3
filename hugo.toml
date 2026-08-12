@@ -25,7 +25,10 @@ isPlainText = true
 notAlternative = false
 
 [outputs]
-home = ['HTML', 'RSS', 'PostsRSS']
+home = ['HTML', 'PostsRSS']
+section = ['HTML']
+taxonomy = ['HTML']
+term = ['HTML']
 
 [caches.getresource]
 maxAge = 0
