@@ -1,0 +1,21 @@
+services:
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    stop_grace_period: 30s
+    expose:
+      - "80"
+    environment:
+      HUGO_LASTFM_API_KEY: "${HUGO_LASTFM_API_KEY}"
+      ATP_IDENTIFIER: "${ATP_IDENTIFIER:-dominik.social}"
+      ATP_APP_PASSWORD: "${ATP_APP_PASSWORD}"
+      SEQUOIA_PUBLISH: "${SEQUOIA_PUBLISH:-1}"
+      GOMAXPROCS: "${GOMAXPROCS:-1}"
+      HUGO_NUMWORKERMULTIPLIER: "${HUGO_NUMWORKERMULTIPLIER:-1}"
+    volumes:
+      - site-data:/var/lib/site
+
+volumes:
+  site-data:
