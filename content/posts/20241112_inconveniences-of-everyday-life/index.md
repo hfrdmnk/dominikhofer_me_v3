@@ -8,7 +8,7 @@ tags: ["life advice", "book"]
 cover: "cover.jpg"
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 I’m currently reading “Four Thousand Weeks” by Oliver Burkeman.

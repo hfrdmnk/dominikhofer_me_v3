@@ -6,7 +6,7 @@ description: "If you’re watching only one video today, make it this one."
 tags: ["life advice"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 {{< youtube ncjZV07vApc >}}

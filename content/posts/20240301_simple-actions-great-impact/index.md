@@ -6,7 +6,7 @@ description: "I was listening to a Deep Dive episode with Nathan Berry (CEO of C
 tags: ["life advice"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 I was listening to a [Deep Dive episode with Nathan Berry](https://open.spotify.com/episode/4ybpRD02MyT76tCyHnOQYj) (CEO of ConvertKit) as a guest. And there was this one quote by him, that really resonated with me[^1]:

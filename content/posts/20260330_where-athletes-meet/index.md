@@ -7,7 +7,7 @@ tags: ["running"]
 cover: "athletes.jpg"
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 In the town where I live, we have this great sports facility with multiple soccer fields, a skate park, a basketball court, a sports hall and a tartan track.

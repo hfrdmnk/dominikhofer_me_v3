@@ -6,7 +6,7 @@ description: "When I’m out running and don’t feel great, I always try to foc
 tags: ["running", "life advice"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 When I’m out running and don’t feel great, I always try to focus on just the next stride. And then the next one. And the next.

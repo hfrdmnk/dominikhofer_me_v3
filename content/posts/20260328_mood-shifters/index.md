@@ -6,7 +6,7 @@ description: "Simple things to do to change your state of mind."
 tags: ["life advice"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 Related to [yesterday’s post](/one-more-win), I want to list a couple of quick and easy ways to get “a small win”. Simple things we can do to shift our mood.

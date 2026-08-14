@@ -6,7 +6,7 @@ description: "A not so obvious benefit of publishing your work and some thank yo
 tags: ["indieweb", "writing"]
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 As I’ve stated before, writing regularly and publishing your work has many benefits. There’s one thing, though, that I didn’t really have on my radar, but that probably brings me the most joy.

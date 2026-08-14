@@ -7,7 +7,7 @@ tags: ["philosophy"]
 cover: "steve-jobs.jpg"
 archived: false
 draft: false
-favorite: false
+favorite: true
 ---
 
 I’m a couple of days late to [Apple’s 50-year anniversary](https://www.apple.com/50-years-of-thinking-different/). But I find it still a great occasion to share this video snippet that I rewatch from time to time. It’s from a 1994 interview with the late and great Steve Jobs.
