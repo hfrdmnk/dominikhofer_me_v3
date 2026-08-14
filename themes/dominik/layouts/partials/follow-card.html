@@ -40,8 +40,7 @@
         <div class="follow-card__links">
             <a class="button-underline follow-card__link" href="{{ "rss.xml" | relURL }}" target="_blank"
                 rel="noopener noreferrer">RSS feed</a>
-            <sequoia-subscribe button-type="plain" label="Standard Site" {{ with $publicationURI }}
-                publication-uri="{{ . }}" {{ end }}>
+            <sequoia-subscribe button-type="plain" label="Standard Site">
                 {{- with $publicationURI -}}
                 <a class="button-underline follow-card__link"
                     href="https://sequoia.pub/subscribe?publicationUri={{ . | urlquery }}" target="_blank"

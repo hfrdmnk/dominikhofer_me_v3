@@ -19,7 +19,7 @@
   {{- if os.FileExists "sequoia.json" }}
     {{- $sequoia := os.ReadFile "sequoia.json" | transform.Unmarshal }}
     {{- with $sequoia.publicationUri }}
-  <link rel="site.standard.publication" href="{{ . }}">
+  <link rel="site.standard.publication" href="{{ . | safe.URL }}">
     {{- end }}
   {{- end }}
   {{- with .Params.atUri }}
@@ -68,10 +68,7 @@
   <script src="{{ .RelPermalink }}?v={{ md5 .Content }}" defer></script>
   {{ end }}
   {{- end }}
-  {{- $followPages := slice "/" "/about/" "/now/" "/posts/" "/hello/" }}
-  {{- if in $followPages .RelPermalink }}
-    {{- with resources.Get "js/sequoia-subscribe.js" }}
+  {{- with resources.Get "js/sequoia-subscribe.js" }}
   <script type="module" src="{{ .RelPermalink }}"></script>
-    {{- end }}
   {{- end }}
 </head>
