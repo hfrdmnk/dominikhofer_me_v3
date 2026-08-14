@@ -1,5 +1,5 @@
 baseURL = 'https://dominikhofer.me/'
-languageCode = 'en-us'
+locale = 'en-US'
 title = 'Dominik Hofer'
 timeZone = 'Europe/Zurich'
 theme = 'dominik'

@@ -1,5 +1,5 @@
 {{ $quote := "trust the process" }}
-{{ with site.Data.quote }}
+{{ with hugo.Data.quote }}
   {{ $quote = index (shuffle .) 0 }}
 {{ end }}
 <footer class="colophon">
