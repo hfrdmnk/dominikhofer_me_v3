@@ -12,7 +12,7 @@ Enjoy :)
 
 The main goal for this iteration of the website was to create a minimal design that still has some personality and feels authentic to me.
 
-My personal highlights in that regard are the variable accent colors (they change depending on the day you’re visiting this site), my signature at the bottom of every page and the personalized cards on [/races](/races).
+My personal highlights in that regard are the variable accent colors (they change depending on the day you’re visiting this site), my signature and a custom quote at the bottom of every page and the personalized cards on [/races](/races).
 
 During the process, I was inspired by these great designers and their websites. Pay them a visit too!
 
