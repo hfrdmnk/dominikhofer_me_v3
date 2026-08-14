@@ -10,6 +10,10 @@ if [ -f .env ]; then
     set +a
 fi
 
+if [ "${SEQUOIA_PUBLISH:-}" = "1" ]; then
+    ./scripts/publish-sequoia.sh
+fi
+
 node scripts/races.mjs
 
 blogroll_updated=$(git log -1 --format=%cI -- content/blogroll/feeds.opml 2>/dev/null || true)

@@ -5,7 +5,7 @@
   "publicDir": "./static",
   "outputDir": "./public",
   "pathPrefix": "",
-  "publicationUri": "at://YOUR_DID/site.standard.publication/YOUR_RECORD_KEY",
+  "publicationUri": "at://did:plc:fthx2gjakdj4ynxxu5vysjty/site.standard.publication/3mt2ja4ijzu27",
   "identity": "dominik.social",
   "frontmatter": {
     "title": "title",
@@ -22,7 +22,8 @@
   "removeIndexFromSlug": true,
   "publishContent": true,
   "bluesky": {
-    "enabled": false
+    "enabled": true,
+    "maxAgeDays": 7
   },
   "ui": {
     "components": "./assets/js"

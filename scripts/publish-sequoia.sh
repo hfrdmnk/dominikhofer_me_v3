@@ -9,12 +9,10 @@ runtime_config="$runtime_dir/sequoia.json"
 ignore_file=$(mktemp)
 eligible_file=$(mktemp)
 stage_dir=""
-content_link="$runtime_dir/content"
 
 cleanup() {
     rm -f "$ignore_file" "$eligible_file" "$runtime_config"
     if [ -n "$stage_dir" ]; then
-        rm -f "$content_link"
         rm -rf "$stage_dir"
     fi
 }
@@ -22,7 +20,7 @@ cleanup() {
 trap cleanup EXIT HUP INT TERM
 
 if [ ! -f "$source_config" ]; then
-    echo "Missing $source_config. Run ./scripts/setup-sequoia.sh first." >&2
+    echo "Missing Sequoia configuration: $source_config" >&2
     exit 1
 fi
 
@@ -111,13 +109,7 @@ done >> "$ignore_file"
 ignore_json=$(jq -Rsc 'split("\n") | map(select(length > 0))' "$ignore_file")
 
 mkdir -p "$runtime_dir"
-if [ -e "$content_link" ] || [ -L "$content_link" ]; then
-    echo "Unexpected existing Sequoia staging path: $content_link" >&2
-    exit 1
-fi
-
 stage_dir=$(mktemp -d "$runtime_dir/stage.XXXXXX")
-ln -s "$stage_dir" "$content_link"
 
 while IFS= read -r file; do
     relative_path=${file#"$content_dir"/}
@@ -178,7 +170,7 @@ while IFS= read -r file; do
 done < "$eligible_file"
 
 jq \
-    --arg content_dir "$content_link" \
+    --arg content_dir "$stage_dir" \
     --arg public_dir "$root_dir/static" \
     --arg output_dir "$root_dir/public" \
     --argjson ignore "$ignore_json" \
@@ -186,8 +178,7 @@ jq \
     | .publicDir = $public_dir
     | .outputDir = $output_dir
     | .ignore = $ignore
-    | .frontmatter.draft = "draft"
-    | .bluesky.enabled = false' \
+    | .frontmatter.draft = "draft"' \
     "$source_config" > "$runtime_config"
 
 if [ "${1:-}" = "--print-config" ]; then
