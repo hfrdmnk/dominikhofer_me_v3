@@ -1,5 +1,9 @@
 {
   "devDependencies": {
-    "@garmin/fitsdk": "^21.208.0"
+    "@garmin/fitsdk": "^21.208.0",
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "sequoia-cli": "0.5.7"
   }
 }

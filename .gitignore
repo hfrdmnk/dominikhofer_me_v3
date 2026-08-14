@@ -8,6 +8,7 @@ hugo_stats.json
 /.hugo_build.lock
 /.sequoia-runtime/
 /.sequoia-state.json
+/.blogroll-updated
 
 # Local environment
 /.env

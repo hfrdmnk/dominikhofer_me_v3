@@ -17,6 +17,9 @@ fi
 node scripts/races.mjs
 
 blogroll_updated=$(git log -1 --format=%cI -- content/blogroll/feeds.opml 2>/dev/null || true)
+if [ -z "$blogroll_updated" ] && [ -f .blogroll-updated ]; then
+    blogroll_updated=$(cat .blogroll-updated)
+fi
 if [ -n "$blogroll_updated" ]; then
     export HUGO_PARAMS_BLOGROLLUPDATED="$blogroll_updated"
 fi

@@ -6,15 +6,14 @@ source_config=${SEQUOIA_SOURCE_CONFIG:-"$root_dir/sequoia.json"}
 content_dir=${SEQUOIA_CONTENT_DIR:-"$root_dir/content/posts"}
 runtime_dir=${SEQUOIA_RUNTIME_DIR:-"$root_dir/.sequoia-runtime"}
 runtime_config="$runtime_dir/sequoia.json"
+state_file="$runtime_dir/.sequoia-state.json"
 ignore_file=$(mktemp)
 eligible_file=$(mktemp)
-stage_dir=""
+stage_dir="$runtime_dir/stage"
 
 cleanup() {
     rm -f "$ignore_file" "$eligible_file" "$runtime_config"
-    if [ -n "$stage_dir" ]; then
-        rm -rf "$stage_dir"
-    fi
+    rm -rf "$stage_dir"
 }
 
 trap cleanup EXIT HUP INT TERM
@@ -71,6 +70,50 @@ frontmatter_value() {
     ' "$1"
 }
 
+set_frontmatter_at_uri() {
+    file=$1
+    at_uri=$2
+    rewritten=$(mktemp)
+
+    awk -v at_uri="$at_uri" '
+        NR == 1 && $0 == "---" {
+            print
+            in_frontmatter = 1
+            next
+        }
+        in_frontmatter && $0 == "---" {
+            if (!found) {
+                print "atUri: \"" at_uri "\""
+            }
+            print
+            in_frontmatter = 0
+            next
+        }
+        in_frontmatter {
+            line = tolower($0)
+            if (line ~ /^[[:space:]]*aturi:[[:space:]]*/) {
+                print "atUri: \"" at_uri "\""
+                found = 1
+                next
+            }
+        }
+        {
+            print
+        }
+    ' "$file" > "$rewritten"
+    mv "$rewritten" "$file"
+}
+
+state_at_uri() {
+    relative_path=$1
+
+    if [ ! -f "$state_file" ]; then
+        return
+    fi
+
+    jq -r --arg key "stage/$relative_path" '.posts[$key].atUri // empty' "$state_file"
+}
+
 printf '%s\n' '_index.md' > "$ignore_file"
 
 find "$content_dir" -type f \( -name '*.md' -o -name '*.mdx' -o -name '*.qmd' \) |
@@ -90,6 +133,9 @@ while IFS= read -r file; do
 
     if [ "$archived" = true ]; then
         at_uri=$(frontmatter_value "$file" aturi)
+        if [ -z "$at_uri" ]; then
+            at_uri=$(state_at_uri "${file#"$content_dir"/}")
+        fi
         if [ -n "$at_uri" ]; then
             echo "Previously published archived post must be deleted from Standard Site first:" >&2
             echo "  File: $file" >&2
@@ -109,7 +155,8 @@ done >> "$ignore_file"
 ignore_json=$(jq -Rsc 'split("\n") | map(select(length > 0))' "$ignore_file")
 
 mkdir -p "$runtime_dir"
-stage_dir=$(mktemp -d "$runtime_dir/stage.XXXXXX")
+rm -rf "$stage_dir"
+mkdir -p "$stage_dir"
 
 while IFS= read -r file; do
     relative_path=${file#"$content_dir"/}
@@ -144,28 +191,34 @@ while IFS= read -r file; do
     )
 
     case "$cover" in
-        ""|http://*|https://*) continue ;;
+        ""|http://*|https://*) ;;
+        *)
+            cover_path="$source_directory/$cover"
+            if [ -f "$cover_path" ]; then
+                rewritten=$(mktemp)
+                awk -v cover_path="$cover_path" '
+                    NR == 1 && $0 == "---" {
+                        in_frontmatter = 1
+                    }
+                    in_frontmatter && NR > 1 && $0 == "---" {
+                        in_frontmatter = 0
+                    }
+                    in_frontmatter && /^[[:space:]]*cover:[[:space:]]*/ {
+                        print "cover: \"" cover_path "\""
+                        next
+                    }
+                    {
+                        print
+                    }
+                ' "$destination" > "$rewritten"
+                mv "$rewritten" "$destination"
+            fi
+            ;;
     esac
 
-    cover_path="$source_directory/$cover"
-    if [ -f "$cover_path" ]; then
-        rewritten=$(mktemp)
-        awk -v cover_path="$cover_path" '
-            NR == 1 && $0 == "---" {
-                in_frontmatter = 1
-            }
-            in_frontmatter && NR > 1 && $0 == "---" {
-                in_frontmatter = 0
-            }
-            in_frontmatter && /^[[:space:]]*cover:[[:space:]]*/ {
-                print "cover: \"" cover_path "\""
-                next
-            }
-            {
-                print
-            }
-        ' "$destination" > "$rewritten"
-        mv "$rewritten" "$destination"
+    at_uri=$(state_at_uri "$relative_path")
+    if [ -n "$at_uri" ]; then
+        set_frontmatter_at_uri "$destination" "$at_uri"
     fi
 done < "$eligible_file"
 
@@ -187,7 +240,7 @@ if [ "${1:-}" = "--print-config" ]; then
 fi
 
 cd "$runtime_dir"
-npx --yes sequoia-cli@0.5.7 publish "$@"
+"$root_dir/node_modules/.bin/sequoia" publish "$@"
 
 for argument in "$@"; do
     if [ "$argument" = "--dry-run" ] || [ "$argument" = "-n" ]; then
@@ -195,7 +248,11 @@ for argument in "$@"; do
     fi
 done
 
-jq --arg content_dir "$content_dir" '.contentDir = $content_dir' \
-    "$runtime_config" > "$ignore_file"
-mv "$ignore_file" "$runtime_config"
-npx --yes sequoia-cli@0.5.7 sync --update-frontmatter
+while IFS= read -r file; do
+    relative_path=${file#"$content_dir"/}
+    staged_file="$stage_dir/$relative_path"
+    at_uri=$(frontmatter_value "$staged_file" aturi)
+    if [ -n "$at_uri" ]; then
+        set_frontmatter_at_uri "$file" "$at_uri"
+    fi
+done < "$eligible_file"
