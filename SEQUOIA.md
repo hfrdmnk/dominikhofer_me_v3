@@ -10,6 +10,7 @@ The production container calls `scripts/build.sh` before nginx starts. That scri
 HUGO_LASTFM_API_KEY=...
 ATP_IDENTIFIER=dominik.social
 ATP_APP_PASSWORD=...
+PDS_URL=https://eurosky.social
 SEQUOIA_PUBLISH=1
 GOMAXPROCS=1
 HUGO_NUMWORKERMULTIPLIER=1
