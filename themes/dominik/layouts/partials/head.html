@@ -59,6 +59,10 @@
   {{ with resources.Get "js/site.js" }}
   <script src="{{ .RelPermalink }}?v={{ md5 .Content }}" defer></script>
   {{ end }}
+  {{- if hugo.IsProduction }}
+  <script src="https://analytics.linea.studio/js/script.outbound-links.js" data-domain="dominikhofer.me" defer></script>
+  <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
+  {{- end }}
   {{- if hugo.IsDevelopment }}
   {{ with resources.Get "js/dev-theme-picker.js" }}
   <script src="{{ .RelPermalink }}?v={{ md5 .Content }}" defer></script>

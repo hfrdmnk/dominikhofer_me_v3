@@ -1,0 +1,7 @@
+{{ define "main" }}
+  <script>
+    if (window.plausible) {
+      window.plausible("404", { props: { path: document.location.pathname } });
+    }
+  </script>
+{{ end }}
