@@ -38,6 +38,19 @@
     background: var(--surface);
     color: var(--secondary);
     font-variant-numeric: tabular-nums;
+    transition: color 150ms ease;
+
+    &:focus-visible {
+        color: var(--primary);
+        outline: 2px solid var(--accent);
+        outline-offset: var(--space-2xs);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            color: var(--primary);
+        }
+    }
 }
 
 .colophon__motto {

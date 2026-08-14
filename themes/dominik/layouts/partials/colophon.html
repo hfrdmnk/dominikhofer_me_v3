@@ -4,7 +4,7 @@
 {{ end }}
 <footer class="colophon">
   <p class="colophon__meta">
-    <span class="colophon__version">v {{ site.Params.version | default "3.0" }}</span>
+    <a class="colophon__version" href="{{ "/colophon" | relURL }}">v {{ site.Params.version | default "3.0" }}</a>
     <span class="colophon__deploy" data-deploy="{{ now.Unix }}">last deployed just now</span>
   </p>
   <span class="colophon__motto"><mark><span class="highlight__text">{{ $quote }}</span></mark></span>
