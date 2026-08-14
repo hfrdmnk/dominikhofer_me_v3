@@ -63,6 +63,7 @@ Small-ish tools that always put a smile on my face:
 
 - Quick Notes: [Antinote](https://antinote.io/)
 - Blurring my Screen: [Monocle](https://www.heyiam.dk/monocle)
+- Compressing Images: [Picmal](https://picmal.app/)
 - App Blocker: [Jomo](https://jomo.so/)
 - Yoga: [Down Dog](https://www.downdogapp.com/)
 - Meditation: [Center](https://apps.apple.com/us/app/center-meditation-timer/id1332483673)
