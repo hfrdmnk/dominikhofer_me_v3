@@ -1,0 +1,5 @@
+{{- with .Params.cover -}}
+  {{- with $.Resources.Get . -}}
+<p><img src="{{ .Permalink }}" alt=""></p>
+  {{- end -}}
+{{- end -}}
