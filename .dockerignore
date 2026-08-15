@@ -1,10 +1,6 @@
-/public/
-/resources/_gen/
-/node_modules/
-/.sequoia-runtime/
-/.sequoia-state.json
-/.env
-/.env.*
-!/.env.example
-/.hugo_build.lock
-/.DS_Store
+**
+!Dockerfile
+!docker/
+!docker/nginx.conf
+!public/
+!public/**

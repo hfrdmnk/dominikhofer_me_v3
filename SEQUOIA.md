@@ -1,23 +1,28 @@
-# Sequoia publishing
+# Publishing and deployment
 
-The production container calls `scripts/build.sh` before nginx starts. That script calls `scripts/publish-sequoia.sh` when `SEQUOIA_PUBLISH=1`. Local builds leave it unset.
+`.github/workflows/deploy.yml` owns production publishing and deployment. It runs for pushes to `main`, manual dispatches, and every 30 minutes. The workflow publishes with Sequoia, builds with Hugo, pushes the finished static nginx image to GHCR, and then calls the Dokploy Application deployment webhook.
 
-`sequoia.json` owns the publication, Standard Site, and Bluesky configuration. The publish wrapper owns frontmatter-based eligibility. Sequoia state lives in `SEQUOIA_RUNTIME_DIR`, which must persist across container replacements. With state present, Sequoia scans first and only logs in when something needs publishing. A missing state triggers one PDS sync before scanning.
+The workflow serializes every production run. Sequoia state is restored from the latest GitHub Actions cache and saved immediately after publication. On the first run or after cache loss, Sequoia's `autoSync` rebuilds state from the Standard Site records in the PDS before scanning. Existing documents are therefore recognized instead of being published again. `sequoia.json` keeps Bluesky limited to new posts from the last seven days.
 
-`Dockerfile` pins Node.js and Hugo, and the npm lockfile pins Sequoia. `docker-compose.yml` owns the image build, runtime variables, internal port, and persistent volume. In Dokploy, create a Docker Compose service from the repository and set its Compose Path to `./docker-compose.yml`. Configure these variables in Dokploy's Environment tab:
+Configure these repository Actions secrets:
 
 ```text
-HUGO_LASTFM_API_KEY=...
-ATP_IDENTIFIER=dominik.social
-ATP_APP_PASSWORD=...
-PDS_URL=https://eurosky.social
-SEQUOIA_PUBLISH=1
-GOMAXPROCS=1
-HUGO_NUMWORKERMULTIPLIER=1
+ATP_APP_PASSWORD
+HUGO_LASTFM_API_KEY
+DOKPLOY_WEBHOOK_URL
 ```
 
-The Compose project automatically creates `site-data` at `/var/lib/site`. It preserves Sequoia's state and Hugo's generated-resource cache across container replacements. Generated site files stay inside each container. In Dokploy's Domains tab, route `dominikhofer.me` to the `website` service on port 80. A scheduled Dokploy redeployment starts a new container, runs the complete build with current Last.fm data, and then starts nginx.
+`DOKPLOY_WEBHOOK_URL` is the complete tokenized Application deployment URL exposed through Tailscale Funnel. Configure Funnel for only that path instead of exposing the Dokploy root. Keep the URL in GitHub Secrets because possession of it authorizes a deployment. No credential is passed to the Docker build, and `.dockerignore` limits the image context to the generated `public/` directory and nginx configuration.
 
-Bluesky publishing uses a seven-day maximum age. The initial archive backfill therefore creates Standard Site documents without flooding Bluesky. Later builds publish newly discovered, recent posts to both services.
+The first workflow run creates `ghcr.io/hfrdmnk/dominikhofer_me_v3`. New GHCR packages are private, so that bootstrap run stops after pushing the image and before calling Dokploy. Make the package public in its GitHub package settings, then rerun the workflow. Later runs verify anonymous pull access before every Dokploy call. The image contains only nginx and the generated site.
 
-The Hugo templates own website, RSS, sitemap, and robots behavior. Posts marked `archived: true` or `draft: true` are excluded from Standard Site. The wrapper stops if an archived post still carries the `atUri` of a previously published Standard Site document.
+In Dokploy, configure an Application with the Docker provider:
+
+1. Set the image to `ghcr.io/hfrdmnk/dominikhofer_me_v3:latest` and the registry URL to `ghcr.io`. Leave username and password empty after making the package public.
+2. Keep Auto Deploy enabled for the Application webhook, but do not install a GitHub repository webhook or a Dokploy schedule. GitHub Actions is the only caller of the deployment webhook.
+3. Remove the former Hugo, Sequoia, Last.fm, and ATProto environment variables from the Application.
+4. Route `dominikhofer.me` to the Application on port 80.
+
+The Docker provider pulls and starts the finished GHCR image. Dokploy does not use the repository, `Dockerfile`, or any build type.
+
+`scripts/publish-sequoia.sh` owns frontmatter eligibility and state injection. Posts marked `archived: true` or `draft: true` are excluded from Standard Site. The wrapper stops if an archived post still carries the `atUri` of a previously published Standard Site document.
