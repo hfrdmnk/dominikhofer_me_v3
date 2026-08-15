@@ -1,6 +1,6 @@
 # Publishing and deployment
 
-`.github/workflows/deploy.yml` owns production publishing and deployment. It runs for pushes to `main`, manual dispatches, and every 30 minutes. The workflow publishes with Sequoia, builds with Hugo, pushes the finished static nginx image to GHCR, and then calls the Dokploy Application deployment webhook.
+`.github/workflows/deploy.yml` owns production publishing and deployment. It runs for pushes to `main`, manual dispatches, and once an hour. The workflow publishes with Sequoia, builds with Hugo, pushes the finished static nginx image to GHCR, and then calls the Dokploy Application deployment webhook.
 
 The workflow serializes every production run. Sequoia state is restored from the latest GitHub Actions cache and saved immediately after publication. On the first run or after cache loss, Sequoia's `autoSync` rebuilds state from the Standard Site records in the PDS before scanning. Existing documents are therefore recognized instead of being published again. `sequoia.json` keeps Bluesky limited to new posts from the last seven days.
 
