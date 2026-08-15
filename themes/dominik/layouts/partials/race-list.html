@@ -30,9 +30,11 @@
           </header>
 
           {{- with $raceArt }}
-            <svg class="race-card__route" viewBox="0 0 640 430" focusable="false" aria-hidden="true">
-              <path d="{{ .route }}" />
-            </svg>
+            <div class="race-card__route-frame">
+              <svg class="race-card__route" viewBox="0 0 640 430" width="640" height="430" focusable="false" aria-hidden="true">
+                <path d="{{ .route }}" />
+              </svg>
+            </div>
           {{- end }}
 
           <dl class="race-card__stats">

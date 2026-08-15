@@ -14,6 +14,9 @@ enable = true
 block = [['$$', '$$']]
 inline = [['$', '$']]
 
+[minify.tdewolff.html]
+keepQuotes = true
+
 [permalinks]
 posts = '/:slug/'
 races = '/:slug/'

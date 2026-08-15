@@ -153,15 +153,22 @@
     justify-content: flex-end;
 }
 
-.race-card__route {
+.race-card__route-frame {
     grid-row: 2;
     position: relative;
     z-index: 1;
+    min-inline-size: 0;
+    min-block-size: 0;
+    overflow: hidden;
+}
+
+.race-card__route {
+    position: absolute;
+    inset: 0;
     inline-size: 100%;
     block-size: 100%;
-    min-block-size: 0;
+    display: block;
     color: var(--accent);
-    overflow: visible;
 
     path {
         fill: none;
