@@ -12,6 +12,9 @@
     </div>
     <form class="follow-card__form" action="https://buttondown.com/api/emails/embed-subscribe/dominikhofer"
         method="post">
+        <label class="visually-hidden" for="follow-card-first-name">First name</label>
+        <input class="follow-card__input" id="follow-card-first-name" type="text" name="metadata__first_name"
+            placeholder="First name" autocomplete="given-name" enterkeyhint="next" required>
         <label class="visually-hidden" for="follow-card-email">Email address</label>
         <input class="follow-card__input" id="follow-card-email" type="email" name="email" placeholder="Email address"
             autocomplete="email" enterkeyhint="send" required>
@@ -29,7 +32,8 @@
             <span class="follow-card__submit-state" data-button-state="danger" aria-hidden="true">
                 <svg class="follow-card__submit-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
+                    <path
+                        d="M6.75827 17.2426L12.0009 12M17.2435 6.75736L12.0009 12M12.0009 12L6.75827 6.75736M12.0009 12L17.2435 17.2426"
                         stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </span>
@@ -38,7 +42,7 @@
     <div class="follow-card__alternatives">
         <p>If you prefer, you can also follow along via RSS or standard.site:</p>
         <div class="follow-card__links">
-            <a class="button-underline follow-card__link" href="{{ "rss.xml" | relURL }}" target="_blank"
+            <a class="button-underline follow-card__link" href="{{ " rss.xml" | relURL }}" target="_blank"
                 rel="noopener noreferrer">RSS feed</a>
             <sequoia-subscribe button-type="plain" label="Standard Site">
                 {{- with $publicationURI -}}

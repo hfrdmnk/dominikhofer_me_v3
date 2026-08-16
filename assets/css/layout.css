@@ -32,11 +32,11 @@
     grid-template-columns: subgrid;
     min-inline-size: 0;
 
-    > * {
+    >* {
         grid-column: main-start / main-end;
     }
 
-    > .breakout {
+    >.breakout {
         grid-column: breakout-start / breakout-end;
     }
 
@@ -54,7 +54,7 @@
     display: grid;
     grid-template-columns: subgrid;
     align-items: start;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     color: var(--tertiary);
 
     @media (width < 60rem) {
@@ -163,7 +163,7 @@
     flex-direction: column;
     justify-content: space-around;
 
-    > span {
+    >span {
         inline-size: 2rem;
         block-size: 1.5px;
         border-radius: 999px;
@@ -190,7 +190,7 @@
         opacity 160ms ease,
         transform 260ms cubic-bezier(0.19, 1, 0.22, 1);
 
-    > span {
+    >span {
         position: absolute;
         inline-size: 1.5rem;
         block-size: 1.5px;
@@ -204,7 +204,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     color: var(--tertiary);
 
     a {
@@ -245,6 +245,7 @@
     --meta-link-icon-x: -0.25rem;
 
     position: relative;
+    font-size: var(--text-base);
 
     .iconoir {
         position: absolute;
@@ -341,7 +342,7 @@
             visibility 0s;
     }
 
-    .nav__toggle-bars > span {
+    .nav__toggle-bars>span {
         transform: translateX(120%);
     }
 
@@ -349,11 +350,11 @@
         opacity: 1;
         transform: translateX(0);
 
-        > span:first-child {
+        >span:first-child {
             transform: rotate(45deg);
         }
 
-        > span:last-child {
+        >span:last-child {
             transform: rotate(-45deg);
         }
     }
@@ -363,11 +364,15 @@
     body::before {
         content: "";
         position: fixed;
-        inset-block-start: 0;
+        inset-block-start: calc(0px - env(safe-area-inset-top, 0px));
         inset-inline: 0;
         z-index: 10;
-        block-size: var(--mobile-menu-fade-size);
-        background: linear-gradient(to bottom, var(--bg), transparent);
+        block-size: calc(var(--mobile-menu-fade-size) + env(safe-area-inset-top, 0px));
+        background: linear-gradient(
+            to bottom,
+            var(--bg) 0 env(safe-area-inset-top, 0px),
+            transparent 100%
+        );
         pointer-events: none;
     }
 
@@ -382,9 +387,9 @@
         transition: opacity 160ms ease, visibility 0s linear 160ms;
     }
 
-    .nav__toggle-bars > span,
+    .nav__toggle-bars>span,
     .nav__toggle-close,
-    .nav__toggle-close > span {
+    .nav__toggle-close>span {
         transition: opacity 160ms ease;
     }
 

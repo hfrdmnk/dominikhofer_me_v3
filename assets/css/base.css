@@ -1,6 +1,10 @@
 /* Base */
+html,
 body {
-    background: var(--bg);
+    background-color: var(--bg);
+}
+
+body {
     color: var(--primary);
     font-family: var(--font-sans);
     font-size: var(--text-base);
