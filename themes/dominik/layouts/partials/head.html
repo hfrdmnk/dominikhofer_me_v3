@@ -1,7 +1,7 @@
 <head>
   {{- partial "validate-post-state.html" . }}
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{{ if or .IsHome (not .Title) }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
   {{- if .Params.feed_only }}
   <meta name="description" content="{{ site.Params.description }}">

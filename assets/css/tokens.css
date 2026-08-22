@@ -85,6 +85,10 @@
     --breakout: 2rem;
     --pad-inline: clamp(1.5rem, 5vw, 5rem);
     --pad-block: clamp(1.75rem, 4vh, 2.75rem);
+    --safe-pad-inline-start: calc(var(--pad-inline) + env(safe-area-inset-left, 0px));
+    --safe-pad-inline-end: calc(var(--pad-inline) + env(safe-area-inset-right, 0px));
+    --safe-pad-block-start: calc(var(--pad-block) + env(safe-area-inset-top, 0px));
+    --safe-pad-block-end: calc(var(--pad-block) + env(safe-area-inset-bottom, 0px));
     --gap-col: clamp(1.5rem, 4vw, 3rem);
     --headroom: clamp(14rem, 22vh, 16rem);
     --mobile-menu-fade-size: calc(var(--pad-block) + 2.75rem + var(--space-2xl));
