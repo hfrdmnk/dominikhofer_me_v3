@@ -370,7 +370,7 @@
         block-size: calc(var(--mobile-menu-fade-size) + env(safe-area-inset-top, 0px));
         background: linear-gradient(
             to bottom,
-            var(--bg) 0 env(safe-area-inset-top, 0px),
+            var(--bg) 0 calc(env(safe-area-inset-top, 0px) + var(--pad-block) + var(--topbar-line)),
             transparent 100%
         );
         pointer-events: none;
