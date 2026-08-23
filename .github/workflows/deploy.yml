@@ -148,6 +148,14 @@ jobs:
             exit 1
           fi
 
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:github-actions
+          ping: dokploy.tailc2dfee.ts.net
+
       - name: Trigger Dokploy
         env:
           DOKPLOY_WEBHOOK_URL: ${{ secrets.DOKPLOY_WEBHOOK_URL }}
@@ -157,7 +165,8 @@ jobs:
             --arg repository "$GITHUB_REPOSITORY" \
             '{ref: $ref, repository: {full_name: $repository}}')
           curl --fail-with-body --silent --show-error \
-            --retry 3 --retry-all-errors \
+            --connect-timeout 10 --max-time 30 \
+            --retry 5 --retry-connrefused --retry-delay 5 \
             --request POST \
             --header "Content-Type: application/json" \
             --header "X-GitHub-Event: push" \
