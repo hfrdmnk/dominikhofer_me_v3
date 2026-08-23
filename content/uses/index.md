@@ -22,7 +22,7 @@ I’m always trying to reduce the amount of “stuff” in my life (be it physic
 - Phone: [iPhone 14 Pro](https://www.apple.com/iphone/)
 - Camera: [Ricoh GR IIIx](https://www.ricoh-imaging.co.jp/english/products/gr-3/)
 - E-Reader: [Tolino Vision Color](https://mytolino.com/products/tolino-vision-color/)
-- Sports Watch: [Garmin Forerunner 255S Music](https://www.garmin.com/en-US/p/780154/)
+- Sports Watch: [Coros Pace 4](https://coros.com/pace4)
 
 ## Software
 
