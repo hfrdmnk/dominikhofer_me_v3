@@ -2,7 +2,7 @@
 title: "Daily drivers and other things I love using."
 kicker: "Uses"
 cover: "uses.avif"
-updated: 2026-08-08
+updated: 2026-09-18
 ---
 
 {{< prose >}}
@@ -19,7 +19,7 @@ I’m always trying to reduce the amount of “stuff” in my life (be it physic
 - Headphones: [AirPods Pro 2](https://www.apple.com/airpods-pro/)
 - Digital Notetaking: [reMarkable Paper 2](https://remarkable.com/store/remarkable-2)
 - Tablet: [Apple iPad Air 4 10.9”](https://www.apple.com/ipad-air/)
-- Phone: [iPhone 14 Pro](https://www.apple.com/iphone/)
+- Phone: [Google Pixel 9a](https://store.google.com/product/pixel_9a)
 - Camera: [Ricoh GR IIIx](https://www.ricoh-imaging.co.jp/english/products/gr-3/)
 - E-Reader: [Tolino Vision Color](https://mytolino.com/products/tolino-vision-color/)
 - Sports Watch: [Coros Pace 4](https://coros.com/pace4)
@@ -27,13 +27,14 @@ I’m always trying to reduce the amount of “stuff” in my life (be it physic
 ## Software
 
 - Browser: [Helium](https://helium.computer/)
-- E-Mail: [Apple Mail](https://apps.apple.com/us/app/mail/id1108187098) (Client), [kMail](https://www.infomaniak.com/en/hosting/service-mail) (Custom Domain Email)
+- E-Mail: [Apple Mail](https://apps.apple.com/us/app/mail/id1108187098) (Client Mac), [Gmail](https://gmail.com) (Client Phone), [kMail](https://www.infomaniak.com/en/hosting/service-mail) (Custom Domain Email)
 - Files: [kDrive](https://www.infomaniak.com/en/kdrive)
-- Calendar: [Apple Calendar](https://apps.apple.com/us/app/calendar/id1108185179) (Client), [Google Calendar](https://calendar.google.com) (Sync)
-- Task Manager: [Things 3](https://culturedcode.com/things/)
+- Photos: [Ente Photos](https://ente.com)
+- Calendar: [Apple Calendar](https://apps.apple.com/us/app/calendar/id1108185179) (Client Mac), [Google Calendar](https://calendar.google.com) (Sync & Client Phone)
+- Task Manager: [Todoist](https://todoist.com/)
 - Password Manager: [1Password](https://1password.com/)
 - Writing: [iA Writer](https://ia.net/writer)
-- Notetaking: [iA Writer](https://ia.net/writer), [Obsidian](https://obsidian.md/), [Apple Notes](https://apps.apple.com/us/app/notes/id1110145109)
+- Notetaking: [iA Writer](https://ia.net/writer), [Obsidian](https://obsidian.md/), [Google Keep](https://keep.google.com/)
 - Music: [Spotify](https://www.spotify.com/), [Endel](https://endel.io/)
 - Podcasts: [Pocket Casts](https://pocketcasts.com/)
 - RSS Reader: [NetNewsWire](https://netnewswire.com/)
@@ -45,7 +46,6 @@ I’m always trying to reduce the amount of “stuff” in my life (be it physic
 - Running Coach: [Runna](https://www.runna.com/)
 - Inspiration: [mymind](https://mymind.com/), [Cosmos](https://www.cosmos.so/)
 - Diary: [Day One](https://dayoneapp.com/)
-- Finance Tracker: [Dime](https://apps.apple.com/us/app/dime-budget-expense-tracker/id1635280255)
 
 ## Physical
 
@@ -64,7 +64,5 @@ Small-ish tools that always put a smile on my face:
 - Quick Notes: [Antinote](https://antinote.io/)
 - Blurring my Screen: [Monocle](https://www.heyiam.dk/monocle)
 - Compressing Images: [Picmal](https://picmal.app/)
-- App Blocker: [Jomo](https://jomo.so/)
 - Yoga: [Down Dog](https://www.downdogapp.com/)
-- Meditation: [Center](https://apps.apple.com/us/app/center-meditation-timer/id1332483673)
 {{< /prose >}}
