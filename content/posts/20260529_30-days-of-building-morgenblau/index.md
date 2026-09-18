@@ -10,7 +10,7 @@ draft: false
 favorite: false
 ---
 
-Last Tuesday, I completed [my latest PACT](/a-new-commitment): Committing at least once a day to the [Morgenblau repo](https://tangled.org/dominik.social/morgenblau) (the RSS reader I’m building) and posting about it over on [Bluesky](https://bsky.app/profile/dominik.social) for 30 days.
+Last Tuesday, I completed [my latest PACT](/a-new-commitment): Committing at least once a day to the [Morgenblau repo](https://tangled.org/dominikhofer.me/morgenblau) (the RSS reader I’m building) and posting about it over on [Bluesky](https://bsky.app/profile/dominikhofer.me) for 30 days.
 
 Whilst I’m nowhere near a finished product, I did make significant progress:
 

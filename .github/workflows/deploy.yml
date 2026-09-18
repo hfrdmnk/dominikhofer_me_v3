@@ -91,7 +91,7 @@ jobs:
 
       - name: Publish eligible posts
         env:
-          ATP_IDENTIFIER: dominik.social
+          ATP_IDENTIFIER: dominikhofer.me
           ATP_APP_PASSWORD: ${{ secrets.ATP_APP_PASSWORD }}
           PDS_URL: https://eurosky.social
         run: ./scripts/publish-sequoia.sh

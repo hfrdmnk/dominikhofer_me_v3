@@ -59,7 +59,7 @@ On a more personal level, seeing the Bluesky team communicating just gives me a 
 
 All of that said, I still believe that the best thing you can do on the web is [having your own personal website](/personal-internet-home). Social media should be an extension to your online presence, not _be_ your online presence. At least that’s my opinion.
 
-That’s why you’ll still mainly find my content here on this website. But you can now also find me on [Bluesky](https://bsky.app/profile/dominik.social) as well as on [Mastodon](https://mastodon.design/@dominik)[^5]. Or [write me an email](/hello), that’s still the best and most personal medium for getting in touch online :)
+That’s why you’ll still mainly find my content here on this website. But you can now also find me on [Bluesky](https://bsky.app/profile/dominikhofer.me) as well as on [Mastodon](https://mastodon.design/@dominik)[^5]. Or [write me an email](/hello), that’s still the best and most personal medium for getting in touch online :)
 
 ## Further reading
 
@@ -83,7 +83,7 @@ And here is [an earlier post of mine](/diving-into-the-fediverse-once-again) whe
 - [A directory of Bluesky starter packs and tools](https://blueskydirectory.com/)
 - [Find new people to follow](https://bsky-follow-finder.theo.io/)
 
-[^1]: Or, in my case, [@dominikhofer.me](https://bsky.app/profile/dominik.social) :)
+[^1]: Or, in my case, [@dominikhofer.me](https://bsky.app/profile/dominikhofer.me) :)
 
 [^2]: Apart from a blogging platform called [WhiteWind](https://whtwnd.com/) I know of.
 

@@ -31,7 +31,7 @@ Primarily within the Open Social Web. Protocols like [ActivityPub](https://domin
 
 If you don’t know what AT is, I can only recommend you to read this phenomenal post by Dan Abramov: [Open Social](https://overreacted.io/open-social/)
 
-But in short, in this protocol, each user controls their data in a thing called “PDS”, short for “Personal Data Server”. No matter what data type, a [Bluesky](https://bsky.app/profile/dominik.social) Post, a book logged on [Bookhive](https://bookhive.buzz/profile/dominik.social) a repo hosted over on [Tangled](https://tangled.org/) or even a [simple static website](https://wisp.place/) – everything is in there[^2]. And you can pretty easily host it yourself, especially compared to let’s say a full-fledged ActivityPub server.
+But in short, in this protocol, each user controls their data in a thing called “PDS”, short for “Personal Data Server”. No matter what data type, a [Bluesky](https://bsky.app/profile/dominikhofer.me) Post, a book logged on [Bookhive](https://bookhive.buzz/profile/dominikhofer.me) a repo hosted over on [Tangled](https://tangled.org/) or even a [simple static website](https://wisp.place/) – everything is in there[^2]. And you can pretty easily host it yourself, especially compared to let’s say a full-fledged ActivityPub server.
 
 Back to the topic of a more social IndieWeb. The good news is: There is some progress being made in this space. I especially wanted to highlight three projects here:
 

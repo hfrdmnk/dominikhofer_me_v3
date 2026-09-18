@@ -33,4 +33,4 @@ The “Everything Account” and by extension the “[Internet Handle](https://i
 
 Because people care more about the fact that they can use their beloved handle anywhere instead of which server their data is exactly hosted on.
 
-No more dominik03 accounts, just [dominik.social](https://dominik.social/) everywhere.
+No more dominik03 accounts, just [dominikhofer.me](https://dominikhofer.me/) everywhere.

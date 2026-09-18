@@ -16,5 +16,5 @@ Simply send me an email and tell me your idea, what you're up to, where I can he
 
 I try to limit my social media consumption as much as possible. That's why you'll only really find me on Bluesky & Mastodon (albeit just semi-regularly). I share some updates/new blogposts on there, so feel free to join me:
 
-[Bluesky](https://bsky.app/profile/dominik.social "button-underline") [Mastodon](https://social.lol/@dominikhofer "button-underline")
+[Bluesky](https://bsky.app/profile/dominikhofer.me "button-underline") [Mastodon](https://social.lol/@dominikhofer "button-underline")
 {{< /prose >}}

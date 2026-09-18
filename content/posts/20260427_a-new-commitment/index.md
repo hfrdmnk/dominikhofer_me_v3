@@ -19,10 +19,10 @@ But I'm still very excited about the project, so I want to get into the flow aga
 
 That's why I'm starting another 30-day PACT:
 
-> I will commit daily to the [Morgenblau repo](https://tangled.org/dominik.social/morgenblau) and post about it on [Bluesky](https://bsky.app/profile/dominik.social) for the next 30 days.
+> I will commit daily to the [Morgenblau repo](https://tangled.org/dominikhofer.me/morgenblau) and post about it on [Bluesky](https://bsky.app/profile/dominikhofer.me) for the next 30 days.
 
 You can also follow along on this website by checking out the posts with [#morgenblau](/tag/morgenblau).
 
-I already marked day 1 off for this challenge, because [my post](https://bsky.app/profile/dominik.social/post/3mkidwnadlc2e) for the day is out.
+I already marked day 1 off for this challenge, because [my post](https://bsky.app/profile/dominikhofer.me/post/3mkidwnadlc2e) for the day is out.
 
 See you tomorrow on Bluesky!

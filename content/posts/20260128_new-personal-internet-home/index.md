@@ -18,7 +18,7 @@ Enjoy :)
 
 ## The reason
 
-I wasn’t really “unhappy” with my old website per se, there were just a few gripes I had with it. I still like the design and could’ve definitely used it on this new site as well, but I also wanted to go in another direction, ever since [posting a logo concept](https://bsky.app/profile/dominik.social/post/3m4dxuln32e2k) a couple of months ago.
+I wasn’t really “unhappy” with my old website per se, there were just a few gripes I had with it. I still like the design and could’ve definitely used it on this new site as well, but I also wanted to go in another direction, ever since [posting a logo concept](https://bsky.app/profile/dominikhofer.me/post/3m4dxuln32e2k) a couple of months ago.
 
 The main “problems” with the old site were:
 - It felt too “static” to me and the blog posts weren’t really first class citizens. 

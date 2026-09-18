@@ -46,8 +46,8 @@ replyEmail = 'hi@dominikhofer.me'
 did = 'did:plc:fthx2gjakdj4ynxxu5vysjty'
 
 [params.bookhive]
-profile = 'https://bookhive.buzz/profile/dominik.social'
+profile = 'https://bookhive.buzz/profile/dominikhofer.me'
 
 [params.semble]
-profile = 'https://semble.so/profile/dominik.social'
+profile = 'https://semble.so/profile/dominikhofer.me'
 findsCollection = 'at://did:plc:fthx2gjakdj4ynxxu5vysjty/network.cosmik.collection/3mmg5d62hv62f'
