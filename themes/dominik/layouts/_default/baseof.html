@@ -9,7 +9,9 @@
     <main class="content" id="content">
       {{ partial "page-title.html" . }}
       {{ block "main" . }}{{ end }}
+      {{- if not .Params.noindex }}
       {{ partialCached "follow-card.html" . }}
+      {{- end }}
     </main>
     {{ block "page-aside" . }}{{ end }}
     {{ partialCached "colophon.html" . }}

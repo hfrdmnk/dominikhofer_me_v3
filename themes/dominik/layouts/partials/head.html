@@ -8,7 +8,7 @@
   {{- else }}
   {{ with .Description | default site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
   {{- end }}
-  {{- if or .Params.archived .Params.feed_only }}
+  {{- if or .Params.archived .Params.feed_only .Params.noindex }}
   <meta name="robots" content="noindex, nofollow">
   {{- end }}
   {{ partial "social-meta.html" . }}
