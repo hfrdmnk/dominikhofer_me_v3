@@ -19,6 +19,9 @@ hugo_stats.json
 # Dependencies
 /node_modules/
 
+# Orb portal metadata
+/.amp/portals/*
+
 # OS / editor
 .DS_Store
 Thumbs.db
