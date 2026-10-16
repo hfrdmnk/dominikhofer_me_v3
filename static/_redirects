@@ -20,3 +20,5 @@
 /photos/ /about/ 301
 /slash / 301
 /slash/ / 301
+/newsletter https://buttondown.com/dominikhofer 302
+/newsletter/ https://buttondown.com/dominikhofer 302
