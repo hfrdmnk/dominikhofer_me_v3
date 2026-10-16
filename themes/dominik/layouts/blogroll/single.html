@@ -3,29 +3,64 @@
   {{- $resourceName := "feeds.opml" -}}
   {{- with .Resources.Get $resourceName -}}
     {{- $opml := transform.Unmarshal (dict "format" "xml") . -}}
-    {{- $sections := $opml.body.outline -}}
-    {{- if not $sections -}}
-      {{- errorf "Blogroll resource %q does not contain any sections" $resourceName -}}
+    {{- $outlines := $opml.body.outline -}}
+    {{- if not $outlines -}}
+      {{- errorf "Blogroll resource %q does not contain any feeds" $resourceName -}}
     {{- end -}}
-    {{- if not (reflect.IsSlice $sections) -}}
-      {{- $sections = slice $sections -}}
+    {{- if not (reflect.IsSlice $outlines) -}}
+      {{- $outlines = slice $outlines -}}
+    {{- end -}}
+    {{- /* Top-level outlines are either category folders or feeds without a folder. */ -}}
+    {{- $otherTitle := "Other" -}}
+    {{- $uncategorized := slice -}}
+    {{- range $outlines -}}
+      {{- if index . "-xmlUrl" -}}
+        {{- $uncategorized = $uncategorized | append . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $sections := slice -}}
+    {{- range $outlines -}}
+      {{- if not (index . "-xmlUrl") -}}
+        {{- $title := or (index . "-title") (index . "-text") -}}
+        {{- $feeds := slice -}}
+        {{- with .outline -}}
+          {{- $feeds = cond (reflect.IsSlice .) . (slice .) -}}
+        {{- end -}}
+        {{- /* A folder already named Other takes the feeds without a folder. */ -}}
+        {{- if and $uncategorized (eq (anchorize $title) (anchorize $otherTitle)) -}}
+          {{- $feeds = $feeds | append $uncategorized -}}
+          {{- $uncategorized = slice -}}
+        {{- end -}}
+        {{- with $feeds -}}
+          {{- $sections = $sections | append (dict "title" $title "feeds" .) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $uncategorized -}}
+      {{- $sections = $sections | append (dict "title" $otherTitle "feeds" .) -}}
     {{- end -}}
     <div class="prose blogroll">
       {{ $page.Content }}
       {{- range $sections }}
-        {{- $sectionTitle := index . "-title" -}}
-        {{- $feeds := .outline -}}
-        {{- if not (reflect.IsSlice $feeds) -}}
-          {{- $feeds = slice $feeds -}}
+        {{- $sectionTitle := .title -}}
+        {{- $feeds := slice -}}
+        {{- range .feeds -}}
+          {{- $title := or (index . "-title") (index . "-text") -}}
+          {{- $feeds = $feeds | append (dict
+            "title" $title
+            "sortKey" (lower $title)
+            "htmlURL" (index . "-htmlUrl")
+            "xmlURL" (index . "-xmlUrl")
+          ) -}}
         {{- end -}}
         {{- $sectionID := $sectionTitle | anchorize -}}
         <section class="blogroll__section" aria-labelledby="{{ $sectionID }}">
           <h2 id="{{ $sectionID }}">{{ $sectionTitle }}</h2>
           <ul class="blogroll__list">
-            {{- range $feeds }}
-              {{- $title := index . "-title" -}}
-              {{- $htmlURL := index . "-htmlUrl" -}}
-              {{- $xmlURL := index . "-xmlUrl" -}}
+            {{- range sort $feeds "sortKey" }}
+              {{- $title := .title -}}
+              {{- $htmlURL := .htmlURL -}}
+              {{- $xmlURL := .xmlURL -}}
               <li class="blogroll__item">
                 <a class="blogroll__site" href="{{ $htmlURL | safeURL }}" target="_blank" rel="noopener noreferrer">{{ $title }}</a>
                 <a class="blogroll__feed" href="{{ $xmlURL | safeURL }}" target="_blank" rel="noopener noreferrer" aria-label="RSS feed for {{ $title }}">

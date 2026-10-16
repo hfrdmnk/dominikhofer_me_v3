@@ -13,6 +13,7 @@
 /races/rss/ /rss.xml 301
 /races/rss.xml /rss.xml 301
 /newsletter.xml /rss.xml 301
+/feed.xml /rss.xml 301
 
 /notes /posts/ 301
 /notes/ /posts/ 301

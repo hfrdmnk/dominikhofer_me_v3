@@ -1,0 +1,67 @@
+{{- /* SocialSpec files (socialspec.org), served from /.well-known/. */ -}}
+{{- $base := strings.TrimSuffix "/" site.BaseURL -}}
+
+{{- with site.GetPage "/about" -}}
+  {{- /* prose only wraps Markdown, so it can be dropped. Any other shortcode would need its own handling. */ -}}
+  {{- $body := .RawContent | replaceRE `(?m)^\{\{<\s*/?prose\s*>\}\}[ \t]*\n?` "" | strings.TrimSpace -}}
+  {{- with findRE `\{\{[<%].*?[>%]\}\}` $body 1 -}}
+    {{- errorf "SocialSpec: about.md cannot include shortcode %s" (index . 0) -}}
+  {{- end -}}
+
+  {{- /* The file is read off-site, so root-relative links need the site's origin. */ -}}
+  {{- $body = $body | replaceRE `\]\(/([^/])` (printf "](%s/$1" $base) -}}
+  {{- $body = $body | replaceRE `(?m)^( {0,3}\[[^\]^][^\]]*\]:[ \t]*)/([^/])` (printf "${1}%s/$2" $base) -}}
+  {{- $body = $body | replaceRE `\b(href|src)=(["'])/([^/])` (printf `${1}=${2}%s/${3}` $base) -}}
+  {{- $links := slice -}}
+  {{- range findRESubmatch `\]\(<?([^)\s>]+)` $body -}}
+    {{- $links = $links | append (index . 1) -}}
+  {{- end -}}
+  {{- range findRESubmatch `(?m)^ {0,3}\[[^\]^][^\]]*\]:[ \t]*<?([^\s>]+)` $body -}}
+    {{- $links = $links | append (index . 1) -}}
+  {{- end -}}
+  {{- range findRESubmatch `\b(?:href|src)=["']([^"']*)["']` $body -}}
+    {{- $links = $links | append (index . 1) -}}
+  {{- end -}}
+  {{- range $links -}}
+    {{- if not (or (hasPrefix . "#") (hasPrefix . "//") (findRE `^[a-zA-Z][a-zA-Z0-9+.-]*:` . 1)) -}}
+      {{- errorf "SocialSpec: about.md link %q is page-relative; use /path or a full URL" . -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $md := printf "---\nsummary: %s\n---\n\n# %s\n\n%s\n" (jsonify site.Params.description) .Title $body -}}
+  {{- (resources.FromString "/.well-known/about.md" $md).Publish -}}
+{{- else -}}
+  {{- errorf "SocialSpec: about page not found" -}}
+{{- end -}}
+
+{{- with site.GetPage "/blogroll" -}}
+  {{- with .Resources.Get "feeds.opml" -}}
+    {{- (resources.Copy "/.well-known/following.opml" .).Publish -}}
+  {{- else -}}
+    {{- errorf "SocialSpec: blogroll OPML not found" -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "SocialSpec: blogroll page not found" -}}
+{{- end -}}
+
+{{- $name := site.Title -}}
+{{- $email := site.Params.replyEmail -}}
+{{- $handle := "" -}}
+{{- with site.Params.atproto -}}
+  {{- $handle = .handle -}}
+{{- end -}}
+{{- if not (and $name $email $handle) -}}
+  {{- errorf "SocialSpec: contact.vcf needs title, params.replyEmail and params.atproto.handle in hugo.toml" -}}
+{{- end -}}
+{{- /* vCard text values escape backslashes, commas and semicolons. */ -}}
+{{- $name = replace (replace (replace $name `\` `\\`) `,` `\,`) `;` `\;` -}}
+{{- $vcard := slice
+  "BEGIN:VCARD"
+  "VERSION:4.0"
+  (printf "FN:%s" $name)
+  (printf "EMAIL;PREF=1:%s" $email)
+  (printf "URL:%s" site.BaseURL)
+  (printf "SOCIALPROFILE;SERVICE-TYPE=Bluesky:https://bsky.app/profile/%s" $handle)
+  "END:VCARD"
+-}}
+{{- (resources.FromString "/.well-known/contact.vcf" (print (delimit $vcard "\r\n") "\r\n")).Publish -}}

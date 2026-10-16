@@ -44,6 +44,7 @@ replyEmail = 'hi@dominikhofer.me'
 
 [params.atproto]
 did = 'did:plc:fthx2gjakdj4ynxxu5vysjty'
+handle = 'dominikhofer.me'
 
 [params.bookhive]
 profile = 'https://bookhive.buzz/profile/dominikhofer.me'
