@@ -1,6 +1,7 @@
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 {{- $pages := where site.RegularPages "Section" "posts" }}
 {{- $pages = where $pages "Params.archived" "ne" true }}
+{{- $pages = where $pages "Params.newsletter" "ne" true }}
 {{- $pages = $pages.ByDate.Reverse }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>

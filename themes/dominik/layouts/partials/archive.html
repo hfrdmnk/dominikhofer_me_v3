@@ -41,11 +41,12 @@
       {{- end }}
       {{- range $group.Pages }}
       <li class="post-list__item" data-post-year="{{ $group.Key }}" data-favorite="{{ .Params.favorite | default false }}" data-tags="{{ delimit (.Params.tags | default (slice)) "|" }}">
-        <a class="post-list__link" href="{{ .RelPermalink }}">
+        <a class="post-list__link" href="{{ .Params.external_url | default .RelPermalink }}"{{ if .Params.external_url }} target="_blank" rel="noopener noreferrer"{{ end }}>
           <span class="post-list__title">
             {{- if and (ne $filter "favorite") .Params.favorite }}<mark>{{ end -}}
             {{- if .Title }}{{ .Title }}{{ else }}{{ .Summary | plainify | truncate 70 }}{{ end -}}
             {{- if and (ne $filter "favorite") .Params.favorite }}</mark>{{ end -}}
+            {{- if .Params.external_url }}<span class="post-list__external">{{ partial "icons/open-new-window.html" }}<span class="visually-hidden"> (opens in a new tab)</span></span>{{ end -}}
           </span>
           <time class="post-list__date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
         </a>

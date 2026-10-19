@@ -42,6 +42,10 @@ location = 'Bern, CH'
 description = 'Dominik Hofer. Striving for Simplicity in a complex World.'
 replyEmail = 'hi@dominikhofer.me'
 
+[params.newsletter]
+title = 'Trust the Process'
+feed = 'https://buttondown.com/dominikhofer/rss'
+
 [params.atproto]
 did = 'did:plc:fthx2gjakdj4ynxxu5vysjty'
 handle = 'dominikhofer.me'

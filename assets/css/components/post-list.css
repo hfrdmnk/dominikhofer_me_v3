@@ -34,3 +34,15 @@
     font-size: var(--text-sm);
     font-variant-numeric: tabular-nums;
 }
+
+.post-list__external {
+    margin-inline-start: 0.35em;
+    color: var(--tertiary);
+
+    .iconoir {
+        display: inline;
+        inline-size: 0.8em;
+        block-size: 0.8em;
+        vertical-align: -0.05em;
+    }
+}
