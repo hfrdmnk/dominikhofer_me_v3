@@ -1,10 +1,10 @@
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
-{{ printf "<?xml-stylesheet href=\"/styles/rss.xsl\" type=\"text/xsl\"?>" | safeHTML }}
 {{- $pages := where site.RegularPages "Section" "posts" }}
 {{- $pages = where $pages "Params.archived" "ne" true }}
 {{- $pages = $pages.ByDate.Reverse }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
+    <script xmlns="http://www.w3.org/1999/xhtml" src="/styles/rss.js" defer=""/>
     <title>{{ site.Title | transform.XMLEscape }}</title>
     <link>{{ site.Home.Permalink }}</link>
     <description>{{ site.Params.description | transform.XMLEscape }}</description>
