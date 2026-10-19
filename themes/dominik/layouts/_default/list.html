@@ -1,8 +1,0 @@
-{{ define "main" }}
-  {{- $page := . -}}
-  {{- with .Content -}}
-    {{ . }}
-  {{- else -}}
-    {{ partial "archive.html" (dict "pages" $page.Pages) }}
-  {{- end -}}
-{{ end }}

@@ -1,0 +1,63 @@
+---
+import { getImage } from "astro:assets";
+import { blobUrl, listRecords } from "../lib/atproto";
+import { SITE } from "../site";
+
+interface Book {
+  title: string;
+  authors: string;
+  hiveId: string;
+  status?: string;
+  cover?: { ref: { $link: string } };
+}
+
+const { ok, records } = await listRecords<Book>("buzz.bookhive.book");
+const reading = ok ? records.filter((record) => record.value.status === "buzz.bookhive.defs#reading") : [];
+
+async function coverImage(book: Book) {
+  const cid = book.cover?.ref?.$link;
+  const src = cid && (await blobUrl(cid));
+  if (!src) return undefined;
+  try {
+    // Like Hugo's `Fill "240x360 webp q85"`, then 120px and 240px candidates.
+    const cover = (format: "avif" | "webp") =>
+      getImage({ src, width: 240, height: 360, fit: "cover", format, quality: 85, widths: [120, 240] });
+    const [avif, webp] = await Promise.all([cover("avif"), cover("webp")]);
+    return { avif, webp };
+  } catch (error) {
+    console.warn(`bookhive: cover processing for "${book.title}" failed: ${error}`);
+    return undefined;
+  }
+}
+
+const books = await Promise.all(reading.map(async ({ value }) => ({ book: value, cover: await coverImage(value) })));
+---
+{books.length > 0 && (
+  <div class="reading">
+    <p class="data-note">This list auto-updates from <a href="https://bookhive.buzz/" target="_blank" rel="noopener noreferrer">Bookhive</a>.</p>
+    <ul class="reading__list">
+      {books.map(({ book, cover }) => (
+        <li class="reading__item">
+          <a class="reading__link" href={`https://bookhive.buzz/books/${book.hiveId}`} target="_blank" rel="noopener noreferrer">
+            <figure class="reading__cover tilt-photo" data-tilt>
+              <div class="tilt-photo__surface">
+                {cover ? (
+                  <picture class="tilt-photo__picture">
+                    <source type="image/avif" srcset={cover.avif.srcSet.attribute} sizes="120px" />
+                    <source type="image/webp" srcset={cover.webp.srcSet.attribute} sizes="120px" />
+                    <img src={cover.webp.src} alt="" width="240" height="360" class="tilt-photo__image" loading="lazy" />
+                  </picture>
+                ) : (
+                  <span class="reading__placeholder" aria-hidden="true"><span>{book.title}</span></span>
+                )}
+              </div>
+            </figure>
+            <span class="reading__title">{book.title}</span>
+            <span class="reading__author">{book.authors}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="button-underline" href={SITE.bookhive.profile} target="_blank" rel="noopener noreferrer">See what I read in the past</a>
+  </div>
+)}

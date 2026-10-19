@@ -1,0 +1,12 @@
+/* Shiki syntax highlighting — Catppuccin Latte (light) / Mocha (dark) */
+.astro-code,
+.astro-code span {
+    color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+    .astro-code,
+    .astro-code span {
+        color: var(--shiki-dark);
+    }
+}

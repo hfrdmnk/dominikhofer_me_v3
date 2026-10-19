@@ -1,0 +1,66 @@
+---
+import { computeRaceArt } from "../../scripts/races.mjs";
+import { getRaces } from "../lib/content";
+import { formatDayMonthYear, isoDate } from "../lib/dates";
+
+const races = await getRaces();
+const courses = (await computeRaceArt()) as Record<string, { route: string; pixelRows: number[][] }>;
+const distance = (value: number) => value.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+---
+<ol class="race-list breakout">
+  {races.map((race) => {
+    const raceArt = courses[race.bundle];
+    const { location, time, pace } = race.entry.data;
+    return (
+      <li>
+        <article class="race-card" data-tilt>
+          <div class="race-card__surface">
+            {raceArt && (
+              <div class="race-card__art" aria-hidden="true">
+                <div class="race-card__pixels">
+                  {raceArt.pixelRows.map((row) => (
+                    <div class="race-card__pixel-row">
+                      {row.map((opacity) => <span style={`--pixel-opacity: ${opacity}`}></span>)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <header class="race-card__header">
+              <p class="race-card__meta">
+                <time datetime={isoDate(race.date)}>{formatDayMonthYear(race.date)}</time>
+                {location && <><span aria-hidden="true"> · </span>{location}</>}
+              </p>
+              <h2 class="race-card__title">{race.title}</h2>
+            </header>
+
+            {raceArt && (
+              <div class="race-card__route-frame">
+                <svg class="race-card__route" viewBox="0 0 640 430" width="640" height="430" focusable="false" aria-hidden="true">
+                  <path d={raceArt.route} />
+                </svg>
+              </div>
+            )}
+
+            <dl class="race-card__stats">
+              <div>
+                <dt>Distance</dt>
+                <dd>{distance(race.entry.data.distance)}<small> km</small></dd>
+              </div>
+              <div>
+                <dt>Time</dt>
+                <dd>{time}</dd>
+              </div>
+              <div>
+                <dt>Pace</dt>
+                <dd>{pace}<small> /km</small></dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+      </li>
+    );
+  })}
+</ol>
+<p class="data-note below race-list__note">These are the official finisher times and might differ from my personal bests.</p>

@@ -1,0 +1,21 @@
+---
+import { LASTFM_API_KEY } from "astro:env/server";
+import { getLastTrack, trackLabel } from "../../lib/lastfm";
+
+interface Props {
+  /** `topbar` or `nav`, the BEM block of the surrounding chrome. */
+  block: "topbar" | "nav";
+}
+
+const { block } = Astro.props;
+const track = await getLastTrack(LASTFM_API_KEY);
+Astro.response.headers.set("Cache-Control", "public, max-age=60");
+---
+{track && (
+  <a class={`${block}__now`} href={track.url} target="_blank" rel="noopener noreferrer">
+    <span class="visually-hidden">Last listened: </span>
+    <span class={`${block}__track`}>{trackLabel(track)}</span>
+    <span class="now-playing__particle" data-now-playing-particle aria-hidden="true"></span>
+  </a>
+  <script is:inline>document.dispatchEvent(new Event("now-playing:ready"));</script>
+)}

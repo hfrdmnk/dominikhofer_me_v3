@@ -1,0 +1,54 @@
+---
+import NavArrowLeft from "./icons/NavArrowLeft.astro";
+import NavArrowUp from "./icons/NavArrowUp.astro";
+import LastFmTrack from "./islands/LastFmTrack.astro";
+
+interface Props {
+  isHome: boolean;
+  /** `posts` or `races` for entries of those sections. */
+  section?: string;
+}
+
+const { isHome, section } = Astro.props;
+const path = Astro.url.pathname;
+const links = ["/about", "/now", "/posts", "/races", "/uses", "/hello"].map((href) => ({
+  href,
+  active: path.startsWith(`${href}/`) || ((href === "/posts" || href === "/races") && section === href.slice(1)),
+}));
+---
+<div class="sidebar" data-menu>
+  <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-menu-toggle>
+    <span class="visually-hidden">Toggle menu</span>
+    <span class="nav__toggle-icon" aria-hidden="true">
+      <span class="nav__toggle-bars"><span></span><span></span><span></span></span>
+      <span class="nav__toggle-close"><span></span><span></span></span>
+    </span>
+  </button>
+  <nav class="nav" id="primary-navigation" aria-label="Primary" data-menu-panel>
+    {!isHome && (
+      <a class="nav__home meta-link" href="/">
+        <NavArrowLeft />
+        Back home
+      </a>
+    )}
+    <ul class="nav__list">
+      <li class="nav__root"><a href="/" aria-current={isHome ? "page" : undefined}>/</a></li>
+      {links.map(({ href, active }) => (
+        <li><a href={href} aria-current={active ? "page" : undefined}>{href}</a></li>
+      ))}
+    </ul>
+    <LastFmTrack server:defer block="nav" />
+  </nav>
+  <a class="progress meta-link" href="#top" aria-label="Back to top">
+    <span class="progress__ring" aria-hidden="true">
+      <svg viewBox="0 0 36 36">
+        <circle class="progress__track" cx="18" cy="18" r="16"/>
+        <circle class="progress__bar" cx="18" cy="18" r="16"/>
+      </svg>
+    </span>
+    <span class="progress__label">
+      <NavArrowUp />
+      Back to top
+    </span>
+  </a>
+</div>

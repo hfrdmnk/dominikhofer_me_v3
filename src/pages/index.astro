@@ -1,0 +1,25 @@
+---
+import { getEntry, render } from "astro:content";
+import TiltPhotoPair from "../components/TiltPhotoPair.astro";
+import PageTitle from "../components/PageTitle.astro";
+import { mdxComponents } from "../components/mdx";
+import Base from "../layouts/Base.astro";
+import { ogImagePath } from "../lib/routes";
+import { SITE } from "../site";
+
+const page = (await getEntry("pages", "home"))!;
+const { Content } = await render(page);
+const photos = [
+  { image: "images/home-1.avif", alt: "Dominik outdoors", tooltip: "That's me, hi :)", tooltipId: "home-photo-dominik-tooltip" },
+  { image: "images/home-2.avif", alt: "Naida lying in the sun", tooltip: "My dog Naida", tooltipId: "home-photo-naida-tooltip" },
+];
+---
+<Base
+  title={page.data.title}
+  isHome
+  social={{ title: page.data.title, description: SITE.description, type: "website", image: ogImagePath("/") }}
+>
+  <PageTitle slot="title" title={page.data.title} kicker={page.data.kicker} />
+  <Content components={mdxComponents} />
+  <TiltPhotoPair slot="aside" photos={photos} />
+</Base>

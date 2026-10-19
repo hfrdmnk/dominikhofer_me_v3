@@ -1,0 +1,28 @@
+---
+import type { ImageMetadata } from "astro";
+import { formatDate, isoDate } from "../lib/dates";
+import ResponsiveImage from "./ResponsiveImage.astro";
+
+interface Props {
+  title: string;
+  kicker?: string;
+  date?: Date;
+  /** Regular pages get their date as kicker; home and sections do not. */
+  isPage?: boolean;
+  updated?: Date;
+  updatedLabel?: string;
+  cover?: ImageMetadata;
+}
+
+const { kicker: pageKicker, date, isPage = false, updated, updatedLabel = "Last updated", cover } = Astro.props;
+const title = Astro.props.title || (date ? formatDate(date) : "");
+const kicker = pageKicker || (isPage && Astro.props.title && date ? formatDate(date) : undefined);
+---
+<header class="intro">
+  {kicker && <p class="intro__kicker">{kicker}</p>}
+  <h1 class="intro__title">{title}</h1>
+  {updated && (
+    <p class="intro__updated">{updatedLabel}: <time datetime={isoDate(updated)}>{formatDate(updated)}</time></p>
+  )}
+  {cover && <ResponsiveImage image={cover} alt="" class="intro__cover" pictureClass="intro__cover-frame" />}
+</header>

@@ -1,0 +1,28 @@
+---
+import { assetImage } from "../lib/images";
+import ResponsiveImage from "./ResponsiveImage.astro";
+
+interface Props {
+  image: string;
+  alt: string;
+  tooltip?: string;
+  tooltipId?: string;
+}
+
+const { alt, tooltip, tooltipId } = Astro.props;
+if (tooltip && !tooltipId) {
+  throw new Error(`TiltPhoto tooltipId is required when tooltip is set for ${Astro.props.image}`);
+}
+const image = await assetImage(Astro.props.image);
+---
+<figure
+  class="tilt-photo"
+  data-tilt
+  tabindex={tooltip ? 0 : undefined}
+  aria-describedby={tooltip ? tooltipId : undefined}
+>
+  <div class="tilt-photo__surface">
+    <ResponsiveImage image={image} alt={alt} class="tilt-photo__image" pictureClass="tilt-photo__picture" sizes="128px" widths={[128, 256]} />
+  </div>
+  {tooltip && <span class="tilt-photo__tooltip" id={tooltipId} role="tooltip">{tooltip}</span>}
+</figure>

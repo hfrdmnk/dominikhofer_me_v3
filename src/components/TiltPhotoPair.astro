@@ -1,0 +1,17 @@
+---
+import TiltPhoto from "./TiltPhoto.astro";
+
+interface Props {
+  photos: Array<{ image: string; alt: string; tooltip?: string; tooltipId?: string }>;
+}
+
+const { photos } = Astro.props;
+if (photos.length !== 2) throw new Error("TiltPhotoPair expects exactly two photos");
+---
+<div class="tilt-photo-pair">
+  {photos.map((photo, index) => (
+    <div class={`tilt-photo-pair__item tilt-photo-pair__item--${index + 1}`}>
+      <TiltPhoto {...photo} />
+    </div>
+  ))}
+</div>

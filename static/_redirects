@@ -23,3 +23,12 @@
 /slash/ / 301
 /newsletter https://buttondown.com/dominikhofer 302
 /newsletter/ https://buttondown.com/dominikhofer 302
+
+# Hugo's taxonomy pages, now filters of the post archive
+/tags/:tag/index.xml /rss.xml 301
+/tags/:tag/ /posts/?tag=:tag 301
+/tags/:tag /posts/?tag=:tag 301
+/tags/ /posts/ 301
+/tags /posts/ 301
+/categories/* /posts/ 301
+/categories /posts/ 301
