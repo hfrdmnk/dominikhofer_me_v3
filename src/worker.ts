@@ -3,6 +3,7 @@ import { handle } from "@astrojs/cloudflare/handler";
 import type { Message } from "@fedify/fedify";
 import { getLogger } from "@logtape/logtape";
 import { getContextData, getFederation } from "./federation";
+import { getMessageQueue } from "./lib/platform";
 
 const logger = getLogger(["dominikhofer", "federation"]);
 
@@ -27,9 +28,12 @@ export default {
   },
   async queue(batch: MessageBatch<unknown>): Promise<void> {
     const federation = await getFederation();
+    const queue = getMessageQueue();
     for (const message of batch.messages) {
       try {
-        await federation.processQueuedTask(getContextData(), message.body as Message);
+        // The queue wraps each task; processMessage unwraps it.
+        const task = await queue.processMessage(message.body);
+        await federation.processQueuedTask(getContextData(), task.message as Message);
         message.ack();
       } catch (error) {
         logger.error("Queued task failed: {error}", { error });

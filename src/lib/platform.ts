@@ -17,7 +17,8 @@ const bindings = env as unknown as Bindings;
 
 export const getDatabase = (): Sql => bindings.DB;
 export const getKvStore = (): KvStore => new WorkersKvStore(bindings.FEDIFY_KV);
-export const getMessageQueue = (): MessageQueue => new WorkersMessageQueue(bindings.FEDIFY_QUEUE);
+export const getMessageQueue = (): MessageQueue & Pick<WorkersMessageQueue, "processMessage"> =>
+  new WorkersMessageQueue(bindings.FEDIFY_QUEUE);
 
 /** Reads a file of the built site. */
 export const getAsset = (path: string): Promise<Response> =>
