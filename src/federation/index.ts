@@ -10,6 +10,7 @@ import {
   Image,
   Note,
   Person,
+  PUBLIC_COLLECTION,
   Undo,
   Update,
 } from "@fedify/vocab";
@@ -17,7 +18,7 @@ import { configureSync, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getDatabase, getKvStore, getMessageQueue } from "../lib/platform";
 import { SITE } from "../site";
 import { toArticle } from "./article";
-import { getFederatedPost } from "./posts";
+import { getFederatedPost, getFederatedPosts } from "./posts";
 import { sanitizeComment } from "./sanitize";
 import { BLOG_IDENTIFIER } from "./constants";
 import { Store } from "./store";
@@ -39,12 +40,17 @@ builder
       id: ctx.getActorUri(identifier),
       preferredUsername: identifier,
       name: SITE.title,
-      summary: SITE.description,
+      summary:
+        `<p>Striving for Simplicity in a complex World.</p>` +
+        `<p>Posts from my personal website.</p>` +
+        `<p><a href="${SITE.url}/">dominikhofer.me</a></p>`,
       url: new URL("/", SITE.url),
       icon: new Image({ url: new URL("/apple-touch-icon.png", SITE.url), mediaType: "image/png" }),
       inbox: ctx.getInboxUri(identifier),
       endpoints: new Endpoints({ sharedInbox: ctx.getInboxUri() }),
       followers: ctx.getFollowersUri(identifier),
+      outbox: ctx.getOutboxUri(identifier),
+      featured: ctx.getFeaturedUri(identifier),
       manuallyApprovesFollowers: false,
       discoverable: true,
       publicKey: keyPairs[0].cryptographicKey,
@@ -80,6 +86,44 @@ builder
   .setCounter(async (ctx, identifier) =>
     identifier === BLOG_IDENTIFIER ? ctx.data.store.countFollowers() : null,
   );
+
+const OUTBOX_PAGE_SIZE = 20;
+
+// Every published post as a Create, newest first. Followers only get new posts pushed
+// (see sync.ts); this lets servers show the post count and fetch older posts.
+builder
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier, cursor) => {
+    if (identifier !== BLOG_IDENTIFIER || cursor == null) return null;
+    const offset = Number.parseInt(cursor, 10) || 0;
+    const posts = await getFederatedPosts();
+    const items = posts.slice(offset, offset + OUTBOX_PAGE_SIZE).map((post) => {
+      const article = toArticle(ctx, post);
+      return new Create({
+        id: new URL("#create", article.id!),
+        actor: ctx.getActorUri(BLOG_IDENTIFIER),
+        to: PUBLIC_COLLECTION,
+        cc: ctx.getFollowersUri(BLOG_IDENTIFIER),
+        published: article.published,
+        object: article,
+      });
+    });
+    const next = offset + OUTBOX_PAGE_SIZE;
+    return { items, nextCursor: next < posts.length ? String(next) : null };
+  })
+  .setFirstCursor((_ctx, identifier) => (identifier === BLOG_IDENTIFIER ? "0" : null))
+  .setCounter(async (_ctx, identifier) =>
+    identifier === BLOG_IDENTIFIER ? (await getFederatedPosts()).length : null,
+  );
+
+const PINNED_POSTS = 5;
+
+// Pinned posts on the profile: the latest favorites. Mastodon fetches these when it
+// looks up the account, so the profile is not empty before new posts arrive.
+builder.setFeaturedDispatcher("/users/{identifier}/featured", async (ctx, identifier) => {
+  if (identifier !== BLOG_IDENTIFIER) return null;
+  const favorites = (await getFederatedPosts()).filter((post) => post.favorite);
+  return { items: favorites.slice(0, PINNED_POSTS).map((post) => toArticle(ctx, post)) };
+});
 
 builder.setObjectDispatcher(Article, "/ap/posts/{slug}", async (ctx, { slug }) => {
   const post = await getFederatedPost(slug);
