@@ -14,6 +14,10 @@
     text-box: trim-both cap alphabetic;
 }
 
+.post-reply__actions + .replies {
+    margin-block-start: var(--space-xl);
+}
+
 .replies {
     .replies__title {
         margin-block-start: 0;
@@ -21,10 +25,6 @@
         font-family: var(--font-sans);
         font-size: var(--text-sm);
         font-weight: 400;
-    }
-
-    .replies__title + .post-reply__actions {
-        margin-block-start: var(--space-xs);
     }
 
     .replies__list {
