@@ -43,8 +43,8 @@ Replies come from the first Bluesky post of `@dominikhofer.me` that linked the a
 3. Add the Worker's secrets once:
 
    ```sh
-   npx wrangler secret put LASTFM_API_KEY
-   npx wrangler secret put FEDIFY_SYNC_TOKEN   # the same value as the GitHub secret
+   pnpm exec wrangler secret put LASTFM_API_KEY
+   pnpm exec wrangler secret put FEDIFY_SYNC_TOKEN   # the same value as the GitHub secret
    ```
 
 4. Run the workflow. The first deploy creates the D1 database, the KV namespace and the queue, and serves the site on `dominikhofer-me.<account>.workers.dev`. Attach `dominikhofer.me` as a custom domain in the Worker's settings (*Domains & Routes*); the domain must not have other DNS records for the same name. Publishing to Sequoia and the fediverse only runs on `main`.
@@ -56,13 +56,13 @@ The Workers free plan allows 10 ms of CPU time per request. Signing deliveries a
 ## Local development
 
 ```sh
-npm run dev          # Astro dev server, with local D1, KV and queue
-npm test             # Markdown and Last.fm tests
-npm run check        # type check
-npm run build && npm run preview   # the built Worker in workerd
+pnpm dev             # Astro dev server, with local D1, KV and queue
+pnpm test            # Markdown and Last.fm tests
+pnpm check           # type check
+pnpm build && pnpm preview   # the built Worker in workerd
 ```
 
-Put `LASTFM_API_KEY` and `FEDIFY_SYNC_TOKEN` in `.env` to use them locally. Apply the database schema locally with `npx wrangler d1 migrations apply DB --local`.
+Put `LASTFM_API_KEY` and `FEDIFY_SYNC_TOKEN` in `.env` to use them locally. Apply the database schema locally with `pnpm exec wrangler d1 migrations apply DB --local`.
 
 ## Self-hosting
 

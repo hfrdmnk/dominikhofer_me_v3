@@ -15,7 +15,7 @@
   },
   "observability": { "enabled": true },
   // Fediverse state: followers, keys, announced posts and replies.
-  // Created on the first deploy; apply migrations with `npm run db:migrate`.
+  // Created on the first deploy; apply migrations with `pnpm db:migrate`.
   "d1_databases": [{ "binding": "DB", "database_name": "dominikhofer-me", "migrations_dir": "migrations" }],
   // Fedify's cache and idempotence store.
   "kv_namespaces": [{ "binding": "FEDIFY_KV" }],

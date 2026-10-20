@@ -40,9 +40,9 @@ fi
 node --version
 echo "Node.js ready (${SECONDS}s)"
 
-echo "Installing locked npm dependencies"
+echo "Installing locked pnpm dependencies"
 SECONDS=0
-npm ci --include=dev --no-audit --no-fund --prefer-offline
+pnpm install --frozen-lockfile --prefer-offline
 echo "Dependencies ready (${SECONDS}s)"
 
 if [[ ! -f .env ]]; then
