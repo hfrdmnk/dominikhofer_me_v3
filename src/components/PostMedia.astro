@@ -1,0 +1,27 @@
+---
+import { bundleFileUrl, videoTag } from "../markdown/plugins.mjs";
+import { bundleImage } from "../lib/images";
+import ResponsiveImage from "./ResponsiveImage.astro";
+
+interface Props {
+  slug: string;
+  filePath?: string;
+  media: string[];
+}
+
+const { slug, filePath, media } = Astro.props;
+const items = await Promise.all(
+  media.map(async (name) =>
+    /\.(?:mp4|webm|mov)$/i.test(name)
+      ? { video: bundleFileUrl(slug, name) }
+      : { image: await bundleImage(filePath, name) },
+  ),
+);
+---
+{items.map((item) =>
+  item.video ? (
+    <p set:html={videoTag(item.video)} />
+  ) : item.image ? (
+    <p><ResponsiveImage image={item.image} alt="" loading="lazy" decoding="async" /></p>
+  ) : null,
+)}

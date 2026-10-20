@@ -1,0 +1,113 @@
+---
+import sequoia from "../../sequoia.json";
+import Colophon from "../components/Colophon.astro";
+import DevThemePicker from "../components/DevThemePicker.astro";
+import FollowCard from "../components/FollowCard.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Topbar from "../components/Topbar.astro";
+import { SITE } from "../site";
+import "../styles/main.css";
+
+interface Props {
+  /** Page title; empty for home and untitled posts. */
+  title?: string;
+  description?: string;
+  /** Title and description for Open Graph. */
+  social: { title: string; description: string; type: "article" | "website"; image: string };
+  isHome?: boolean;
+  section?: "posts" | "races";
+  noindex?: boolean;
+  /** Hides the follow card, for pages like the newsletter confirmations. */
+  hideFollowCard?: boolean;
+  hasHeaderMedia?: boolean;
+  hasMath?: boolean;
+  atUri?: string;
+}
+
+const {
+  title,
+  description = SITE.description,
+  social,
+  isHome = false,
+  section,
+  noindex = false,
+  hideFollowCard = false,
+  hasHeaderMedia = false,
+  hasMath = false,
+  atUri,
+} = Astro.props;
+
+const pageTitle = isHome || !title ? SITE.title : `${title} | ${SITE.title}`;
+const permalink = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = new URL(social.image, SITE.url).href;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{pageTitle}</title>
+  <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex, nofollow">}
+  <meta property="og:title" content={social.title}>
+  <meta property="og:description" content={social.description}>
+  <meta property="og:type" content={social.type}>
+  <meta property="og:url" content={permalink}>
+  <meta property="og:site_name" content={SITE.title}>
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={social.title}>
+  <meta name="twitter:description" content={social.description}>
+  <meta name="twitter:image" content={ogImage}>
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="alternate" type="application/rss+xml" href="/rss.xml" title={SITE.title}>
+  <link rel="alternate" type="application/rss+xml" href={SITE.newsletter.feed} title={SITE.newsletter.title}>
+  {sequoia.publicationUri && <link rel="site.standard.publication" href={sequoia.publicationUri}>}
+  {atUri && <link rel="site.standard.document" href={atUri}>}
+  <slot name="head" />
+  <script is:inline define:vars={{ dev: import.meta.env.DEV }}>
+    const currentDay =
+      { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[
+        new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Zurich", weekday: "short" }).format()
+      ];
+    if (dev) {
+      const storedDay = localStorage.getItem("dev-theme-day");
+      document.documentElement.dataset.currentDay = currentDay;
+      document.documentElement.dataset.day = /^[0-6]$/.test(storedDay) ? storedDay : currentDay;
+    } else {
+      document.documentElement.dataset.day = currentDay;
+    }
+  </script>
+  <link rel="preload" href="/fonts/Newsreader-Roman-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Newsreader-Italic-VF.woff2" as="font" type="font/woff2" crossorigin>
+  {hasMath && <link rel="stylesheet" href="/vendor/katex/katex.min.css">}
+  {import.meta.env.PROD && (
+    <>
+      <script is:inline src="https://analytics.linea.studio/js/script.outbound-links.js" data-domain="dominikhofer.me" defer></script>
+      <script is:inline>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };</script>
+    </>
+  )}
+  <script src="../scripts/site.js"></script>
+  <script src="../scripts/sequoia-subscribe.js"></script>
+</head>
+<body id="top">
+  <div class:list={["page", { "page--has-header-media": isHome || hasHeaderMedia }]}>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <Topbar />
+    <Sidebar isHome={isHome} section={section} />
+    <main class="content" id="content">
+      <slot name="title" />
+      <slot />
+      {!hideFollowCard && <FollowCard />}
+    </main>
+    <slot name="aside" />
+    <Colophon />
+  </div>
+  {import.meta.env.DEV && <DevThemePicker />}
+</body>
+</html>

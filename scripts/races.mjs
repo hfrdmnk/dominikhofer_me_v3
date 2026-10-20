@@ -1,9 +1,8 @@
-import { mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import { readFile, readdir } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { Decoder, Stream } from "@garmin/fitsdk";
 
-const DEFAULT_DATA_FILE = "data/race_courses.json";
 const SEMICIRCLES_TO_DEGREES = 180 / 2 ** 31;
 
 export function decodeFitRecords(buffer) {
@@ -255,18 +254,8 @@ export function buildRoutePath(points, width = 640, height = 430, padding = 24) 
     .join(" ");
 }
 
-async function writeJsonAtomic(file, value) {
-  await mkdir(dirname(file), { recursive: true });
-  const temporaryFile = `${file}.${process.pid}.tmp`;
-  await writeFile(temporaryFile, `${JSON.stringify(value, null, 2)}\n`);
-  await rename(temporaryFile, file);
-}
-
-export async function generateRaceArt({
-  cwd = process.cwd(),
-  dataFile = DEFAULT_DATA_FILE,
-  log = console.log,
-} = {}) {
+/** Route paths and heart-rate pixel rows for every race bundle with a FIT file. */
+export async function computeRaceArt({ cwd = process.cwd() } = {}) {
   const racesDirectory = resolve(cwd, "content/races");
   const bundles = await readdir(racesDirectory, { withFileTypes: true });
   const raceArt = {};
@@ -288,11 +277,10 @@ export async function generateRaceArt({
     }
   }
 
-  await writeJsonAtomic(resolve(cwd, dataFile), raceArt);
-  log(`Generated artwork for ${Object.keys(raceArt).length} races.`);
   return raceArt;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  await generateRaceArt();
+  const raceArt = await computeRaceArt();
+  process.stdout.write(`${JSON.stringify(raceArt, null, 2)}\n`);
 }

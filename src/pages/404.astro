@@ -1,0 +1,15 @@
+---
+import PageTitle from "../components/PageTitle.astro";
+import Base from "../layouts/Base.astro";
+import { SITE } from "../site";
+
+const title = "404 Page not found";
+---
+<Base title={title} social={{ title, description: SITE.description, type: "website", image: "/og/404.png" }}>
+  <PageTitle slot="title" title={title} />
+  <script is:inline>
+    if (window.plausible) {
+      window.plausible("404", { props: { path: document.location.pathname } });
+    }
+  </script>
+</Base>

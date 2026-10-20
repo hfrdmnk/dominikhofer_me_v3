@@ -1,0 +1,116 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render } from "astro:content";
+import { slug as anchorize } from "github-slugger";
+import PageTitle from "../components/PageTitle.astro";
+import PostMedia from "../components/PostMedia.astro";
+import ReplyByEmail from "../components/ReplyByEmail.astro";
+import TiltPhotoPair from "../components/TiltPhotoPair.astro";
+import Replies from "../components/islands/Replies.astro";
+import RssIcon from "../components/icons/Rss.astro";
+import { mdxComponents } from "../components/mdx";
+import Base from "../layouts/Base.astro";
+import { blogrollSections, blogrollUpdated } from "../lib/blogroll";
+import { entryDate } from "../lib/content";
+import { bundleImage } from "../lib/images";
+import { getRoutes, isHidden, ogImagePath, routeDate, socialTitle, type Route } from "../lib/routes";
+import { SITE } from "../site";
+
+export const getStaticPaths = (async () =>
+  (await getRoutes())
+    .filter((route) => route.url !== "/")
+    .map((route) => ({ params: { slug: route.url.slice(1, -1) }, props: { route } }))) satisfies GetStaticPaths;
+
+const { route } = Astro.props as { route: Route };
+const entry = route.kind === "page" ? route.page : route.kind === "post" ? route.post.entry : route.race.entry;
+const data = entry.data as Record<string, any>;
+const { Content } = await render(entry);
+
+const feedOnly = route.kind === "post" && route.post.entry.data.feed_only;
+const section = route.kind === "post" ? "posts" : route.kind === "race" ? "races" : undefined;
+const isSection = route.kind === "page" && (route.page.id === "posts" || route.page.id === "races");
+const title = route.kind === "page" ? route.page.data.title : route.kind === "post" ? route.post.title : route.race.title;
+const date = routeDate(route);
+const description = feedOnly ? SITE.description : data.description || SITE.description;
+const cover = !feedOnly && data.cover ? await bundleImage(entry.filePath, data.cover) : undefined;
+const media: string[] = data.media ?? [];
+const photoPair = route.kind === "page" ? route.page.data.photo_pair : undefined;
+const isBlogroll = route.kind === "page" && route.page.id === "blogroll";
+const updated = feedOnly ? undefined : isBlogroll ? blogrollUpdated() : entryDate(entry, "updated");
+const hasMath = entry.rendered?.html.includes('class="katex') ?? false;
+// Posts that the fediverse actor publishes, and that collect replies from there and Bluesky.
+const isFederated =
+  route.kind === "post" && !data.archived && !data.feed_only && !data.external_url;
+---
+<Base
+  title={title}
+  description={description}
+  social={{
+    title: socialTitle(route),
+    description,
+    type: isSection || feedOnly ? "website" : "article",
+    image: ogImagePath(route.url),
+  }}
+  section={section}
+  noindex={isHidden(route)}
+  hideFollowCard={route.kind === "page" && route.page.data.noindex}
+  hasHeaderMedia={Boolean(photoPair)}
+  hasMath={hasMath}
+  atUri={route.kind === "post" ? route.post.entry.data.atUri : undefined}
+>
+  {isFederated && <link slot="head" rel="alternate" type="application/activity+json" href={`/ap/posts/${entry.id}`}>}
+  <PageTitle
+    slot="title"
+    title={title}
+    kicker={data.kicker}
+    date={date}
+    isPage={!isSection}
+    updated={updated}
+    updatedLabel={data.updatedLabel}
+    cover={cover}
+  />
+  {feedOnly ? (
+    <div class="prose">
+      <p>This post was published through RSS and standard.site. Its full content is not available on this website.</p>
+      <hr class="post-reply__separator">
+      <ReplyByEmail title={title} />
+    </div>
+  ) : route.kind === "page" ? (
+    isBlogroll ? (
+      <div class="prose blogroll">
+        <Content />
+        {blogrollSections().map((blogrollSection) => (
+          <section class="blogroll__section" aria-labelledby={anchorize(blogrollSection.title)}>
+            <h2 id={anchorize(blogrollSection.title)}>{blogrollSection.title}</h2>
+            <ul class="blogroll__list">
+              {blogrollSection.feeds.map((feed) => (
+                <li class="blogroll__item">
+                  <a class="blogroll__site" href={feed.htmlUrl} target="_blank" rel="noopener noreferrer">{feed.title}</a>
+                  <a class="blogroll__feed" href={feed.xmlUrl} target="_blank" rel="noopener noreferrer" aria-label={`RSS feed for ${feed.title}`}>
+                    <RssIcon />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    ) : (
+      <Content components={mdxComponents} />
+    )
+  ) : (
+    <article class="prose">
+      <Content />
+      <PostMedia slug={entry.id} filePath={entry.filePath} media={media} />
+      {route.kind === "post" && <hr class="post-reply__separator">}
+      {isFederated ? (
+        <Replies server:defer slug={entry.id} title={title} url={new URL(route.url, SITE.url).href} atUri={data.atUri}>
+          <p class="post-reply__actions" slot="fallback"><ReplyByEmail title={title} /></p>
+        </Replies>
+      ) : (
+        route.kind === "post" && <ReplyByEmail title={title} />
+      )}
+    </article>
+  )}
+  {photoPair && <TiltPhotoPair slot="aside" photos={photoPair.photos} />}
+</Base>

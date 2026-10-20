@@ -3,7 +3,7 @@
   "siteUrl": "https://dominikhofer.me",
   "contentDir": "./content/posts",
   "publicDir": "./static",
-  "outputDir": "./public",
+  "outputDir": "./dist/client",
   "pathPrefix": "",
   "publicationUri": "at://did:plc:fthx2gjakdj4ynxxu5vysjty/site.standard.publication/3mt2ja4ijzu27",
   "identity": "dominikhofer.me",
@@ -26,7 +26,7 @@
     "maxAgeDays": 7
   },
   "ui": {
-    "components": "./assets/js"
+    "components": "./src/scripts"
   },
   "autoSync": true
 }

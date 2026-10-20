@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "dominikhofer-me",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": ["nodejs_compat"],
+  // Deploys go to dominikhofer-me.<account>.workers.dev. dominikhofer.me is attached
+  // as a custom domain in the dashboard during the switch from Dokploy.
+  "workers_dev": true,
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist/client",
+    // Static files are served before the Worker runs, except these, whose CORS preflights the Worker answers.
+    "run_worker_first": ["/.well-known/about.md", "/.well-known/contact.vcf", "/.well-known/following.opml"]
+  },
+  "observability": { "enabled": true },
+  // Fediverse state: followers, keys, announced posts and replies.
+  // Created on the first deploy; apply migrations with `pnpm db:migrate`.
+  "d1_databases": [{ "binding": "DB", "database_name": "dominikhofer-me", "migrations_dir": "migrations" }],
+  // Fedify's cache and idempotence store.
+  "kv_namespaces": [{ "binding": "FEDIFY_KV" }],
+  // Outgoing activities, delivered by the Worker's queue() handler.
+  "queues": {
+    "producers": [{ "binding": "FEDIFY_QUEUE", "queue": "dominikhofer-me-fedify" }],
+    "consumers": [{ "queue": "dominikhofer-me-fedify", "max_retries": 10 }]
+  }
+}

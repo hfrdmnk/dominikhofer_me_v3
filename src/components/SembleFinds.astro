@@ -1,0 +1,40 @@
+---
+import { getRecord, listRecords } from "../lib/atproto";
+import { SITE } from "../site";
+
+interface CollectionLink {
+  collection: { uri: string };
+  card: { uri: string };
+}
+interface Card {
+  content?: { url?: string; metadata?: { title?: string } };
+}
+
+const { ok, records } = await listRecords<CollectionLink>("network.cosmik.collectionLink");
+const finds: Array<{ url: string; domain: string; title: string }> = [];
+for (const link of ok ? records : []) {
+  if (finds.length >= 5) break;
+  if (link.value.collection?.uri !== SITE.semble.findsCollection) continue;
+  const card = await getRecord<Card>("network.cosmik.card", link.value.card.uri.split("/").pop()!);
+  const url = card?.value.content?.url;
+  if (!url) continue;
+  const domain = new URL(url).host.replace(/^www\./, "");
+  finds.push({ url, domain, title: card.value.content?.metadata?.title || domain });
+}
+---
+{finds.length > 0 && (
+  <div class="finds">
+    <p class="data-note">This list auto-updates from <a href="https://semble.so/" target="_blank" rel="noopener noreferrer">Semble</a>.</p>
+    <ul class="post-list">
+      {finds.map((find) => (
+        <li class="post-list__item">
+          <a class="post-list__link" href={find.url} target="_blank" rel="noopener noreferrer">
+            <span class="post-list__title">{find.title}</span>
+            <span class="post-list__date">{find.domain}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="button-underline" href={SITE.semble.profile} target="_blank" rel="noopener noreferrer">Check out all my discoveries</a>
+  </div>
+)}

@@ -225,7 +225,7 @@ done < "$eligible_file"
 jq \
     --arg content_dir "$stage_dir" \
     --arg public_dir "$root_dir/static" \
-    --arg output_dir "$root_dir/public" \
+    --arg output_dir "$root_dir/dist/client" \
     --argjson ignore "$ignore_json" \
     '.contentDir = $content_dir
     | .publicDir = $public_dir

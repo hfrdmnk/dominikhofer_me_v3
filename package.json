@@ -1,9 +1,51 @@
 {
+  "name": "dominikhofer-me",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@12.14.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler dev",
+    "check": "wrangler types && astro check",
+    "test": "tsx --test tests/*.test.*",
+    "deploy": "wrangler deploy",
+    "db:migrate": "wrangler d1 migrations apply DB --remote"
+  },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20261019.1",
     "@garmin/fitsdk": "^21.208.0",
-    "typescript": "5.9.3"
+    "@types/node": "^22.20.5",
+    "@types/sanitize-html": "^2.16.2",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "wrangler": "^4.151.2"
   },
   "dependencies": {
-    "sequoia-cli": "0.5.7"
+    "@astrojs/cloudflare": "^14.4.0",
+    "@astrojs/markdown-remark": "^7.3.3",
+    "@astrojs/mdx": "^8.1.0",
+    "@fedify/cfworkers": "^2.4.4",
+    "@fedify/fedify": "^2.4.4",
+    "@fedify/vocab": "^2.4.4",
+    "@logtape/logtape": "^2.4.2",
+    "astro": "^7.4.0",
+    "fast-xml-parser": "^5.11.2",
+    "github-slugger": "^2.0.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "sanitize-html": "^2.18.1",
+    "satori": "^0.63.0",
+    "sequoia-cli": "0.5.7",
+    "sharp": "^0.35.5",
+    "temporal-polyfill": "^1.0.6",
+    "unist-util-visit": "^5.1.0"
   }
 }

@@ -1,0 +1,64 @@
+---
+import { getArchiveItems } from "../lib/content";
+import { formatDate, isoDate, year } from "../lib/dates";
+import OpenNewWindow from "./icons/OpenNewWindow.astro";
+
+interface Props {
+  count?: number;
+  filter?: "favorite";
+  /** The full archive on /posts/ gets the year navigation and query filters. */
+  queryFilter?: boolean;
+}
+
+const { count = 0, filter, queryFilter = false } = Astro.props;
+
+let items = await getArchiveItems();
+if (filter === "favorite") items = items.filter((item) => item.favorite);
+if (count > 0) {
+  items =
+    filter === "favorite"
+      ? items
+          .map((item) => ({ item, order: Math.random() }))
+          .sort((a, b) => a.order - b.order)
+          .slice(0, count)
+          .map(({ item }) => item)
+          .sort((a, b) => b.date.getTime() - a.date.getTime())
+      : items.slice(0, count);
+}
+
+const yearGroups = Map.groupBy(items, (item) => year(item.date));
+const showFavorites = filter === "favorite";
+---
+<div class={`archive archive--${count > 0 ? "excerpt" : "full"}`} data-filter={filter} data-query-filter={queryFilter || undefined}>
+  {queryFilter && (
+    <nav class="archive-nav" aria-label="Posts by year" data-archive-nav>
+      <div class="archive-nav__years">
+        {[...yearGroups].map(([key, group], index) => (
+          <a href={`#posts-${key}`} data-archive-year-link={key} aria-current={index === 0 ? "location" : undefined}>{key} ({group.length})</a>
+        ))}
+      </div>
+      <button class="archive-nav__favorites" type="button" aria-pressed="false" data-favorite-toggle>Show only favorites</button>
+    </nav>
+  )}
+  <ul class="post-list archive__list">
+    {[...yearGroups].map(([key, group]) => (
+      <>
+        {queryFilter && <li class="archive__year-anchor" id={`posts-${key}`} data-archive-year-anchor={key} aria-hidden="true"></li>}
+        {group.map((item) => (
+          <li class="post-list__item" data-post-year={key} data-favorite={String(item.favorite)} data-tags={item.tags.join("|")}>
+            <a class="post-list__link" href={item.url} target={item.external ? "_blank" : undefined} rel={item.external ? "noopener noreferrer" : undefined}>
+              <span class="post-list__title">
+                {!showFavorites && item.favorite ? <mark>{item.title}</mark> : item.title}
+                {item.external && <span class="post-list__external"><OpenNewWindow /><span class="visually-hidden"> (opens in a new tab)</span></span>}
+              </span>
+              <time class="post-list__date" datetime={isoDate(item.date)}>{formatDate(item.date, "short")}</time>
+            </a>
+          </li>
+        ))}
+      </>
+    ))}
+  </ul>
+  {count > 0 && (
+    <a class="archive__more button-underline" href={showFavorites ? "/posts/?favorite=true" : "/posts/"}>View all {showFavorites ? "favorites" : "posts"}</a>
+  )}
+</div>

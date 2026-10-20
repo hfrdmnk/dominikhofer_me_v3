@@ -1,0 +1,13 @@
+---
+import signature from "../assets/images/signature.svg?raw";
+import { BUILD_TIME, QUOTE } from "../lib/build";
+import { SITE } from "../site";
+---
+<footer class="colophon">
+  <p class="colophon__meta">
+    <a class="colophon__version" href="/colophon">v {SITE.version}</a>
+    <span class="colophon__deploy" data-deploy={Math.floor(BUILD_TIME.getTime() / 1000)}>last deployed just now</span>
+  </p>
+  <span class="colophon__motto"><mark><span class="highlight__text">{QUOTE}</span></mark></span>
+  <span class="colophon__sign" aria-hidden="true" set:html={signature} />
+</footer>

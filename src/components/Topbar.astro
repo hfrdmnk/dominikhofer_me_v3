@@ -1,0 +1,11 @@
+---
+import { clockTime } from "../lib/dates";
+import { SITE } from "../site";
+import LastFmTrack from "./islands/LastFmTrack.astro";
+---
+<header class="topbar">
+  <p class="topbar__status">
+    <a href="/"><time class="topbar__clock" data-clock>{clockTime(new Date())}</time> <span class="topbar__loc">in {SITE.location}</span></a>
+  </p>
+  <LastFmTrack server:defer block="topbar" />
+</header>

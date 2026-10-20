@@ -1,0 +1,26 @@
+---
+import type { Reply } from "../lib/bluesky";
+import { formatDate } from "../lib/dates";
+
+interface Props {
+  reply: Reply;
+}
+
+const { reply } = Astro.props;
+---
+<li class="reply">
+  <p class="reply__meta">
+    <a class="reply__author" href={reply.authorUrl} target="_blank" rel="nofollow noopener noreferrer">{reply.authorName}</a>
+    {reply.authorHandle && <span class="reply__handle">{reply.authorHandle}</span>}
+  </p>
+  <div class="reply__content" set:html={reply.html} />
+  <a class="reply__date" href={reply.url} target="_blank" rel="nofollow noopener noreferrer">
+    <time datetime={reply.published.toISOString()}>{formatDate(reply.published, "short")}</time>
+    {` on ${reply.source === "bluesky" ? "Bluesky" : "the fediverse"}`}
+  </a>
+  {reply.replies.length > 0 && (
+    <ol class="replies__list">
+      {reply.replies.map((child) => <Astro.self reply={child} />)}
+    </ol>
+  )}
+</li>
