@@ -62,7 +62,10 @@ jobs:
       - name: Run tests
         run: npm test
 
+      # Publishing and announcing only run on main, so that a manual run on
+      # another branch only builds and deploys to workers.dev.
       - name: Restore Sequoia publication state
+        if: github.ref == 'refs/heads/main'
         uses: actions/cache/restore@v5
         with:
           path: ${{ env.SEQUOIA_RUNTIME_DIR }}/.sequoia-state.json
@@ -71,6 +74,7 @@ jobs:
             sequoia-
 
       - name: Publish eligible posts
+        if: github.ref == 'refs/heads/main'
         env:
           ATP_IDENTIFIER: dominikhofer.me
           ATP_APP_PASSWORD: ${{ secrets.ATP_APP_PASSWORD }}
@@ -78,6 +82,7 @@ jobs:
         run: ./scripts/publish-sequoia.sh
 
       - name: Save Sequoia publication state
+        if: github.ref == 'refs/heads/main'
         uses: actions/cache/save@v5
         with:
           path: ${{ env.SEQUOIA_RUNTIME_DIR }}/.sequoia-state.json
@@ -109,6 +114,7 @@ jobs:
         run: npm run db:migrate
 
       - name: Announce new posts on the fediverse
+        if: github.ref == 'refs/heads/main'
         env:
           FEDIFY_SYNC_TOKEN: ${{ secrets.FEDIFY_SYNC_TOKEN }}
         run: |

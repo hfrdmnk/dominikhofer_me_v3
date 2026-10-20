@@ -4,7 +4,9 @@
   "main": "./src/worker.ts",
   "compatibility_date": "2026-10-12",
   "compatibility_flags": ["nodejs_compat"],
-  "routes": [{ "pattern": "dominikhofer.me", "custom_domain": true }],
+  // Deploys go to dominikhofer-me.<account>.workers.dev. dominikhofer.me is attached
+  // as a custom domain in the dashboard during the switch from Dokploy.
+  "workers_dev": true,
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist/client",

@@ -47,7 +47,7 @@ Replies come from the first Bluesky post of `@dominikhofer.me` that linked the a
    npx wrangler secret put FEDIFY_SYNC_TOKEN   # the same value as the GitHub secret
    ```
 
-4. Run the workflow. The first deploy creates the D1 database, the KV namespace and the queue, and attaches `dominikhofer.me` as the Worker's custom domain. The domain's DNS zone must be on Cloudflare.
+4. Run the workflow. The first deploy creates the D1 database, the KV namespace and the queue, and serves the site on `dominikhofer-me.<account>.workers.dev`. Attach `dominikhofer.me` as a custom domain in the Worker's settings (*Domains & Routes*); the domain must not have other DNS records for the same name. Publishing to Sequoia and the fediverse only runs on `main`.
 
 Cloudflare's Bot Fight Mode and managed challenges can block fediverse servers, which cannot solve challenges. If they are on, add a WAF skip rule for requests whose `Accept` or `Content-Type` header contains `application/activity+json` or `application/ld+json`.
 
