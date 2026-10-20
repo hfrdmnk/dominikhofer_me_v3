@@ -17,10 +17,14 @@
 .replies {
     .replies__title {
         margin-block-start: 0;
-        color: var(--secondary);
+        color: var(--tertiary);
         font-family: var(--font-sans);
         font-size: var(--text-sm);
         font-weight: 400;
+    }
+
+    .replies__title + .post-reply__actions {
+        margin-block-start: var(--space-xs);
     }
 
     .replies__list {
