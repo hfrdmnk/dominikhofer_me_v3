@@ -7,5 +7,10 @@ import LastFmTrack from "./islands/LastFmTrack.astro";
   <p class="topbar__status">
     <a href="/"><time class="topbar__clock" data-clock>{clockTime(new Date())}</time> <span class="topbar__loc">in {SITE.location}</span></a>
   </p>
-  <LastFmTrack server:defer block="topbar" />
+  <LastFmTrack server:defer block="topbar">
+    <span class="topbar__now now-playing--loading" slot="fallback" aria-hidden="true">
+      <span class="now-playing__skeleton"></span>
+      <span class="now-playing__particle"></span>
+    </span>
+  </LastFmTrack>
 </header>

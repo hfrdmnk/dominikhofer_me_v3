@@ -37,7 +37,12 @@ const links = ["/about", "/now", "/posts", "/races", "/uses", "/hello"].map((hre
         <li><a href={href} aria-current={active ? "page" : undefined}>{href}</a></li>
       ))}
     </ul>
-    <LastFmTrack server:defer block="nav" />
+    <LastFmTrack server:defer block="nav">
+      <span class="nav__now now-playing--loading" slot="fallback" aria-hidden="true">
+        <span class="now-playing__skeleton"></span>
+        <span class="now-playing__particle"></span>
+      </span>
+    </LastFmTrack>
   </nav>
   <a class="progress meta-link" href="#top" aria-label="Back to top">
     <span class="progress__ring" aria-hidden="true">
