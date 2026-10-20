@@ -47,6 +47,7 @@ const races = defineCollection({
     distance: z.coerce.number(),
     time: z.string(),
     pace: z.string(),
+    draft: z.boolean().default(false),
   }),
 });
 

@@ -80,12 +80,12 @@ const byDateDescending = <T extends { date: Date }>(a: T, b: T) =>
 
 let postsPromise: Promise<Post[]> | undefined;
 
-/** Every post Hugo would build: no drafts and nothing dated in the future. */
+/** Every post Hugo would build: no drafts and nothing dated in the future, except in the dev server. */
 export function getPosts(): Promise<Post[]> {
   postsPromise ??= getCollection("posts").then((entries) =>
     entries
       .map(toPost)
-      .filter((post) => !post.entry.data.draft && post.date <= now)
+      .filter((post) => import.meta.env.DEV || (!post.entry.data.draft && post.date <= now))
       .sort(byDateDescending),
   );
   return postsPromise;
@@ -138,7 +138,7 @@ export async function getRaces(): Promise<Race[]> {
       date: entryDate(entry, "date") ?? new Date(0),
       url: `/${entry.id}/`,
     }))
-    .filter((race) => race.date <= now)
+    .filter((race) => import.meta.env.DEV || (!race.entry.data.draft && race.date <= now))
     .sort(byDateDescending);
 }
 
