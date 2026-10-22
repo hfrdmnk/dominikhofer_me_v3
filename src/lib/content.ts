@@ -96,7 +96,7 @@ export async function getFeedPosts(): Promise<Post[]> {
   return (await getPosts()).filter((post) => !post.entry.data.archived);
 }
 
-/** Entries of the post archive, including newsletter issues that link to Buttondown. */
+/** Entries of the post archive, including newsletter issues that link to their Buttondown archive copy. */
 export async function getArchiveItems(): Promise<ListItem[]> {
   const posts = (await getPosts())
     .filter((post) => !post.entry.data.archived && !post.entry.data.feed_only)

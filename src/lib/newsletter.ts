@@ -1,29 +1,39 @@
 import type { Loader } from "astro/loaders";
-import { XMLParser } from "fast-xml-parser";
 import { SITE } from "../site";
+import { getRecord, listRecords } from "./atproto";
 
-/** Lists newsletter issues from Buttondown as posts that link to the archive copy. */
+interface Publication {
+  url: string;
+}
+
+interface Document {
+  site: string;
+  title: string;
+  path: string;
+  publishedAt: string;
+}
+
+/** Lists newsletter issues from their Standard Site records as posts that link to the Buttondown archive copy. */
 export function newsletterLoader(): Loader {
   return {
-    name: "buttondown-newsletter",
+    name: "standard-site-newsletter",
     async load({ store, logger, parseData }) {
-      store.clear();
-      let items: Array<{ title: string; link: string; pubDate: string }> = [];
-      try {
-        const response = await fetch(SITE.newsletter.feed);
-        if (!response.ok) throw new Error(`${SITE.newsletter.feed} returned ${response.status}`);
-        const feed = new XMLParser().parse(await response.text());
-        const channelItems = feed?.rss?.channel?.item ?? [];
-        items = Array.isArray(channelItems) ? channelItems : [channelItems];
-      } catch (error) {
-        logger.warn(`Skipping newsletter issues: ${error}`);
+      const rkey = SITE.newsletter.publication.split("/").pop()!;
+      const [publication, documents] = await Promise.all([
+        getRecord<Publication>("site.standard.publication", rkey),
+        listRecords<Document>("site.standard.document"),
+      ]);
+      if (!publication || !documents.ok) {
+        logger.warn("Skipping newsletter issues: their Standard Site records could not be fetched");
         return;
       }
-      for (const item of items) {
-        const id = item.link.replace(/\/$/, "").split("/").pop()!;
+      store.clear();
+      for (const { value } of documents.records) {
+        if (value.site !== SITE.newsletter.publication) continue;
+        const id = value.path.split("/").pop()!;
         const data = await parseData({
           id,
-          data: { title: String(item.title), date: item.pubDate, url: item.link },
+          data: { title: value.title, date: value.publishedAt, url: publication.value.url.replace(/\/$/, "") + value.path },
         });
         store.set({ id, data });
       }

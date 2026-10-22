@@ -10,6 +10,7 @@ export const SITE = {
   newsletter: {
     title: "Trust the Process",
     feed: "https://buttondown.com/dominikhofer/rss",
+    publication: "at://did:plc:fthx2gjakdj4ynxxu5vysjty/site.standard.publication/3mvub6zu4by2p",
   },
   atproto: {
     did: "did:plc:fthx2gjakdj4ynxxu5vysjty",
