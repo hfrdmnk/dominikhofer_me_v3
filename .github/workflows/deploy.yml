@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - main
+  # Also started every 2 hours by the Worker's cron trigger (see wrangler.jsonc).
   workflow_dispatch:
-  schedule:
-    - cron: "0 */2 * * *"
 
 permissions:
   contents: read

@@ -14,6 +14,10 @@
     "run_worker_first": ["/.well-known/about.md", "/.well-known/contact.vcf", "/.well-known/following.opml"]
   },
   "observability": { "enabled": true },
+  // Rebuilds the site every 2 hours through the Worker's scheduled() handler, which
+  // starts the deploy workflow. Needs the GITHUB_DEPLOY_TOKEN secret: a fine-grained
+  // token for this repository with "Actions: Read and write".
+  "triggers": { "crons": ["0 */2 * * *"] },
   // Fediverse state: followers, keys, announced posts and replies.
   // Created on the first deploy; apply migrations with `pnpm db:migrate`.
   "d1_databases": [{ "binding": "DB", "database_name": "dominikhofer-me", "migrations_dir": "migrations" }],
