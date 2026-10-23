@@ -7,7 +7,6 @@ export interface FederatedPost {
   /** The HTML page of the post. */
   url: string;
   published: string;
-  favorite: boolean;
   /** The Standard Site document, when Sequoia published the post. */
   atUri?: string;
 }

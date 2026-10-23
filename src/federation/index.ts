@@ -50,7 +50,6 @@ builder
       endpoints: new Endpoints({ sharedInbox: ctx.getInboxUri() }),
       followers: ctx.getFollowersUri(identifier),
       outbox: ctx.getOutboxUri(identifier),
-      featured: ctx.getFeaturedUri(identifier),
       manuallyApprovesFollowers: false,
       discoverable: true,
       publicKey: keyPairs[0].cryptographicKey,
@@ -114,19 +113,6 @@ builder
   .setCounter(async (_ctx, identifier) =>
     identifier === BLOG_IDENTIFIER ? (await getFederatedPosts()).length : null,
   );
-
-const PINNED_POSTS = 5;
-
-// Pinned posts on the profile: the latest favorites. Mastodon fetches these when it
-// looks up the account, so the profile is not empty before new posts arrive.
-// Mastodon skips embedded objects other than Notes, so the items are the post URIs;
-// Fedify writes URLs as is, although the type asks for objects.
-builder.setFeaturedDispatcher("/users/{identifier}/featured", async (ctx, identifier) => {
-  if (identifier !== BLOG_IDENTIFIER) return null;
-  const favorites = (await getFederatedPosts()).filter((post) => post.favorite);
-  const uris = favorites.slice(0, PINNED_POSTS).map((post) => ctx.getObjectUri(Article, { slug: post.slug }));
-  return { items: uris as unknown as Article[] };
-});
 
 builder.setObjectDispatcher(Article, "/ap/posts/{slug}", async (ctx, { slug }) => {
   const post = await getFederatedPost(slug);

@@ -13,7 +13,6 @@ export const GET: APIRoute = async () => {
       description: post.entry.data.description ?? "",
       url: new URL(post.url, SITE.url).href,
       published: post.date.toISOString(),
-      favorite: post.entry.data.favorite,
       atUri: post.entry.data.atUri,
     }));
   return Response.json(posts);
