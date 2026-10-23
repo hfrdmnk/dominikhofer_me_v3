@@ -83,19 +83,23 @@
     const normalizeTag = (value) => value.trim().toLocaleLowerCase().replace(/\s+/g, "-");
     const tagParam = params.get("tag") ?? params.get("tags");
     const tag = tagParam && normalizeTag(tagParam);
+    const hideNewsletter = params.get("newsletter") === "false";
 
-    if (favoriteOnly || tag) {
+    if (favoriteOnly || tag || hideNewsletter) {
       postsArchive.querySelectorAll(".post-list__item").forEach((post) => {
         const tags = post.dataset.tags
           .split("|")
           .map(normalizeTag);
         post.hidden =
-          (favoriteOnly && post.dataset.favorite !== "true") || (tag && !tags.includes(tag));
+          (favoriteOnly && post.dataset.favorite !== "true") ||
+          (tag && !tags.includes(tag)) ||
+          (hideNewsletter && post.dataset.newsletter === "true");
       });
     }
 
     const archiveNav = postsArchive.querySelector("[data-archive-nav]");
     const favoriteToggle = postsArchive.querySelector("[data-favorite-toggle]");
+    const newsletterToggle = postsArchive.querySelector("[data-newsletter-toggle]");
     const yearLinks = [...postsArchive.querySelectorAll("[data-archive-year-link]")];
 
     favoriteToggle.setAttribute("aria-pressed", String(favoriteOnly));
@@ -104,6 +108,14 @@
       url.searchParams.delete("favorites");
       if (favoriteOnly) url.searchParams.delete("favorite");
       else url.searchParams.set("favorite", "true");
+      window.location.assign(url.toString());
+    });
+
+    newsletterToggle.setAttribute("aria-pressed", String(hideNewsletter));
+    newsletterToggle.addEventListener("click", () => {
+      const url = new URL(window.location.href);
+      if (hideNewsletter) url.searchParams.delete("newsletter");
+      else url.searchParams.set("newsletter", "false");
       window.location.assign(url.toString());
     });
 

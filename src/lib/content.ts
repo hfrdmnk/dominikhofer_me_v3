@@ -40,6 +40,7 @@ export interface ListItem {
   url: string;
   external: boolean;
   favorite: boolean;
+  newsletter: boolean;
   tags: string[];
 }
 
@@ -106,6 +107,7 @@ export async function getArchiveItems(): Promise<ListItem[]> {
       url: post.entry.data.external_url ?? post.url,
       external: Boolean(post.entry.data.external_url),
       favorite: post.entry.data.favorite,
+      newsletter: false,
       tags: post.entry.data.tags,
     }));
   const issues = (await getCollection("newsletter")).map((issue) => ({
@@ -114,6 +116,7 @@ export async function getArchiveItems(): Promise<ListItem[]> {
     url: issue.data.url,
     external: true,
     favorite: false,
+    newsletter: true,
     tags: [],
   }));
   return [...posts, ...issues].sort(byDateDescending);
