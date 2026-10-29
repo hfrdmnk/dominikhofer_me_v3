@@ -156,6 +156,46 @@
     window.addEventListener("resize", requestYearUpdate);
   }
 
+  // The reply links render in a server island after this script runs, so listen on the document.
+  const mastodonInstanceKey = "mastodon-instance";
+  document.addEventListener("click", (event) => {
+    const opener = event.target.closest("[data-mastodon-open]");
+    if (opener) {
+      const dialog = document.getElementById(opener.dataset.mastodonOpen);
+      const input = dialog.querySelector("input");
+      input.value ||= localStorage.getItem(mastodonInstanceKey) ?? "";
+      dialog.showModal();
+      input.select();
+      return;
+    }
+    // A click on the dialog element itself lands on its backdrop.
+    if (event.target.closest("[data-mastodon-close]") || event.target.matches?.(".mastodon-dialog")) {
+      event.target.closest("dialog").close();
+    }
+  });
+  document.addEventListener("submit", (event) => {
+    const form = event.target.closest("[data-mastodon-form]");
+    if (!form) return;
+    event.preventDefault();
+    const input = form.elements.instance;
+    // Accept "mastodon.social", "https://mastodon.social/..." or a handle like "@me@mastodon.social".
+    const instance = input.value.trim().replace(/^https?:\/\//i, "").split("/")[0].split("@").pop().toLowerCase();
+    if (!/^[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?$/.test(instance)) {
+      input.setCustomValidity("Enter your instance’s domain, like mastodon.social");
+      input.reportValidity();
+      return;
+    }
+    input.value = instance;
+    localStorage.setItem(mastodonInstanceKey, instance);
+    const url = new URL(`https://${instance}/authorize_interaction`);
+    url.searchParams.set("uri", form.dataset.uri);
+    window.open(url, "_blank", "noopener");
+    form.closest("dialog").close();
+  });
+  document.addEventListener("input", (event) => {
+    if (event.target.closest("[data-mastodon-form]")) event.target.setCustomValidity("");
+  });
+
   document.querySelectorAll(".follow-card__form").forEach((form) => {
     const submit = form.querySelector(".follow-card__submit");
     const successDisplayTime = 5000;

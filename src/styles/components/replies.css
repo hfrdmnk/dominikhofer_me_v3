@@ -5,13 +5,147 @@
     gap: var(--space-xs) var(--space-lg);
 }
 
-.reply-on-bluesky {
+:is(.reply-on-bluesky, .reply-on-mastodon) {
     --meta-link-icon-y: -0.25rem;
 }
 
+.reply-on-mastodon {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+
 /* Center the icons on the letters rather than on the line box */
-:is(.reply-by-email, .reply-on-bluesky) > span {
+:is(.reply-by-email, .reply-on-bluesky, .reply-on-mastodon) > span {
     text-box: trim-both cap alphabetic;
+}
+
+.mastodon-dialog {
+    inline-size: min(28rem, 100% - 2 * var(--space-lg));
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: var(--secondary);
+    box-shadow: 0 0 0 1px var(--border), var(--shadow-lg);
+    --dialog-ease: cubic-bezier(0.23, 1, 0.32, 1);
+
+    /* Closed values; the exit transitions back to them while display and overlay stay discrete until the end */
+    opacity: 0;
+    scale: 0.97;
+    transition:
+        opacity 200ms var(--dialog-ease),
+        scale 200ms var(--dialog-ease),
+        overlay 200ms allow-discrete,
+        display 200ms allow-discrete;
+
+    &::backdrop {
+        background-color: oklch(0 0 0 / 0);
+        backdrop-filter: blur(0) saturate(100%);
+        transition:
+            background-color 200ms var(--dialog-ease),
+            backdrop-filter 200ms var(--dialog-ease),
+            overlay 200ms allow-discrete,
+            display 200ms allow-discrete;
+    }
+
+    &[open] {
+        opacity: 1;
+        scale: 1;
+
+        @starting-style {
+            opacity: 0;
+            scale: 0.97;
+        }
+    }
+
+    &[open]::backdrop {
+        background-color: oklch(0 0 0 / 0.25);
+        backdrop-filter: blur(6px) saturate(180%);
+
+        @starting-style {
+            background-color: oklch(0 0 0 / 0);
+            backdrop-filter: blur(0) saturate(100%);
+        }
+    }
+
+    /* Keep the fade and blur, drop the scale */
+    @media (prefers-reduced-motion: reduce) {
+        &,
+        &[open] {
+            scale: 1;
+        }
+    }
+}
+
+/* The padding sits on the form so that a click on the dialog element itself is a backdrop click */
+.mastodon-dialog__form {
+    display: grid;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+
+    @media (width < 36rem) {
+        padding: var(--space-lg);
+    }
+}
+
+.mastodon-dialog .mastodon-dialog__title {
+    margin: 0;
+    color: var(--primary);
+    font-size: var(--text-lg);
+    text-wrap: balance;
+}
+
+.mastodon-dialog__copy {
+    margin: 0 0 var(--space-xs);
+    text-wrap: pretty;
+}
+
+.mastodon-dialog__input {
+    min-inline-size: 0;
+    min-block-size: 2.5rem;
+    padding: var(--space-xs) var(--space-md);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    color: var(--primary);
+    font-size: 1rem;
+
+    &::placeholder {
+        color: var(--tertiary);
+    }
+}
+
+.mastodon-dialog__actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.mastodon-dialog__cancel {
+    min-block-size: 2.5rem;
+    padding: var(--space-xs) var(--space-md);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--secondary);
+    font-size: var(--text-sm);
+    cursor: pointer;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            color: var(--primary);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: var(--space-2xs);
+    }
 }
 
 .post-reply__actions + .replies {

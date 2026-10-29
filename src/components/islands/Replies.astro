@@ -2,6 +2,8 @@
 import { getBlueskyReplies, type Reply } from "../../lib/bluesky";
 import ReplyByEmail from "../ReplyByEmail.astro";
 import ReplyItem from "../ReplyItem.astro";
+import ReplyOnMastodon from "../ReplyOnMastodon.astro";
+import { SITE } from "../../site";
 
 interface Props {
   slug: string;
@@ -19,7 +21,7 @@ const count = (list: Reply[]): number => list.reduce((total, reply) => total + 1
 const total = count(replies);
 Astro.response.headers.set("Cache-Control", "public, max-age=300");
 ---
-<p class="post-reply__actions">
+<div class="post-reply__actions">
   <ReplyByEmail title={title} />
   {bluesky.postUrl && (
     <a class="reply-on-bluesky meta-link" href={bluesky.postUrl} target="_blank" rel="noopener noreferrer">
@@ -30,7 +32,8 @@ Astro.response.headers.set("Cache-Control", "public, max-age=300");
       <span>Reply on Bluesky</span>
     </a>
   )}
-</p>
+  <ReplyOnMastodon uri={new URL(`/ap/posts/${slug}`, SITE.url).href} />
+</div>
 {total > 0 && (
   <section class="replies" aria-labelledby="replies-title">
     <h2 class="replies__title" id="replies-title">{total === 1 ? "1 reply" : `${total} replies`}</h2>
