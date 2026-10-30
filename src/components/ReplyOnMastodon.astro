@@ -1,4 +1,6 @@
 ---
+import MastodonDialog from "./MastodonDialog.astro";
+
 interface Props {
   /** The ActivityPub id of the post, which the reader's instance looks up. */
   uri: string;
@@ -11,18 +13,9 @@ interface Props {
   </svg>
   <span>Reply on Mastodon</span>
 </button>
-<dialog class="mastodon-dialog" id="reply-on-mastodon-dialog" aria-labelledby="reply-on-mastodon-title" aria-describedby="reply-on-mastodon-copy">
-  <form class="mastodon-dialog__form" data-mastodon-form data-uri={Astro.props.uri}>
-    <h2 class="mastodon-dialog__title" id="reply-on-mastodon-title">Enter your Mastodon instance</h2>
-    <p class="mastodon-dialog__copy" id="reply-on-mastodon-copy">
-      This allows you to directly comment on this post. Your instance opens in a new tab, where you can reply from your own account.
-    </p>
-    <label class="visually-hidden" for="reply-on-mastodon-instance">Your Mastodon instance</label>
-    <input class="mastodon-dialog__input" id="reply-on-mastodon-instance" name="instance" type="text" inputmode="url"
-      placeholder="mastodon.social" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go" required>
-    <div class="mastodon-dialog__actions">
-      <button class="mastodon-dialog__cancel" type="button" data-mastodon-close>Cancel</button>
-      <button class="button-primary" type="submit">Reply on Mastodon</button>
-    </div>
-  </form>
-</dialog>
+<MastodonDialog
+  id="reply-on-mastodon-dialog"
+  uri={Astro.props.uri}
+  copy="This allows you to directly comment on this post. Your instance opens in a new tab, where you can reply from your own account."
+  submitLabel="Reply on Mastodon"
+/>

@@ -157,7 +157,7 @@ sequoia-subscribe::part(button) {
     user-select: none;
 }
 
-/* Copies the fediverse handle */
+/* Opens the Mastodon follow dialog */
 button.follow-card__link {
     padding: 0 0 2px;
     border: 0;

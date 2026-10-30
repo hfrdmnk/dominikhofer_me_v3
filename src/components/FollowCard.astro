@@ -1,8 +1,9 @@
 ---
 import sequoia from "../../sequoia.json";
+import MastodonDialog from "./MastodonDialog.astro";
 
 const publicationUri = sequoia.publicationUri;
-const FEDIVERSE_HANDLE = "@blog@dominikhofer.me";
+const MASTODON_HANDLE = "@blog@dominikhofer.me";
 ---
 <section class="follow-card breakout" aria-labelledby="follow-card-title">
     <h2 class="follow-card__title" id="follow-card-title">Want to stay in touch?</h2>
@@ -42,7 +43,7 @@ const FEDIVERSE_HANDLE = "@blog@dominikhofer.me";
         </button>
     </form>
     <div class="follow-card__alternatives">
-        <p>If you prefer, you can also follow along via RSS, standard.site or the fediverse:</p>
+        <p>If you prefer, you can also follow along via RSS, standard.site or Mastodon:</p>
         <div class="follow-card__links">
             <a class="button-underline follow-card__link"
                 href="https://subscribeopenly.net/subscribe/?url=https://dominikhofer.me/rss.xml" target="_blank"
@@ -56,8 +57,14 @@ const FEDIVERSE_HANDLE = "@blog@dominikhofer.me";
                 <span class="button-underline follow-card__link">Standard Site</span>
                 )}
             </sequoia-subscribe>
-            <button class="button-underline follow-card__link" type="button" data-copy-handle={FEDIVERSE_HANDLE}
-                title={`Copy ${FEDIVERSE_HANDLE}`} aria-label={`Copy fediverse handle ${FEDIVERSE_HANDLE}`}>Fediverse</button>
+            <button class="button-underline follow-card__link" type="button" aria-haspopup="dialog"
+                data-mastodon-open="follow-on-mastodon-dialog">Mastodon</button>
         </div>
     </div>
+    <MastodonDialog
+        id="follow-on-mastodon-dialog"
+        uri={MASTODON_HANDLE}
+        copy={`Follow ${MASTODON_HANDLE} from your own account. Your instance opens in a new tab, where you can confirm the follow.`}
+        submitLabel="Follow on Mastodon"
+    />
 </section>

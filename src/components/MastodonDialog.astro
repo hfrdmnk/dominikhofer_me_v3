@@ -1,0 +1,24 @@
+---
+interface Props {
+  id: string;
+  /** What the reader's instance looks up: an ActivityPub id or a handle. */
+  uri: string;
+  copy: string;
+  submitLabel: string;
+}
+
+const { id, uri, copy, submitLabel } = Astro.props;
+---
+<dialog class="mastodon-dialog" id={id} aria-labelledby={`${id}-title`} aria-describedby={`${id}-copy`}>
+  <form class="mastodon-dialog__form" data-mastodon-form data-uri={uri}>
+    <h2 class="mastodon-dialog__title" id={`${id}-title`}>Enter your Mastodon instance</h2>
+    <p class="mastodon-dialog__copy" id={`${id}-copy`}>{copy}</p>
+    <label class="visually-hidden" for={`${id}-instance`}>Your Mastodon instance</label>
+    <input class="mastodon-dialog__input" id={`${id}-instance`} name="instance" type="text" inputmode="url"
+      placeholder="mastodon.social" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="go" required>
+    <div class="mastodon-dialog__actions">
+      <button class="mastodon-dialog__cancel" type="button" data-mastodon-close>Cancel</button>
+      <button class="button-primary" type="submit">{submitLabel}</button>
+    </div>
+  </form>
+</dialog>

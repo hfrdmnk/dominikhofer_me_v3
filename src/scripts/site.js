@@ -241,25 +241,6 @@
     });
   });
 
-  document.querySelectorAll("[data-copy-handle]").forEach((button) => {
-    const handle = button.dataset.copyHandle;
-    const label = button.textContent;
-    let resetTimer;
-
-    button.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(handle);
-        button.textContent = "Copied!";
-      } catch {
-        return;
-      }
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => {
-        button.textContent = label;
-      }, 2000);
-    });
-  });
-
   const root = document.documentElement;
   const updateScrollable = () => {
     root.dataset.scrollable = root.scrollHeight > root.clientHeight ? "true" : "false";
