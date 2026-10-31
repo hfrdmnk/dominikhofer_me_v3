@@ -1,14 +1,14 @@
 // Cloudflare bindings used by the on-demand parts of the site.
 // To self-host on Node.js, reimplement these functions (for example with
-// `node:sqlite` for the database and `@fedify/sqlite` for the key–value store).
+// `node:sqlite` for the database, which also holds the key–value store).
 import { env } from "cloudflare:workers";
-import { WorkersKvStore, WorkersMessageQueue } from "@fedify/cfworkers";
-import type { KvStore, MessageQueue } from "@fedify/fedify";
+import { WorkersMessageQueue } from "@fedify/cfworkers";
+import type { MessageQueue } from "@fedify/fedify";
+import { SqlKvStore } from "../federation/kv";
 import type { Sql } from "../federation/sql";
 
 interface Bindings {
   DB: Sql;
-  FEDIFY_KV: ConstructorParameters<typeof WorkersKvStore>[0];
   FEDIFY_QUEUE: ConstructorParameters<typeof WorkersMessageQueue>[0];
   ASSETS: { fetch(request: Request | string): Promise<Response> };
 }
@@ -16,7 +16,7 @@ interface Bindings {
 const bindings = env as unknown as Bindings;
 
 export const getDatabase = (): Sql => bindings.DB;
-export const getKvStore = (): KvStore => new WorkersKvStore(bindings.FEDIFY_KV);
+export const getKvStore = (): SqlKvStore => new SqlKvStore(bindings.DB);
 export const getMessageQueue = (): MessageQueue & Pick<WorkersMessageQueue, "processMessage"> =>
   new WorkersMessageQueue(bindings.FEDIFY_QUEUE);
 

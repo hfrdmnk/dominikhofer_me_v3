@@ -3,7 +3,7 @@ import { handle } from "@astrojs/cloudflare/handler";
 import type { Message } from "@fedify/fedify";
 import { getLogger } from "@logtape/logtape";
 import { getContextData, getFederation } from "./federation";
-import { getMessageQueue } from "./lib/platform";
+import { getKvStore, getMessageQueue } from "./lib/platform";
 
 const logger = getLogger(["dominikhofer", "federation"]);
 
@@ -47,6 +47,7 @@ export default {
   // Starts the deploy workflow on the cron in wrangler.jsonc, which rebuilds the site.
   // GitHub's own schedule trigger runs late or not at all under load.
   async scheduled(_controller, env) {
+    await getKvStore().deleteExpired();
     const { GITHUB_DEPLOY_TOKEN } = env as Env & { GITHUB_DEPLOY_TOKEN?: string };
     if (!GITHUB_DEPLOY_TOKEN) throw new Error("GITHUB_DEPLOY_TOKEN is not set");
     const response = await fetch(DEPLOY_WORKFLOW_DISPATCH, {
