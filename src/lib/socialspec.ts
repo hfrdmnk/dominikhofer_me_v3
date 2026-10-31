@@ -40,6 +40,7 @@ export function contactCard(): string {
     `EMAIL;PREF=1:${SITE.replyEmail}`,
     `URL:${SITE.url}/`,
     `SOCIALPROFILE;SERVICE-TYPE=Bluesky:https://bsky.app/profile/${SITE.atproto.handle}`,
+    `SOCIALPROFILE;SERVICE-TYPE=Mastodon:${SITE.mastodon.profile}`,
     "END:VCARD",
   ]
     .map((line) => `${line}\r\n`)

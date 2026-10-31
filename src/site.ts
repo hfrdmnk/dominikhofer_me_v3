@@ -16,6 +16,9 @@ export const SITE = {
     did: "did:plc:fthx2gjakdj4ynxxu5vysjty",
     handle: "dominikhofer.me",
   },
+  mastodon: {
+    profile: "https://mastodon.social/@dominikhofer_me",
+  },
   bookhive: {
     profile: "https://bookhive.buzz/profile/dominikhofer.me",
   },
