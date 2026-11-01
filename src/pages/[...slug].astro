@@ -10,7 +10,7 @@ import Replies from "../components/islands/Replies.astro";
 import RssIcon from "../components/icons/Rss.astro";
 import { mdxComponents } from "../components/mdx";
 import Base from "../layouts/Base.astro";
-import { blogrollSections, blogrollUpdated } from "../lib/blogroll";
+import { blogrollSections, loadBlogroll } from "../lib/blogroll";
 import { entryDate } from "../lib/content";
 import { bundleImage } from "../lib/images";
 import { getRoutes, isHidden, ogImagePath, routeDate, socialTitle, type Route } from "../lib/routes";
@@ -36,7 +36,8 @@ const cover = !feedOnly && data.cover ? await bundleImage(entry.filePath, data.c
 const media: string[] = data.media ?? [];
 const photoPair = route.kind === "page" ? route.page.data.photo_pair : undefined;
 const isBlogroll = route.kind === "page" && route.page.id === "blogroll";
-const updated = feedOnly ? undefined : isBlogroll ? blogrollUpdated() : entryDate(entry, "updated");
+const blogroll = isBlogroll ? await loadBlogroll() : undefined;
+const updated = feedOnly ? undefined : blogroll ? blogroll.updated : entryDate(entry, "updated");
 const hasMath = entry.rendered?.html.includes('class="katex') ?? false;
 // Posts that the fediverse actor publishes, and that collect replies from there and Bluesky.
 const isFederated =
@@ -76,19 +77,21 @@ const isFederated =
       <ReplyByEmail title={title} />
     </div>
   ) : route.kind === "page" ? (
-    isBlogroll ? (
+    blogroll ? (
       <div class="prose blogroll">
         <Content />
-        {blogrollSections().map((blogrollSection) => (
+        {blogrollSections(blogroll.opml).map((blogrollSection) => (
           <section class="blogroll__section" aria-labelledby={anchorize(blogrollSection.title)}>
             <h2 id={anchorize(blogrollSection.title)}>{blogrollSection.title}</h2>
             <ul class="blogroll__list">
               {blogrollSection.feeds.map((feed) => (
                 <li class="blogroll__item">
                   <a class="blogroll__site" href={feed.htmlUrl} target="_blank" rel="noopener noreferrer">{feed.title}</a>
-                  <a class="blogroll__feed" href={feed.xmlUrl} target="_blank" rel="noopener noreferrer" aria-label={`RSS feed for ${feed.title}`}>
-                    <RssIcon />
-                  </a>
+                  {feed.xmlUrl && (
+                    <a class="blogroll__feed" href={feed.xmlUrl} target="_blank" rel="noopener noreferrer" aria-label={`RSS feed for ${feed.title}`}>
+                      <RssIcon />
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
