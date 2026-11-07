@@ -3,6 +3,8 @@ import { SITE } from "../site";
 
 /** YouTube channels are left out because the blogroll lists blogs. */
 export const MORGENBLAU_OPML_URL = `https://app.morgen.blue/user/${SITE.atproto.did}/following.opml?excludeKind=youtube`;
+/** Without folders, because FollowSpec readers such as FollowDraw only read top-level outlines. */
+export const MORGENBLAU_FLAT_OPML_URL = `${MORGENBLAU_OPML_URL}&folders=none`;
 
 export interface Feed {
   title: string;
@@ -25,18 +27,13 @@ const feedOf = (outline: Outline): Feed => ({
   xmlUrl: outline["@_xmlUrl"],
 });
 
-let blogrollPromise: Promise<{ opml: string; updated: Date }> | undefined;
-
-/** The list of sources I follow, fetched from Morgenblau once per build. */
-export function loadBlogroll(): Promise<{ opml: string; updated: Date }> {
-  blogrollPromise ??= (async () => {
-    const response = await fetch(MORGENBLAU_OPML_URL);
-    if (!response.ok) throw new Error(`blogroll: fetching ${MORGENBLAU_OPML_URL} failed: HTTP ${response.status}`);
-    const opml = await response.text();
-    if (!parseOutlines(opml).length) throw new Error(`blogroll: ${MORGENBLAU_OPML_URL} lists no sources`);
-    return { opml, updated: new Date() };
-  })();
-  return blogrollPromise;
+/** The list of sources I follow, fetched from Morgenblau. */
+export async function loadBlogroll(url = MORGENBLAU_OPML_URL): Promise<{ opml: string; updated: Date }> {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`blogroll: fetching ${url} failed: HTTP ${response.status}`);
+  const opml = await response.text();
+  if (!parseOutlines(opml).length) throw new Error(`blogroll: ${url} lists no sources`);
+  return { opml, updated: new Date() };
 }
 
 /** Folders (Morgenblau tags) as sections; sources without a folder go to "Other". */
