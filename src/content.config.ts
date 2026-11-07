@@ -62,7 +62,6 @@ const pages = defineCollection({
     kicker: z.string().optional(),
     description: z.string().optional(),
     updated: timestamp,
-    updatedResource: z.string().optional(),
     updatedLabel: z.string().optional(),
     cover: z.string().optional(),
     noindex: z.boolean().default(false),

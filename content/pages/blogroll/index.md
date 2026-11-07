@@ -1,7 +1,6 @@
 ---
 title: "Blogs worth following."
 kicker: "Blogroll"
-updatedResource: "feeds.opml"
 updatedLabel: "Last updated at"
 ---
 

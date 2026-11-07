@@ -10,10 +10,6 @@
       <outline text="Trust the Process" title="Trust the Process" type="link" url="https://trust.example/" htmlUrl="https://trust.example/"></outline>
       <outline text="Anil Dash" title="Anil Dash" type="rss" xmlUrl="https://www.anildash.com/feed.xml" htmlUrl="https://www.anildash.com/"></outline>
     </outline>
-    <outline text="Videos" title="Videos">
-      <outline text="Amp, Inc." title="Amp, Inc." type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCTBO4_LccT2C8THAOS_W-kQ" htmlUrl="https://youtube.com/@ampcodeinc"></outline>
-    </outline>
     <outline text="Leaflet Notes" title="Leaflet Notes" type="link" url="https://notes.example/" htmlUrl="https://notes.example/"></outline>
-    <outline text="Ali Abdaal" title="Ali Abdaal" type="rss" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCoOae5nYA7VqaXzerajD0lg" htmlUrl="https://www.youtube.com/channel/UCoOae5nYA7VqaXzerajD0lg"></outline>
   </body>
 </opml>

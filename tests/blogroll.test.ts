@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { blogrollSections } from "../src/lib/blogroll";
 
-test("lists Standardfeed publications without a feed link and leaves out YouTube channels", () => {
+test("lists Standardfeed publications without a feed link", () => {
   const opml = readFileSync(new URL("./fixtures/blogroll/following.opml", import.meta.url), "utf8");
   assert.deepEqual(blogrollSections(opml), [
     {
