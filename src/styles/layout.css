@@ -250,7 +250,14 @@
     --meta-link-icon-x: -0.25rem;
 
     position: relative;
+    /* Keeps the line's height now that the text is trimmed to its letters */
+    min-block-size: 1lh;
     font-size: var(--text-base);
+
+    /* Center the icon on the letters rather than on the line box */
+    > span {
+        text-box: trim-both cap alphabetic;
+    }
 
     .icon {
         position: absolute;
@@ -523,6 +530,10 @@
     opacity: 0;
     transform: translate(-4px, -50%);
     transition: color 150ms ease, opacity 150ms ease, transform 150ms ease;
+
+    > span {
+        text-box: trim-both cap alphabetic;
+    }
 
     @media (prefers-reduced-motion: reduce) {
         transition: none;
