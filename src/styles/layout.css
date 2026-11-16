@@ -252,7 +252,7 @@
     position: relative;
     font-size: var(--text-base);
 
-    .iconoir {
+    .icon {
         position: absolute;
         inset-block-start: 50%;
         inset-inline-end: calc(100% + var(--space-xs));

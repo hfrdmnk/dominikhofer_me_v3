@@ -39,7 +39,7 @@
     margin-inline-start: 0.35em;
     color: var(--tertiary);
 
-    .iconoir {
+    .icon {
         display: inline;
         inline-size: 0.8em;
         block-size: 0.8em;

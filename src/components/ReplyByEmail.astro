@@ -8,11 +8,11 @@ interface Props {
 
 // The href holds HTML entities to obfuscate the address, so the link is raw HTML.
 const href = replyEmailHref(SITE.replyEmail, Astro.props.title);
+// "send" icon from central icons (https://centralicons.com/)
 ---
 <Fragment set:html={`<a class="reply-by-email meta-link" href="${href}">
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-    <path d="M22.1525 3.55321L11.1772 21.0044L9.50686 12.4078L2.00002 7.89795L22.1525 3.55321Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-    <path d="M9.45557 12.4436L22.1524 3.55321" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M13.1325 21.5344C13.3778 22.5155 14.758 22.5542 15.0577 21.5883L20.1858 5.0646C20.4244 4.29579 19.7031 3.57454 18.9343 3.81313L2.41066 8.94116C1.44476 9.24092 1.48337 10.6211 2.46451 10.8664L10.4168 12.8545C10.7751 12.944 11.0549 13.2238 11.1444 13.5821L13.1325 21.5344Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
   </svg>
   <span>Reply by email</span>
 </a>`} />
