@@ -23,6 +23,16 @@
 /slash/ / 301
 /newsletter https://buttondown.com/dominikhofer 302
 /newsletter/ https://buttondown.com/dominikhofer 302
+/newsletter/008 https://web.archive.org/web/20250519211855/https://dominikhofer.me/newsletter/008 301
+/newsletter/008/ https://web.archive.org/web/20250519211855/https://dominikhofer.me/newsletter/008 301
+/hi /hello/ 301
+/hi/ /hello/ 301
+/repo https://github.com/hfrdmnk/dominikhofer_me_v3 302
+/repo/ https://github.com/hfrdmnk/dominikhofer_me_v3 302
+/til /posts/ 301
+/til/ /posts/ 301
+/3mdlb7kyau22n https://bsky.app/profile/dominikhofer.me/post/3mdlb7kyau22n 301
+/3mdlb7kyau22n/ https://bsky.app/profile/dominikhofer.me/post/3mdlb7kyau22n 301
 
 # Hugo's taxonomy pages, now filters of the post archive
 /tags/:tag/index.xml /rss.xml 301
@@ -30,5 +40,8 @@
 /tags/:tag /posts/?tag=:tag 301
 /tags/ /posts/ 301
 /tags /posts/ 301
+# Kirby's tag pages
+/tag/:tag/ /posts/?tag=:tag 301
+/tag/:tag /posts/?tag=:tag 301
 /categories/* /posts/ 301
 /categories /posts/ 301
