@@ -17,7 +17,7 @@ Until I found out from [Marcel](https://marcel.io/posts/how-i-manage-my-read-lat
 
 Yeah, that’s precisely what I do now. Here’s my Today view in Things 3 as of writing this:
 
-![][//cutakfyi0trkip7f](//cutakfyi0trkip7f)
+![My Today view in Things 3 with articles to read](read-later.jpg)
 
 Three side-effects of this system that are a feature, not a bug:
 
