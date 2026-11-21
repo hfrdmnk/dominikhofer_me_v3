@@ -2,11 +2,12 @@
   "name": "dominikhofer-me",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@12.14.0",
+  "packageManager": "pnpm@12.21.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "onFail": "error"
+      "onFail": "error",
+      "version": "12.21.0"
     }
   },
   "scripts": {
